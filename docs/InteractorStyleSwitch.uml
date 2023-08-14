@@ -1,0 +1,36 @@
+class InteractorStyleSwitch
+{
+- ActorManipulationInteractorStyle * TrackballActor;
+- CameraInteractorStyle * TrackballCamera;
+
+  + void SetCurrentStyleToTrackballActor();
+  + void SetCurrentStyleToTrackballCamera();
+
+  + void SetDefaultRenderer(vtkRenderer *) override;
+  + void SetCurrentRenderer(vtkRenderer *) override;
+
+  + void SetInteractor(vtkRenderWindowInteractor *iren) override;
+  + vtkRenderWindowInteractor *GetInteractor();
+
+}
+
+
+InteractorStyleSwitch o-- ActorManipulationInteractorStyle
+InteractorStyleSwitch o-- CameraInteractorStyle
+
+class vtkInteractorStyleSwitchBase
+
+
+
+vtkInteractorStyleSwitchBase  <|-- InteractorStyleSwitch
+
+
+class vtkInteractorStyleTrackballActor
+class vtkInteractorStyleTrackballCamera
+
+
+class ActorManipulationInteractorStyle
+class CameraInteractorStyle
+
+vtkInteractorStyleTrackballCamera   <|--  CameraInteractorStyle
+vtkInteractorStyleTrackballActor  <|-- ActorManipulationInteractorStyle
