@@ -1,3 +1,6 @@
+# QQuickVTKRenderItem
+
+This class is deprecated, use `QQuickVTKItem` instead.
 
 In your main:
 
@@ -19,7 +22,6 @@ In your main:
   qquickvtkItem->renderer()->SetBackground(0.5, 0.5, 0.7);
   qquickvtkItem->update();
 ```
-
 
 In your QML
 
@@ -44,7 +46,6 @@ import VTK 9.2
     renderWindow: vtkwindow
   }
 ```
-
 
 [code](../vtk/qml_pcl.cpp)
 

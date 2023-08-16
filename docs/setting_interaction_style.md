@@ -1,5 +1,4 @@
-By default the `vtkRenderWindowInteractor` instantiates an instance of `vtkInteractorStyle`. 
-
+By default the `vtkRenderWindowInteractor` instantiates an instance of `vtkInteractorStyle`.
 
 ```cpp
 vtkNew<vtkRenderWindow> renWin;
@@ -15,10 +14,7 @@ We can specify a particular interactor style.
 vtkNew<vtkInteractorStyleTrackballCamera> style;
 iren->SetInteractorStyle(style);
 ```
- 
- 
 
-[code](../vtk/setting_interaction_style.cpp)
-
+[code](../src/setting_interaction_style.cpp)
 
 Refs: [1](https://examples.vtk.org/site/Cxx/Tutorial/Tutorial_Step5/)

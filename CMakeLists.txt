@@ -1,32 +1,24 @@
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 project(vtk_projects)
 
-
 if(NOT "${CMAKE_GENERATOR}" STREQUAL "Ninja Multi-Config")
-    #message(WARNING "It's recommended to use -G \"Ninja Multi-Config\" for this project.")
-    # OR, if you want to force-stop the configuration:
-    message(FATAL_ERROR "Please use -G \"Ninja Multi-Config\" for this project.")
+	# message(WARNING "It's recommended to use -G \"Ninja Multi-Config\" for this project.")
+	# OR, if you want to force-stop the configuration:
+	message(FATAL_ERROR "Please use -G \"Ninja Multi-Config\" for this project.")
 endif()
-
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
 
-
 find_package(Boost COMPONENTS filesystem system REQUIRED)
-
 
 set(VTK_DIR "$ENV{HOME}/usr/lib/cmake/vtk-9.2/")
 message("VTK_DIR:" ${VTK_DIR})
 
-find_package(VTK)
 find_package(VTK REQUIRED)
 message("VTK_VERSION:" ${VTK_VERSION})
 message("VTK_LIBRARIES:" ${VTK_LIBRARIES})
-
-
-
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -38,41 +30,39 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Qml Quick Widgets Gui Qui
 message(STATUS "QT version: " ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
 message(STATUS "QT dir" ${Qt${QT_VERSION_MAJOR}_DIR})
 
-
 set(PCL_DIR "$ENV{HOME}/usr/share/pcl-1.13/")
 message("PCL_DIR:" ${PCL_DIR})
 
-
 if(EXISTS "${PCL_DIR}")
 	find_package(PCL 1.13 REQUIRED COMPONENTS
-	    common
-	    octree
-	    io
-	    kdtree
-	    search
-	    sample_consensus
-	    filters
-	    2d
-	    features
-	    registration
-	    geometry
-	    visualization
-	    outofcore
-	    surface
-	    keypoints
-	    ml
-	    segmentation
-	    recognition
-	    people
-	    tracking
-	    stereo)
+		common
+		octree
+		io
+		kdtree
+		search
+		sample_consensus
+		filters
+		2d
+		features
+		registration
+		geometry
+		visualization
+		outofcore
+		surface
+		keypoints
+		ml
+		segmentation
+		recognition
+		people
+		tracking
+		stereo)
 endif()
 
 if(${PCL_FOUND})
 	include_directories(${PCL_INCLUDE_DIRS})
 	link_directories(${PCL_LIBRARY_DIRS})
 	add_definitions(${PCL_DEFINITIONS})
-	
+
 	add_executable(qml_pcl src/qml_pcl.cpp qml.qrc)
 	target_link_libraries(qml_pcl PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 
@@ -92,8 +82,6 @@ if(${PCL_FOUND})
 	target_link_libraries(AreaPicking PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 	vtk_module_autoinit(TARGETS AreaPicking MODULES ${VTK_LIBRARIES})
 endif()
-
-
 
 add_executable(vtk_demo src/vtk_demo.cpp)
 target_link_libraries(vtk_demo PRIVATE ${VTK_LIBRARIES})
@@ -462,7 +450,9 @@ add_executable(CylinderExample src/CylinderExample.cpp)
 target_link_libraries(CylinderExample PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS CylinderExample MODULES ${VTK_LIBRARIES})
 
-
+add_executable(sandbox src/sandbox.cpp)
+target_link_libraries(sandbox PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS sandbox MODULES ${VTK_LIBRARIES})
 
 # # vtk_module_autoinit is needed
 # vtk_module_autoinit(

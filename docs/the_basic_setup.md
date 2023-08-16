@@ -21,15 +21,14 @@ vtkNew<vtkRenderWindow> renWin;
 renWin->AddRenderer(renderer);
 
 for (int i = 0; i < 360; ++i) {
-	// Render the image
-	renWin->Render();
+ // Render the image
+ renWin->Render();
 
-	// Rotate the camera about the view up vector centered at the focal point.
-	renderer->GetActiveCamera()->Azimuth(1);
+ // Rotate the camera about the view up vector centered at the focal point.
+ renderer->GetActiveCamera()->Azimuth(1);
 }
 ```
 
-[code](../vtk/the_basic_setup.cpp)
-
+[code](../src/the_basic_setup.cpp)
 
 Refs: [1](https://examples.vtk.org/site/Cxx/Tutorial/Tutorial_Step1)
