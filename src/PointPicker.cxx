@@ -15,14 +15,12 @@
 namespace {
 
 // Define interaction style
-class MouseInteractorStylePP : public vtkInteractorStyleTrackballCamera
-{
+class MouseInteractorStylePP : public vtkInteractorStyleTrackballCamera {
 public:
-  static MouseInteractorStylePP* New();
+  static MouseInteractorStylePP *New();
   vtkTypeMacro(MouseInteractorStylePP, vtkInteractorStyleTrackballCamera);
 
-  virtual void OnLeftButtonDown() override
-  {
+  virtual void OnLeftButtonDown() override {
     std::cout << "Picking pixel: " << this->Interactor->GetEventPosition()[0]
               << " " << this->Interactor->GetEventPosition()[1] << std::endl;
     this->Interactor->GetPicker()->Pick(this->Interactor->GetEventPosition()[0],
@@ -44,8 +42,7 @@ vtkStandardNewMacro(MouseInteractorStylePP);
 
 } // namespace
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkSphereSource> sphereSource;

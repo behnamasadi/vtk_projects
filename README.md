@@ -45,7 +45,9 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [BoxWidget](docs/boxWidget.md)  
 [AffineWidget](docs/affineWidget.md)  
 [DistanceWidget](docs/distanceWidget.md)  
-[TextWidget](docs/textWidget.md)
+[AngleWidget](docs/angleWidget.md)  
+[TextWidget](docs/textWidget.md)  
+[Gizmo, CameraOrientationWidget](docs/gizmo_camera_orientation_widget.md)
 
 ## Axes
 

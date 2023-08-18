@@ -1,6 +1,7 @@
 <img src="images/InteractorStyleSwitch.svg" />
 
 In the header:
+
 ```cpp
 enum class INTERACTION_MODE { CAMERA, ACTOR };
 
@@ -78,7 +79,6 @@ void InteractorStyleSwitch::SetCurrentStyle() {
 }
 ```
 
-[code](../vtk/InteractorStyleSwitch.cpp)
+[code](../src/InteractorStyleSwitch.cpp)
 
 source code of vtkInteractorStyleSwitch: [1](https://github.com/Kitware/VTK/blob/master/Interaction/Style/vtkInteractorStyleSwitch.h), [2](https://github.com/Kitware/VTK/blob/master/Interaction/Style/vtkInteractorStyleSwitch.cxx)
-

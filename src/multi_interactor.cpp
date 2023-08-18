@@ -132,31 +132,13 @@ int main() {
     actor->GetProperty()->SetSpecularColor(
         namedColor->GetColor3d("White").GetData());
     actor->GetProperty()->SetSpecularPower(30.0);
-    // renderer->AddActor(actor);
+    renderer->AddActor(actor);
   }
 
   // adding point cloud
 
   pcl::PointCloud<pcl::PointXYZ> cloud;
   pcl::PointXYZ point;
-
-  // for (int i = 0; i < 1000; i++) {
-  //   double x, y, z, radius;
-  //   x = randomSequence->GetRangeValue(5.0, 10.0);
-  //   randomSequence->Next();
-  //   y = randomSequence->GetRangeValue(2.0, 5.0);
-  //   randomSequence->Next();
-  //   z = randomSequence->GetRangeValue(2.0, 5.0);
-  //   randomSequence->Next();
-
-  //   point.x = x;
-  //   point.y = y;
-  //   point.z = z;
-
-  //   std::cout << point.x << ", " << point.y << ", " << point.z << std::endl;
-
-  //   cloud.points.push_back(point);
-  // }
 
   double cylanderRadius = 2.0;
   for (int i = 0; i < 1000; i++) {
@@ -171,8 +153,6 @@ int main() {
     point.y = y;
     point.z = z;
 
-    // std::cout << point.x << ", " << point.y << ", " << point.z << std::endl;
-
     cloud.points.push_back(point);
 
     point.x = x;
@@ -181,7 +161,7 @@ int main() {
     cloud.points.push_back(point);
   }
 
-  vtkSmartPointer<vtkPolyData> polydata = vtkSmartPointer<vtkPolyData>::New();
+  vtkNew<vtkPolyData> polydata;
   pcl::io::pointCloudTovtkPolyData(cloud, polydata);
 
   vtkNew<vtkPolyDataMapper> pointcloudMapper;

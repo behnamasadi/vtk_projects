@@ -1,4 +1,5 @@
 ## World Point Picker
+
 ```cpp
 class MouseInteractorStyle : public vtkInteractorStyleTrackballCamera {
 public:
@@ -23,7 +24,8 @@ public:
   }
 };
 ```
-In your main 
+
+In your main
 
 ```cpp
 vtkNew<vtkWorldPointPicker> worldPointPicker;
@@ -37,5 +39,4 @@ renderWindowInteractor->SetInteractorStyle(style);
 
 ```
 
-[code](../vtk/WorldPointPicker.cxx)
-
+[code](../src/WorldPointPicker.cxx)

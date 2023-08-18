@@ -239,7 +239,7 @@ void InteractorStyleSwitch::OnChar() {
     break;
   case 'a':
   case 'A': {
-    m_txtModeIndicator->SetInput("Angle Mode");
+    m_txtModeIndicator->SetInput("Angle Measurement Mode");
 
     vtkAngleWidget *angleWidget;
     angleWidget = vtkAngleWidget::New();

@@ -9,11 +9,6 @@
 	<file>images/HQ.png</file>
 	<file>qml/DynamicSplitView.qml</file>		
 	<file>qml/dynamic_split_view_main.qml</file>		
+	<file>qml/sanbox.qml</file>			
 </qresource>
-<!-- 
-<qresource prefix="/images">
-<file>images/HQ.png</file>
-<file>images/PNG_transparency_demonstration_1.bmp</file>
-</qresource>
--->
 </RCC>
