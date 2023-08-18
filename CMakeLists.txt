@@ -450,6 +450,10 @@ add_executable(CylinderExample src/CylinderExample.cpp)
 target_link_libraries(CylinderExample PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS CylinderExample MODULES ${VTK_LIBRARIES})
 
+add_executable(TransformActorCollection src/TransformActorCollection.cxx)
+target_link_libraries(TransformActorCollection PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS TransformActorCollection MODULES ${VTK_LIBRARIES})
+
 add_executable(sandbox src/sandbox.cpp)
 target_link_libraries(sandbox PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS sandbox MODULES ${VTK_LIBRARIES})

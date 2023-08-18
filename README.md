@@ -34,6 +34,9 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [Command/Observer and CallBacks for Events](docs/command_observer_for_events_callback.md)  
 [Actor Properties](docs/actor_properties.md)  
 [Plane Source/ Grid Background](docs/plane_source_grid_background.md)  
+[BoundingBox](docs/boundingbox.md)  
+[Prop3D](docs/prop3d.md)  
+[Grouping Actors, Actor Collection](docs/grouping_actors_actor_collection.md)  
 
 ## Viewport
 
@@ -69,6 +72,8 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 ## Window Interaction
 
 [Setting Interaction Style](docs/setting_interaction_style.md)  
+ * [vtkInteractorStyleTrackballCamera](docs/setting_interaction_style.md#vtkInteractorStyleTrackballCamera)
+ * [vtkInteractorStyleTrackballActor](docs/setting_interaction_style.md#vtkInteractorStyleTrackballActor)
 [Rotate/ Transform Actor](docs/rotate_actor.md)  
 [Key Press Interactor](docs/key_press_interactor.md)  
 [InteractorStyleSwitch](docs/interactor_style_switch.md)  

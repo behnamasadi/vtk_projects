@@ -1,6 +1,10 @@
+#include <QQuickVTKItem.h>
 #include <vtkActor.h>
+#include <vtkAxesActor.h>
+#include <vtkBillboardTextActor3D.h>
 #include <vtkCallbackCommand.h>
 #include <vtkCamera.h>
+#include <vtkCameraOrientationWidget.h>
 #include <vtkConeSource.h>
 #include <vtkInteractorStyle.h>
 #include <vtkInteractorStyleJoystickActor.h>
@@ -11,30 +15,35 @@
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
-
 #include <vtkRenderer.h>
 
-enum class INTERACTION_MODE { CAMERA, ACTOR };
+struct myvtkItem : QQuickVTKItem {
 
-class InteractorStyleSwitch : vtkInteractorStyleSwitch {
+  struct userData : public vtkObject {
+    static userData *New();
+    vtkTypeMacro(userData, vtkObject);
+  };
 
 public:
-  static InteractorStyleSwitch *New();
-  void SetDefaultRenderer(vtkRenderer *) override;
-  void SetCurrentRenderer(vtkRenderer *) override;
-  void SetInteractor(vtkRenderWindowInteractor *) override;
-  void OnChar() override;
+  vtkUserData initializeVTK(vtkRenderWindow *renderWindow) override {
+    vtkNew<userData> data;
+    return data;
+  }
 };
-
-void InteractorStyleSwitch::OnChar() {}
 
 void func(vtkObject *caller, unsigned long eid, void *clientdata,
           void *calldata) {
   auto renderer = reinterpret_cast<vtkRenderer *>(caller);
 
-  std::cout << renderer->GetActiveCamera()->GetPosition()[0] << ", "
-            << renderer->GetActiveCamera()->GetPosition()[1] << ", "
+  std::cout << "Position: " << renderer->GetActiveCamera()->GetPosition()[0]
+            << ", " << renderer->GetActiveCamera()->GetPosition()[1] << ", "
             << renderer->GetActiveCamera()->GetPosition()[2] << std::endl;
+
+  double focalPoint[3];
+  renderer->GetActiveCamera()->GetFocalPoint(focalPoint[0], focalPoint[1],
+                                             focalPoint[2]);
+  std::cout << "FocalPoint: " << focalPoint[0] << ", " << focalPoint[1] << ","
+            << focalPoint[2] << std::endl;
 }
 
 struct MyCallback : public vtkCommand {
@@ -71,9 +80,21 @@ struct MyCallback : public vtkCommand {
 */
 
 int main(int argc, char **argv) {
+
+  vtkNew<vtkAxesActor> axes;
+  // axes->SetUserTransform();
+  // axes->SetCoordinateSystem()
+
+  vtkNew<vtkCameraOrientationWidget> gizmo;
+
+  vtkNew<vtkBillboardTextActor3D> textActor;
+  textActor->SetInput("foo");
+
+  textActor->SetPosition(10, 1, 1);
+
   vtkNew<vtkConeSource> cone;
-  cone->SetRadius(10);
-  cone->SetHeight(10);
+  cone->SetRadius(1);
+  cone->SetHeight(1);
   cone->Update();
 
   vtkNew<vtkPolyDataMapper> coneMapper;
@@ -84,6 +105,9 @@ int main(int argc, char **argv) {
 
   vtkNew<vtkRenderer> renderer;
   renderer->AddActor(coneActor);
+
+  renderer->AddActor(textActor);
+  renderer->AddActor(axes);
 
   vtkNew<vtkRenderWindow> renWin;
 
@@ -98,20 +122,32 @@ int main(int argc, char **argv) {
   iren->SetRenderWindow(renWin);
 
   vtkNew<vtkInteractorStyleTrackballCamera> style;
+  // vtkNew<vtkInteractorStyleTrackballActor> style;
+
+  // vtkNew<InteractorStyleSwitch> style;
+
   iren->SetInteractorStyle(style);
+
+  gizmo->SetParentRenderer(renderer);
+  gizmo->On();
+  gizmo->SetInteractor(iren);
+
+  // renderer->GetActiveCamera()->SetViewUp(0, 1, 0);
+
+  double focalPoint[3] = {1, 1, 2};
+  renderer->GetActiveCamera()->SetViewUp(1, 0, 0);
+  // renderer->GetActiveCamera()->SetFocalDistance();
+  renderer->GetActiveCamera()->SetFocalPoint(focalPoint[0], focalPoint[1],
+                                             focalPoint[2]);
+
+  // renderer->GetActiveCamera()->GetFrustumPlanes()
+
+  renderer->GetActiveCamera()->GetFocalPoint(focalPoint[0], focalPoint[1],
+                                             focalPoint[2]);
+
+  std::cout << "FocalPoint: " << focalPoint[0] << ", " << focalPoint[1] << ","
+            << focalPoint[2] << std::endl;
 
   iren->Initialize();
   iren->Start();
-
-  // for (int i = 0; i < 360; ++i) {
-  //   // Render the image
-  //   renWin->Render();
-
-  //   // Rotate the camera about the view up vector centered at the focal
-  //   point.
-
-  //   renderer->GetActiveCamera()->Azimuth(1);
-
-  //   // renderer->GetActiveCamera()->Elevation(1);
-  // }
 }

@@ -10,18 +10,15 @@ vtkNew<vtkRenderer> renderer;
 renderer->SetActiveCamera(camera);
 
 //renderer->GetActiveCamera()
-
 ```
 
+or
 
-or 
-
-
-```
+```cpp
 vtkCamera* camera = nullptr;
 camera = renderer->GetActiveCamera();
 camera->Azimuth(30);
 camera->Elevation(30);
 ```
 
-[code](../vtk/Camera.cxx)
+[code](../src/Camera.cxx)

@@ -8,13 +8,7 @@
 #include <vtkConeSource.h>
 #include <vtkDataSetMapper.h>
 #include <vtkImageData.h>
-#include <vtkInteractorStyle.h>
-#include <vtkInteractorStyle3D.h>
-#include <vtkInteractorStyleImage.h>
-#include <vtkInteractorStyleTerrain.h>
-#include <vtkInteractorStyleTrackballActor.h>
-#include <vtkInteractorStyleTrackballCamera.h>
-#include <vtkInteractorStyleUnicam.h>
+
 #include <vtkMatrix4x4.h>
 #include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
