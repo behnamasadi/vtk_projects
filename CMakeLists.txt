@@ -458,6 +458,22 @@ add_executable(sandbox src/sandbox.cpp)
 target_link_libraries(sandbox PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS sandbox MODULES ${VTK_LIBRARIES})
 
+add_executable(BoundingBox src/BoundingBox.cpp)
+target_link_libraries(BoundingBox PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS BoundingBox MODULES ${VTK_LIBRARIES})
+
+add_executable(OutlineFilter src/OutlineFilter.cpp)
+target_link_libraries(OutlineFilter PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS OutlineFilter MODULES ${VTK_LIBRARIES})
+
+add_executable(bar src/bar.cpp)
+target_link_libraries(bar PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS bar MODULES ${VTK_LIBRARIES})
+
+add_executable(transform_multiple_actors_group src/transform_multiple_actors_group.cpp)
+target_link_libraries(transform_multiple_actors_group PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS transform_multiple_actors_group MODULES ${VTK_LIBRARIES})
+
 # # vtk_module_autoinit is needed
 # vtk_module_autoinit(
 # TARGETS VisualDebugging
