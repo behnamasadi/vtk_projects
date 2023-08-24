@@ -25,18 +25,18 @@ Window {
     MyVtkItem {
       id: vtk
       anchors.fill: parent
-      // focus: hoverHandler.hovered ? true : false
-      // HoverHandler {
-      //     id: hoverHandler
-      // }
+      focus: hoverHandler.hovered ? true : false
+      HoverHandler {
+          id: hoverHandler
+      }
 
 
-          MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            MyVtkItem.handleMouseClick(mouse.x, mouse.y)
-        }
-        }
+        //   MouseArea {
+        // anchors.fill: parent
+        // onClicked: {
+        //     MyVtkItem.handleMouseClick(mouse.x, mouse.y)
+        // }
+        // }
 
       // transform: Rotation{
       //   angle: 0
