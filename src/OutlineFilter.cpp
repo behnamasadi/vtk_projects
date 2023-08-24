@@ -147,12 +147,20 @@ int main(int, char *[]) {
   // Create a square plane that covers the bounding box of the object and is
   // bigger by a given factor
 
-  planeSource->SetOrigin(centerX - adjustedDimension / 2, bounds[2],
+  // planeSource->SetOrigin(centerX - adjustedDimension / 2, bounds[2],
+  //                        centerZ - adjustedDimension / 2);
+  // planeSource->SetPoint1(centerX + adjustedDimension / 2, bounds[2],
+  //                        centerZ - adjustedDimension / 2);
+  // planeSource->SetPoint2(centerX - adjustedDimension / 2, bounds[2],
+  //                        centerZ + adjustedDimension / 2);
+
+  planeSource->SetOrigin(centerX - adjustedDimension / 2, 0,
                          centerZ - adjustedDimension / 2);
-  planeSource->SetPoint1(centerX + adjustedDimension / 2, bounds[2],
+  planeSource->SetPoint1(centerX + adjustedDimension / 2, 0,
                          centerZ - adjustedDimension / 2);
-  planeSource->SetPoint2(centerX - adjustedDimension / 2, bounds[2],
+  planeSource->SetPoint2(centerX - adjustedDimension / 2, 0,
                          centerZ + adjustedDimension / 2);
+
   planeSource->Update();
 
   // Create a mapper and actor for the plane: show it as a wireframe
