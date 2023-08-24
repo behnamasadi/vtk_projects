@@ -84,18 +84,21 @@ public:
   void OnChar() override;
   // void OnKeyPress() override;
   vtkGetObjectMacro(m_currentStyle, vtkInteractorStyle);
+  vtkNew<vtkTextActor> m_txtModeIndicator;
+  void SetCurrentStyle();
+
+  std::vector<unsigned long> observerIds;
 
 protected:
   InteractorStyleSwitch();
   ~InteractorStyleSwitch() override;
-  void SetCurrentStyle();
 
 private:
   InteractorStyleSwitch(const InteractorStyleSwitch &) = delete;
   void operator=(const InteractorStyleSwitch &) = delete;
 
   // small text on the screen to inform the user the mode
-  vtkNew<vtkTextActor> m_txtModeIndicator;
+
   vtkSmartPointer<vtkTextProperty> m_txtModeIndicatorProperty;
 
   // abstract widget for distance and angle measurement
@@ -111,6 +114,7 @@ private:
   // current style, could be any of above
   vtkSmartPointer<vtkInteractorStyle> m_currentStyle;
 
+public:
   INTERACTION_MODE m_interactionMode;
 };
 

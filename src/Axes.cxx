@@ -13,8 +13,7 @@
 #include <vtkTextProperty.h>
 #include <vtkTransform.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkSphereSource> sphereSource;

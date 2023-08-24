@@ -1,6 +1,7 @@
 #include "InteractorStyleSwitch.hpp"
 
 #include <algorithm>
+#include <math.h>
 #include <vtkAngleWidget.h>
 #include <vtkCallbackCommand.h>
 #include <vtkCamera.h>
@@ -150,6 +151,10 @@ void placeAnglePoint(vtkObject *caller, unsigned long eid, void *clientData,
         ->GetCenterRepresentation()
         ->SetWorldPosition(data);
   }
+
+  interactorStyle->m_interactionMode = INTERACTION_MODE::CAMERA;
+  interactorStyle->m_txtModeIndicator->SetInput("Camera Mode");
+  interactorStyle->SetCurrentStyle();
 }
 
 void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
@@ -179,29 +184,42 @@ void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
   vtkNew<vtkPointPicker> pointPicker;
   distanceWidget->GetInteractor()->SetPicker(pointPicker);
 
+  double data1[3];
   if (pointPicker->Pick(p1, distanceWidget->GetCurrentRenderer())) {
-    double data[3];
-    pointPicker->GetPickPosition(data);
-    std::cout << "point: " << data[0] << ", " << data[1] << ", " << data[2]
+
+    pointPicker->GetPickPosition(data1);
+    std::cout << "point: " << data1[0] << ", " << data1[1] << ", " << data1[2]
               << std::endl;
 
     static_cast<vtkDistanceRepresentation3D *>(
         distanceWidget->GetRepresentation())
         ->GetPoint1Representation()
-        ->SetWorldPosition(data);
+        ->SetWorldPosition(data1);
   }
 
+  double data2[3];
   if (pointPicker->Pick(p2, distanceWidget->GetCurrentRenderer())) {
-    double data[3];
-    pointPicker->GetPickPosition(data);
-    std::cout << "point: " << data[0] << ", " << data[1] << ", " << data[2]
+
+    pointPicker->GetPickPosition(data2);
+    std::cout << "point: " << data2[0] << ", " << data2[1] << ", " << data2[2]
               << std::endl;
 
     static_cast<vtkDistanceRepresentation3D *>(
         distanceWidget->GetRepresentation())
         ->GetPoint2Representation()
-        ->SetWorldPosition(data);
+        ->SetWorldPosition(data2);
   }
+
+  double sumSquared = std::pow(data1[0] - data2[0], 2) +
+                      std::pow(data1[1] - data2[1], 2) +
+                      std::pow(data1[2] - data2[2], 2);
+  double distance = std::pow(sumSquared, 0.5);
+  std::cout << "distance: " << distance << std::endl;
+
+  interactorStyle->m_interactionMode = INTERACTION_MODE::CAMERA;
+  interactorStyle->m_txtModeIndicator->SetInput("Camera Mode");
+
+  interactorStyle->SetCurrentStyle();
 }
 
 void InteractorStyleSwitch::OnChar() {
@@ -249,8 +267,10 @@ void InteractorStyleSwitch::OnChar() {
     vtkSmartPointer<vtkCallbackCommand> placeAnglePointCallback =
         vtkSmartPointer<vtkCallbackCommand>::New();
     placeAnglePointCallback->SetCallback(placeAnglePoint);
-    angleWidget->AddObserver(vtkCommand::EndInteractionEvent,
-                             placeAnglePointCallback);
+    unsigned long observerId = angleWidget->AddObserver(
+        vtkCommand::EndInteractionEvent, placeAnglePointCallback);
+
+    observerIds.push_back(observerId);
 
     placeAnglePointCallback->SetClientData((void *)this);
 
@@ -276,6 +296,34 @@ void InteractorStyleSwitch::OnChar() {
     vtkSmartPointer<vtkCallbackCommand> placePointCallback =
         vtkSmartPointer<vtkCallbackCommand>::New();
     placePointCallback->SetCallback(placePoint);
+    unsigned long observerId = distanceWidget->AddObserver(
+        vtkCommand::EndInteractionEvent, placePointCallback);
+
+    observerIds.push_back(observerId);
+
+    placePointCallback->SetClientData((void *)this);
+
+    vtkSmartPointer<vtkPointHandleRepresentation3D> handle =
+        vtkSmartPointer<vtkPointHandleRepresentation3D>::New();
+    vtkSmartPointer<vtkDistanceRepresentation3D> rep;
+    rep = vtkSmartPointer<vtkDistanceRepresentation3D>::New();
+    rep->SetHandleRepresentation(handle);
+    distanceWidget->SetRepresentation(rep);
+    rep->SetMaximumNumberOfRulerTicks(2);
+    distanceWidget->On();
+    break;
+  }
+
+  case 's':
+  case 'S': {
+    m_txtModeIndicator->SetInput("Scaling Mode");
+    vtkDistanceWidget *distanceWidget;
+    distanceWidget = vtkDistanceWidget::New();
+    distanceWidget->SetInteractor(Interactor);
+
+    vtkSmartPointer<vtkCallbackCommand> placePointCallback =
+        vtkSmartPointer<vtkCallbackCommand>::New();
+    placePointCallback->SetCallback(placePoint);
     distanceWidget->AddObserver(vtkCommand::EndInteractionEvent,
                                 placePointCallback);
 
@@ -291,6 +339,7 @@ void InteractorStyleSwitch::OnChar() {
     distanceWidget->On();
     break;
   }
+
   default:
     std::cout << "InteractorStyleSwitch::OnChar() " << Interactor->GetKeyCode()
               << std::endl;

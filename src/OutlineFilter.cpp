@@ -123,45 +123,36 @@ int main(int, char *[]) {
   planeSource->SetXResolution(20);
   planeSource->SetYResolution(20);
 
-  double x_min, x_max, y_min, y_max, z_min, z_max;
+  // double x_min, x_max, y_min, y_max, z_min, z_max;
 
-  x_min = bounds[0];
-  x_max = bounds[1];
-  y_min = bounds[2];
-  y_max = bounds[3];
-  z_min = bounds[4];
-  z_max = bounds[5];
-
-  // planeSource->SetOrigin(bounds[0], 0, -bounds[4]);
-  // planeSource->SetPoint1(bounds[0], 0, bounds[4]);
-  // planeSource->SetPoint2(bounds[1], 0, bounds[5]);
-
-  // planeSource->SetOrigin(bounds[0], bounds[2], bounds[4]);
-  // planeSource->SetPoint1(bounds[1], bounds[2], bounds[4]);
-  // planeSource->SetPoint2(bounds[0], bounds[3], bounds[4]);
-  // planeSource->Update();
+  // x_min = bounds[0];
+  // x_max = bounds[1];
+  // y_min = bounds[2];
+  // y_max = bounds[3];
+  // z_min = bounds[4];
+  // z_max = bounds[5];
 
   double width = bounds[1] - bounds[0];
-  double height = bounds[3] - bounds[2];
-  double maxDimension = std::max(width, height);
+  double depth = bounds[5] - bounds[4]; // This is the depth in Z direction
+  double maxDimension = std::max(width, depth);
 
   // Factor to make the plane bigger, e.g., 2 makes it twice as big
   double factor = 4.0;
 
   double adjustedDimension = maxDimension * factor;
+
   double centerX = (bounds[0] + bounds[1]) / 2.0;
-  double centerY = (bounds[2] + bounds[3]) / 2.0;
+  double centerZ = (bounds[4] + bounds[5]) / 2.0; // Z center
 
   // Create a square plane that covers the bounding box of the object and is
   // bigger by a given factor
-  vtkSmartPointer<vtkPlaneSource> plane =
-      vtkSmartPointer<vtkPlaneSource>::New();
-  planeSource->SetOrigin(centerX - adjustedDimension / 2,
-                         centerY - adjustedDimension / 2, bounds[4]);
-  planeSource->SetPoint1(centerX + adjustedDimension / 2,
-                         centerY - adjustedDimension / 2, bounds[4]);
-  planeSource->SetPoint2(centerX - adjustedDimension / 2,
-                         centerY + adjustedDimension / 2, bounds[4]);
+
+  planeSource->SetOrigin(centerX - adjustedDimension / 2, bounds[2],
+                         centerZ - adjustedDimension / 2);
+  planeSource->SetPoint1(centerX + adjustedDimension / 2, bounds[2],
+                         centerZ - adjustedDimension / 2);
+  planeSource->SetPoint2(centerX - adjustedDimension / 2, bounds[2],
+                         centerZ + adjustedDimension / 2);
   planeSource->Update();
 
   // Create a mapper and actor for the plane: show it as a wireframe
@@ -180,13 +171,10 @@ int main(int, char *[]) {
   // adding axes
   vtkNew<vtkAxesActor> axesActor;
   axesActor->AxisLabelsOff();
-  // axesActor->SetOrigin(2, 2, -bounds[4]);
-  // axesActor->SetPosition(5, 5, 5);
-  // axesActor->SetUserTransform();
 
-  vtkNew<vtkTransform> transform;
-  transform->Translate(centerX - adjustedDimension / 2,
-                       centerY - adjustedDimension / 2, bounds[4]);
+  // vtkNew<vtkTransform> transform;
+  // transform->Translate(centerX - adjustedDimension / 2,
+  //                      centerY - adjustedDimension / 2, bounds[4]);
 
   // axesActor->SetUserTransform(transform);
 

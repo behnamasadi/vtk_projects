@@ -474,6 +474,14 @@ add_executable(transform_multiple_actors_group src/transform_multiple_actors_gro
 target_link_libraries(transform_multiple_actors_group PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS transform_multiple_actors_group MODULES ${VTK_LIBRARIES})
 
+add_executable(camera_frustum src/camera_frustum.cpp)
+target_link_libraries(camera_frustum PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS camera_frustum MODULES ${VTK_LIBRARIES})
+
+add_executable(Frustum src/Frustum.cxx)
+target_link_libraries(Frustum PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS Frustum MODULES ${VTK_LIBRARIES})
+
 # # vtk_module_autoinit is needed
 # vtk_module_autoinit(
 # TARGETS VisualDebugging
