@@ -61,6 +61,8 @@ public:
     vtkNew<QVTKInteractor> iRen;
   };
 
+  void handleMouseClick(int x, int y);
+
   // using vtkUserData = vtkSmartPointer<vtkObject>;
   vtkUserData initializeVTK(vtkRenderWindow *renderWindow) override {
     // Create a cone pipeline and add it to the view

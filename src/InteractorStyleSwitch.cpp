@@ -231,6 +231,8 @@ void InteractorStyleSwitch::OnChar() {
     EventCallbackCommand->SetAbortFlag(1);
     m_txtModeIndicator->SetInput("Camera Mode");
 
+    //->RemoveObserver(observerId);
+
     break;
   case 'h':
   case 'H':

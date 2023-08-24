@@ -409,6 +409,9 @@ vtk_module_autoinit(TARGETS actor_properties MODULES ${VTK_LIBRARIES})
 add_executable(QtQuickCone src/QtQuickCone.cpp src/MyVtkItem.hpp qml.qrc src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
 target_link_libraries(QtQuickCone PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 
+add_executable(main src/main.cpp src/VTKBackend.hpp src/VTKBackend.cpp qml.qrc)
+target_link_libraries(main PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
+
 vtk_module_autoinit(TARGETS QtQuickCone MODULES ${VTK_LIBRARIES})
 
 add_executable(dynamic_split_view qml.qrc src/dynamic_split_view.cpp)

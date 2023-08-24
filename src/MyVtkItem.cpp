@@ -58,4 +58,30 @@ struct MyVtkItem : QQuickVTKItem {
   void mouseDoubleClickEvent(QMouseEvent *event) override {
     std::cout << "----" << std::endl;
   }
+
+  // Assuming you have a class named VTKBackend
+  void MyVtkItem::handleMouseClick(int x, int y) {
+    if (!this->vtkRenderWindowInteractor) {
+      // Ensure the render window interactor is available
+      std::cout << "00000000000000000000000000000000" << std::endl;
+      return;
+    }
+
+    // Convert the QML mouse coordinates if needed
+
+    // Send a mouse press event
+    std::cout << "1111111111111111111111111111111111111" << std::endl;
+    this->vtkRenderWindowInteractor->InvokeEvent(
+        vtkCommand::LeftButtonPressEvent, nullptr);
+
+    std::cout << "222222222222222222222222222" << std::endl;
+
+    // ... Handle other mouse events if needed ...
+
+    // Then, trigger a mouse release
+    this->vtkRenderWindowInteractor->InvokeEvent(
+        vtkCommand::LeftButtonReleaseEvent, nullptr);
+
+    std::cout << "33333333333333333333333333" << std::endl;
+  }
 };
