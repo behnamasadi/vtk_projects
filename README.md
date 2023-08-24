@@ -37,6 +37,8 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [BoundingBox](docs/boundingbox.md)  
 [Prop3D](docs/prop3d.md)  
 [Grouping Actors, Actor Collection](docs/grouping_actors_actor_collection.md)  
+[Remove Actor](docs/remove_actor.md)  
+[Remove Observer](docs/remove_observer.md)
 
 ## Viewport
 
@@ -51,6 +53,7 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [AngleWidget](docs/angleWidget.md)  
 [TextWidget](docs/textWidget.md)  
 [Gizmo, CameraOrientationWidget](docs/gizmo_camera_orientation_widget.md)
+[Add/ remove multiple Widget](docs/add_remove_multiple_widget.md) 
 
 ## Axes
 
