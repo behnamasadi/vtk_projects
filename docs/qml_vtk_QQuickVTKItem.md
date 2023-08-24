@@ -121,3 +121,22 @@ engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 [code](../src/main.cpp)
 
 Refs: [1](https://vtk.org/doc/nightly/html//classQQuickVTKItem.html#a9538631cf6510414e50e8e7567300e4b)
+
+
+`scheduleRender()` is a method provided by `QQuickVtkItem` to request a render pass in the VTK pipeline.
+
+You should use `scheduleRender()` in situations where:
+
+1. **The underlying VTK data has changed:** If you've updated or changed the VTK dataset that is being visualized, you'll need to request a new render to visualize these changes in the Qt Quick item.
+ 
+2. **Camera or view changes:** If there are changes in the viewpoint or camera settings and you wish to update the view, you'd call this method.
+
+3. **Visual attributes change:** Any changes in visualization attributes such as color maps, contour levels, opacity, etc., will require a re-render to reflect the changes in the visualization.
+
+4. **Interactivity:** If your application has any kind of interactivity related to the VTK visualization, such as selecting points, drawing regions, or manipulating objects in the VTK scene, you might need to call `scheduleRender()` to update the view based on user input.
+
+5. **Animations:** If you're creating any kind of animation or time-evolving visualization using VTK in your Qt Quick application, you'd schedule renders at each frame or time step.
+
+It's essential to be judicious about when to call `scheduleRender()` because unnecessary renders can be computationally expensive and might degrade the performance of your application. Always try to optimize and call it only when necessary.
+
+Ensure you're familiar with the rest of the VTK pipeline and the Qt Quick rendering loop to integrate the two systems most efficiently.
