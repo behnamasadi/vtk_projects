@@ -89,6 +89,8 @@ public:
 
   std::vector<unsigned long> observerIds;
 
+  vtkNew<vtkRenderWindowInteractor> m_iren;
+
 protected:
   InteractorStyleSwitch();
   ~InteractorStyleSwitch() override;

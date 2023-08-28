@@ -18,9 +18,6 @@
 #include <vtkInteractorStyleRubberBandZoom.h>
 #include <vtkInteractorStyleTerrain.h>
 
-// #include "../vtk/ActorManipulationInteractorStyle.hpp"
-//#include "../vtk/CameraInteractorStyle.hpp"
-
 #include <algorithm>
 #include <vtkAngleWidget.h>
 #include <vtkCallbackCommand.h>

@@ -1,3 +1,4 @@
+//#include "MyVtkItem.hpp"
 
 struct MyVtkItem : QQuickVTKItem {
 

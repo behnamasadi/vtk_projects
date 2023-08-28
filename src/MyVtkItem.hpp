@@ -18,11 +18,9 @@
 #include <vtkInteractorStyleRubberBandZoom.h>
 #include <vtkInteractorStyleTerrain.h>
 
-#include "CameraInteractorStyle.hpp"
-
-#include "InteractorStyleSwitch.hpp"
 #include <QVTKInteractor.h>
 #include <algorithm>
+#include <typeinfo>
 #include <vtkAngleWidget.h>
 #include <vtkCallbackCommand.h>
 #include <vtkCamera.h>
@@ -45,6 +43,9 @@
 #include <vtkTimeStamp.h>
 #include <vtkTransform.h>
 #include <vtkWidgetEvent.h>
+
+#include "CameraInteractorStyle.hpp"
+#include "InteractorStyleSwitch.hpp"
 
 struct MyVtkItem : public QQuickVTKItem {
 
@@ -84,22 +85,11 @@ public:
     // vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
     //     vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
 
-    // vtkSmartPointer<vtkInteractorStyleRubberBandZoom> style =
-    //     vtkSmartPointer<vtkInteractorStyleRubberBandZoom>::New();
-
-    // vtkSmartPointer<vtkInteractorStyleTerrain> style =
-    //     vtkSmartPointer<vtkInteractorStyleTerrain>::New();
-
-    // vtkSmartPointer<vtkInteractorStyleJoystickCamera> style =
-    //     vtkSmartPointer<vtkInteractorStyleJoystickCamera>::New();
-
-    // vtkSmartPointer<CameraInteractorStyle> style =
-    //     vtkSmartPointer<CameraInteractorStyle>::New();
-
-    vtkSmartPointer<InteractorStyleSwitch> style =
-        vtkSmartPointer<InteractorStyleSwitch>::New();
+    vtkNew<InteractorStyleSwitch> style;
 
     style->SetCurrentRenderer(vtk->renderer);
+    style->SetInteractor(vtk->iRen);
+    std::cout << "Interactor type name: " << typeid(vtk->iRen).name() << "\n";
 
     renderWindow->AddRenderer(vtk->renderer);
     vtk->iRen->SetInteractorStyle(style);

@@ -81,7 +81,7 @@ int main() {
   vtkNew<vtkRenderer> renderer;
   renderer->AddActor(axesActor);
   renderer->AddActor(planeActor);
-  // renderer->AddActor(coneActor);
+  renderer->AddActor(coneActor);
   renderer->GetActiveCamera()->SetViewUp(1, 0, 0);
   renderer->GetActiveCamera()->SetFocalPoint(0, 0, 0);
   renderer->GetActiveCamera()->SetPosition(1, 1, 1);

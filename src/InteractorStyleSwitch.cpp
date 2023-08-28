@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <math.h>
+#include <typeinfo>
 #include <vtkAngleWidget.h>
 #include <vtkCallbackCommand.h>
 #include <vtkCamera.h>
@@ -178,8 +179,10 @@ void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
       distanceWidget->GetRepresentation())
       ->GetPoint2DisplayPosition(p2);
 
-  std::cout << "p1: " << p1[0] << ", " << p1[1] << ", " << p1[2] << std::endl;
-  std::cout << "p2: " << p2[0] << ", " << p2[1] << ", " << p2[2] << std::endl;
+  std::cout << "placePoint p1: " << p1[0] << ", " << p1[1] << ", " << p1[2]
+            << std::endl;
+  std::cout << "placePoint p2: " << p2[0] << ", " << p2[1] << ", " << p2[2]
+            << std::endl;
 
   vtkNew<vtkPointPicker> pointPicker;
   distanceWidget->GetInteractor()->SetPicker(pointPicker);
@@ -294,10 +297,12 @@ void InteractorStyleSwitch::OnChar() {
     vtkDistanceWidget *distanceWidget;
     distanceWidget = vtkDistanceWidget::New();
     distanceWidget->SetInteractor(Interactor);
+    std::cout << "Interactor type name: " << typeid(Interactor).name() << "\n";
 
     vtkSmartPointer<vtkCallbackCommand> placePointCallback =
         vtkSmartPointer<vtkCallbackCommand>::New();
     placePointCallback->SetCallback(placePoint);
+
     unsigned long observerId = distanceWidget->AddObserver(
         vtkCommand::EndInteractionEvent, placePointCallback);
 
@@ -385,7 +390,7 @@ void InteractorStyleSwitch::SetCurrentStyle() {
     m_currentStyle->SetTDxStyle(TDxStyle);
   }
   CurrentRenderer->AddActor(m_txtModeIndicator);
-  std::cout << "dddd" << std::endl;
+  std::cout << "InteractorStyleSwitch::SetCurrentStyle" << std::endl;
 }
 
 void InteractorStyleSwitch::SetInteractor(vtkRenderWindowInteractor *iren) {
@@ -395,6 +400,7 @@ void InteractorStyleSwitch::SetInteractor(vtkRenderWindowInteractor *iren) {
   // if we already have an Interactor then stop observing it
   if (Interactor) {
     Interactor->RemoveObserver(EventCallbackCommand);
+    std::cout << "Interactor->RemoveObserver" << std::endl;
   }
   Interactor = iren;
   // add observers for each of the events handled in ProcessEvents
@@ -402,6 +408,8 @@ void InteractorStyleSwitch::SetInteractor(vtkRenderWindowInteractor *iren) {
     iren->AddObserver(vtkCommand::CharEvent, EventCallbackCommand, Priority);
 
     iren->AddObserver(vtkCommand::DeleteEvent, EventCallbackCommand, Priority);
+
+    std::cout << "-------************-----------" << std::endl;
   }
   SetCurrentStyle();
 }
