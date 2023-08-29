@@ -57,7 +57,7 @@ vtkInteractorStyleTrackballCamera   <|--  CameraInteractorStyle
 vtkInteractorStyleTrackballActor  <|-- ActorManipulationInteractorStyle
 */
 
-enum class INTERACTION_MODE { CAMERA, ACTOR };
+enum class INTERACTION_MODE { CAMERA, ACTOR, MEASUREMENT, SCALING };
 class InteractorStyleSwitch : public vtkInteractorStyleSwitchBase {
 public:
   static InteractorStyleSwitch *New();
@@ -81,9 +81,10 @@ public:
   // void OnKeyPress() override;
   vtkGetObjectMacro(m_currentStyle, vtkInteractorStyle);
   vtkNew<vtkTextActor> m_txtModeIndicator;
+  vtkSmartPointer<vtkDistanceWidget> m_scalingWidget;
   void SetCurrentStyle();
 
-  std::vector<vtkDistanceWidget *> m_distanceWidgets;
+  std::vector<vtkSmartPointer<vtkDistanceWidget>> m_distanceWidgets;
 
 protected:
   InteractorStyleSwitch();

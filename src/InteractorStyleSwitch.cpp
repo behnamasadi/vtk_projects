@@ -210,7 +210,6 @@ void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
 }
 
 void InteractorStyleSwitch::OnChar() {
-
   switch (m_iren->GetKeyCode()) {
   case 'c':
   case 'C':
@@ -228,6 +227,7 @@ void InteractorStyleSwitch::OnChar() {
     EventCallbackCommand->SetAbortFlag(1);
 
     break;
+
   case 'd':
   case 'D':
     // m_txtModeIndicator->SetInput("Deletion Mode");
@@ -247,8 +247,6 @@ void InteractorStyleSwitch::OnChar() {
 
     m_interactionMode = INTERACTION_MODE::CAMERA;
     m_txtModeIndicator->SetInput("Camera Mode");
-
-    SetCurrentStyle();
 
     break;
     // case 'a':
@@ -282,8 +280,13 @@ void InteractorStyleSwitch::OnChar() {
 
   case 'm':
   case 'M': {
+
+    if (m_interactionMode == INTERACTION_MODE::MEASUREMENT) {
+      break;
+    }
+    m_interactionMode = INTERACTION_MODE::MEASUREMENT;
     m_txtModeIndicator->SetInput("Measurement Mode");
-    vtkDistanceWidget *distanceWidget;
+    vtkSmartPointer<vtkDistanceWidget> distanceWidget;
     distanceWidget = vtkDistanceWidget::New();
     distanceWidget->SetInteractor(m_iren);
 
@@ -311,16 +314,23 @@ void InteractorStyleSwitch::OnChar() {
 
   case 's':
   case 'S': {
+
+    if (m_interactionMode == INTERACTION_MODE::SCALING) {
+      break;
+    }
+    m_interactionMode = INTERACTION_MODE::SCALING;
+    if (m_scalingWidget)
+      m_scalingWidget->Off();
     m_txtModeIndicator->SetInput("Scaling Mode");
-    vtkDistanceWidget *distanceWidget;
-    distanceWidget = vtkDistanceWidget::New();
-    distanceWidget->SetInteractor(m_iren);
+
+    m_scalingWidget = vtkDistanceWidget::New();
+    m_scalingWidget->SetInteractor(m_iren);
 
     vtkSmartPointer<vtkCallbackCommand> placePointCallback =
         vtkSmartPointer<vtkCallbackCommand>::New();
     placePointCallback->SetCallback(placePoint);
-    distanceWidget->AddObserver(vtkCommand::EndInteractionEvent,
-                                placePointCallback);
+    m_scalingWidget->AddObserver(vtkCommand::EndInteractionEvent,
+                                 placePointCallback);
 
     placePointCallback->SetClientData((void *)this);
 
@@ -329,9 +339,16 @@ void InteractorStyleSwitch::OnChar() {
     vtkSmartPointer<vtkDistanceRepresentation3D> rep;
     rep = vtkSmartPointer<vtkDistanceRepresentation3D>::New();
     rep->SetHandleRepresentation(handle);
-    distanceWidget->SetRepresentation(rep);
+    m_scalingWidget->SetRepresentation(rep);
     rep->SetMaximumNumberOfRulerTicks(2);
-    distanceWidget->On();
+
+    rep->GetLineProperty()->SetColor(
+        m_namedColors->GetColor3d("Gold").GetData());
+
+    rep->GetLabelProperty()->SetColor(
+        m_namedColors->GetColor3d("Navy").GetData());
+
+    m_scalingWidget->On();
     break;
   }
 
