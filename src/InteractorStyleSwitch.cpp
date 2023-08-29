@@ -47,6 +47,8 @@ InteractorStyleSwitch::InteractorStyleSwitch() {
   m_txtModeIndicatorProperty->SetColor(
       m_namedColors->GetColor3d("Cornsilk").GetData());
   m_txtModeIndicator->SetDisplayPosition(20, 30);
+  m_iren = vtkRenderWindowInteractor::New();
+
   // SetCurrentRenderer();
   // SetCurrentStyle();
 }
@@ -227,7 +229,7 @@ void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
 
 void InteractorStyleSwitch::OnChar() {
 
-  switch (Interactor->GetKeyCode()) {
+  switch (m_iren->GetKeyCode()) {
   case 'c':
   case 'C':
     m_interactionMode = INTERACTION_MODE::CAMERA;
@@ -266,7 +268,7 @@ void InteractorStyleSwitch::OnChar() {
 
     vtkAngleWidget *angleWidget;
     angleWidget = vtkAngleWidget::New();
-    angleWidget->SetInteractor(Interactor);
+    angleWidget->SetInteractor(m_iren);
     angleWidget->CreateDefaultRepresentation();
 
     vtkSmartPointer<vtkCallbackCommand> placeAnglePointCallback =
@@ -296,8 +298,8 @@ void InteractorStyleSwitch::OnChar() {
     m_txtModeIndicator->SetInput("Measurement Mode");
     vtkDistanceWidget *distanceWidget;
     distanceWidget = vtkDistanceWidget::New();
-    distanceWidget->SetInteractor(Interactor);
-    std::cout << "Interactor type name: " << typeid(Interactor).name() << "\n";
+    distanceWidget->SetInteractor(m_iren);
+    std::cout << "m_iren type name: " << typeid(m_iren).name() << "\n";
 
     vtkSmartPointer<vtkCallbackCommand> placePointCallback =
         vtkSmartPointer<vtkCallbackCommand>::New();
@@ -326,7 +328,7 @@ void InteractorStyleSwitch::OnChar() {
     m_txtModeIndicator->SetInput("Scaling Mode");
     vtkDistanceWidget *distanceWidget;
     distanceWidget = vtkDistanceWidget::New();
-    distanceWidget->SetInteractor(Interactor);
+    distanceWidget->SetInteractor(m_iren);
 
     vtkSmartPointer<vtkCallbackCommand> placePointCallback =
         vtkSmartPointer<vtkCallbackCommand>::New();
@@ -348,7 +350,7 @@ void InteractorStyleSwitch::OnChar() {
   }
 
   default:
-    std::cout << "InteractorStyleSwitch::OnChar() " << Interactor->GetKeyCode()
+    std::cout << "InteractorStyleSwitch::OnChar() " << m_iren->GetKeyCode()
               << std::endl;
   }
 
@@ -386,7 +388,7 @@ void InteractorStyleSwitch::SetCurrentStyle() {
     }
   }
   if (m_currentStyle) {
-    m_currentStyle->SetInteractor(Interactor);
+    m_currentStyle->SetInteractor(m_iren);
     m_currentStyle->SetTDxStyle(TDxStyle);
   }
   CurrentRenderer->AddActor(m_txtModeIndicator);
@@ -394,15 +396,20 @@ void InteractorStyleSwitch::SetCurrentStyle() {
 }
 
 void InteractorStyleSwitch::SetInteractor(vtkRenderWindowInteractor *iren) {
-  if (iren == Interactor) {
+  std::cout << "(((((((((((((((((((((((((((())))))))))))))))))))))))))))"
+            << std::endl;
+  if (iren == m_iren) {
     return;
   }
   // if we already have an Interactor then stop observing it
-  if (Interactor) {
-    Interactor->RemoveObserver(EventCallbackCommand);
-    std::cout << "Interactor->RemoveObserver" << std::endl;
+  if (m_iren) {
+    m_iren->RemoveObserver(EventCallbackCommand);
+    // Interactor->RemoveObserver(EventCallbackCommand);
+    std::cout << "m_iren->RemoveObserver" << std::endl;
   }
-  Interactor = iren;
+  m_iren = iren;
+  m_trackballCameraStyle->SetInteractor(m_iren);
+  // Interactor = iren;
   // add observers for each of the events handled in ProcessEvents
   if (iren) {
     iren->AddObserver(vtkCommand::CharEvent, EventCallbackCommand, Priority);
@@ -415,7 +422,7 @@ void InteractorStyleSwitch::SetInteractor(vtkRenderWindowInteractor *iren) {
 }
 
 vtkRenderWindowInteractor *InteractorStyleSwitch::GetInteractor() {
-  return Interactor;
+  return m_iren;
 }
 
 void InteractorStyleSwitch::PrintSelf(ostream &os, vtkIndent indent) {

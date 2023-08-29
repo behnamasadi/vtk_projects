@@ -1,27 +1,13 @@
 #include "VTKBackend.hpp"
+#include <typeinfo>
 
-VTKBackend::VTKBackend() {
-  // // Assuming you initialize your VTK components somewhere here
-  // this->m_vtkRenderWindowInteractor =
-  //     vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  // // ... Other VTK initialization...
-}
-
-// void VTKBackend::handleMouseClick(int x, int y) {
-//   if (!this->m_vtkRenderWindowInteractor) {
-//     return;
-//   }
-//   this->m_vtkRenderWindowInteractor->InvokeEvent(
-//       vtkCommand::LeftButtonPressEvent, nullptr);
-//   this->m_vtkRenderWindowInteractor->InvokeEvent(
-//       vtkCommand::LeftButtonReleaseEvent, nullptr);
-// }
+VTKBackend::VTKBackend() {}
 
 void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
                 void *calldata) {
   double p1[3], p2[3];
 
-  // auto distanceWidget = reinterpret_cast<vtkDistanceWidget *>(clientData);
+  auto callerObject = reinterpret_cast<VTKBackend *>(clientData);
   auto distanceWidget = reinterpret_cast<vtkDistanceWidget *>(caller);
 
   vtkSmartPointer<vtkDistanceRepresentation3D> rep;
@@ -39,8 +25,28 @@ void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
   std::cout << "placePoint p2: " << p2[0] << ", " << p2[1] << ", " << p2[2]
             << std::endl;
 
+  // distanceWidget->GetInteractor()->GetLastEventPosition();
+
   vtkNew<vtkPointPicker> pointPicker;
-  distanceWidget->GetInteractor()->SetPicker(pointPicker);
+
+  vtkRenderWindowInteractor *rwi = distanceWidget->GetInteractor();
+
+  QVTKInteractor *qvtkInteractor = dynamic_cast<QVTKInteractor *>(rwi);
+
+  std::cout << "qvtkInteractor " << typeid(qvtkInteractor).name() << "\n";
+  std::cout << "qvtkInteractor " << qvtkInteractor << "\n";
+
+  // callerObject->vtk->iRen->SetPicker(pointPicker);
+  callerObject->iRen->SetPicker(pointPicker);
+
+  // std::cout << "callerObject->vtk->iRen " << callerObject->vtk->iRen << "\n";
+  std::cout << "callerObject->iRen " << callerObject->iRen << "\n";
+
+  // callerObject->vtk->iRen->Print(std::cout);
+  callerObject->iRen->Print(std::cout);
+
+  // EventPosition: ( 420, 9 )
+  //  LastEventPosition: ( 13, 11 )
 
   double data1[3];
   if (pointPicker->Pick(p1, distanceWidget->GetCurrentRenderer())) {
@@ -77,8 +83,8 @@ void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
 
 VTKBackend::vtkUserData
 VTKBackend::initializeVTK(vtkRenderWindow *renderWindow) {
-  vtkNew<Data> vtk;
 
+  iRen = QVTKInteractor::New();
   vtk->actor->SetMapper(vtk->mapper);
   vtk->mapper->SetInputConnection(vtk->cone->GetOutputPort());
 
@@ -95,18 +101,29 @@ VTKBackend::initializeVTK(vtkRenderWindow *renderWindow) {
   style->SetCurrentRenderer(vtk->renderer);
 
   renderWindow->AddRenderer(vtk->renderer);
-  vtk->iRen->SetInteractorStyle(style);
+  // vtk->iRen->SetInteractorStyle(style);
+  this->iRen->SetInteractorStyle(style);
 
-  renderWindow->SetInteractor(vtk->iRen);
+  // renderWindow->SetInteractor(vtk->iRen);
+  renderWindow->SetInteractor(this->iRen);
 
   ///////////////////////////////////////////////////
 
-  vtkDistanceWidget *distanceWidget;
-  distanceWidget = vtkDistanceWidget::New();
-  distanceWidget->SetInteractor(vtk->iRen);
+  // vtkNew<vtkDistanceWidget> distanceWidget;
 
-  vtkSmartPointer<vtkCallbackCommand> placePointCallback =
-      vtkSmartPointer<vtkCallbackCommand>::New();
+  vtkDistanceWidget *distanceWidget = vtkDistanceWidget::New();
+
+  // std::cout << "vtk->iRen typeid: " << typeid(vtk->iRen).name() << "\n";
+  // std::cout << "vtk->iRen: " << vtk->iRen << "\n";
+
+  // distanceWidget->SetInteractor(vtk->iRen);
+
+  distanceWidget->SetInteractor(this->iRen);
+
+  std::cout << "distanceWidget->GetInteractor(): "
+            << distanceWidget->GetInteractor() << "\n";
+
+  vtkNew<vtkCallbackCommand> placePointCallback;
   placePointCallback->SetCallback(placePoint);
 
   distanceWidget->AddObserver(vtkCommand::EndInteractionEvent,
@@ -114,13 +131,16 @@ VTKBackend::initializeVTK(vtkRenderWindow *renderWindow) {
 
   placePointCallback->SetClientData((void *)this);
 
-  vtkSmartPointer<vtkPointHandleRepresentation3D> handle =
-      vtkSmartPointer<vtkPointHandleRepresentation3D>::New();
-  vtkSmartPointer<vtkDistanceRepresentation3D> rep;
-  rep = vtkSmartPointer<vtkDistanceRepresentation3D>::New();
+  vtkNew<vtkPointHandleRepresentation3D> handle;
+
+  vtkNew<vtkDistanceRepresentation3D> rep;
+
   rep->SetHandleRepresentation(handle);
   distanceWidget->SetRepresentation(rep);
   rep->SetMaximumNumberOfRulerTicks(2);
+
+  this->iRen->Start();
+
   distanceWidget->On();
 
   //////////////////////////////////////////////////

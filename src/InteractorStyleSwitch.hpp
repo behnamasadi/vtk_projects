@@ -89,8 +89,6 @@ public:
 
   std::vector<unsigned long> observerIds;
 
-  vtkNew<vtkRenderWindowInteractor> m_iren;
-
 protected:
   InteractorStyleSwitch();
   ~InteractorStyleSwitch() override;
@@ -117,6 +115,9 @@ private:
   vtkSmartPointer<vtkInteractorStyle> m_currentStyle;
 
 public:
+  // vtkNew<vtkRenderWindowInteractor> m_iren;
+  //  vtkRenderWindowInteractor *m_iren;
+  vtkSmartPointer<vtkRenderWindowInteractor> m_iren;
   INTERACTION_MODE m_interactionMode;
 };
 

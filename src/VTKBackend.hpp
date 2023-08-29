@@ -31,10 +31,14 @@ public:
     vtkNew<vtkPolyDataMapper> mapper;
     vtkNew<vtkActor> actor;
     vtkNew<vtkRenderer> renderer;
-    vtkNew<QVTKInteractor> iRen;
+    //    vtkNew<QVTKInteractor> iRen;
+    // vtkNew<vtkRenderer> iRen;
   };
 
-  vtkNew<vtkRenderWindowInteractor> m_vtkRenderWindowInteractor;
+  vtkNew<Data> vtk;
+  // vtkNew<QVTKInteractor> iRen;
+  QVTKInteractor *iRen;
+  //  vtkNew<vtkRenderWindowInteractor> m_vtkRenderWindowInteractor;
 
   VTKBackend();
 
