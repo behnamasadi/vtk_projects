@@ -1,32 +1,18 @@
 #include "InteractorStyleSwitch.hpp"
-
-#include <algorithm>
-#include <math.h>
-#include <typeinfo>
-#include <vtkAngleWidget.h>
 #include <vtkCallbackCommand.h>
 #include <vtkCamera.h>
 #include <vtkCommand.h>
-#include <vtkDistanceRepresentation3D.h>
-#include <vtkDistanceWidget.h>
-#include <vtkInteractorStyleTrackballActor.h>
-#include <vtkInteractorStyleTrackballCamera.h>
-#include <vtkObjectFactory.h>
 #include <vtkPointHandleRepresentation3D.h>
 #include <vtkPointPicker.h>
-#include <vtkPropPicker.h>
-#include <vtkProperty.h>
 #include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkRendererCollection.h>
 #include <vtkTextProperty.h>
-#include <vtkTimeStamp.h>
-#include <vtkTransform.h>
-#include <vtkWidgetEvent.h>
 
 VTK_ABI_NAMESPACE_BEGIN
 vtkStandardNewMacro(InteractorStyleSwitch);
+
+Q_LOGGING_CATEGORY(INTERACTOR_STYLE_SWITCH, "INTERACTOR_STYLE_SWITCH",
+                   QtInfoMsg);
 
 // constructor
 InteractorStyleSwitch::InteractorStyleSwitch() {
@@ -47,10 +33,6 @@ InteractorStyleSwitch::InteractorStyleSwitch() {
   m_txtModeIndicatorProperty->SetColor(
       m_namedColors->GetColor3d("Cornsilk").GetData());
   m_txtModeIndicator->SetDisplayPosition(20, 30);
-  m_iren = vtkRenderWindowInteractor::New();
-
-  // SetCurrentRenderer();
-  // SetCurrentStyle();
 }
 
 InteractorStyleSwitch::~InteractorStyleSwitch() {
@@ -92,79 +74,79 @@ void InteractorStyleSwitch::SetCurrentStyleToTrackballCamera() {
   SetCurrentStyle();
 }
 
-void placeAnglePoint(vtkObject *caller, unsigned long eid, void *clientData,
-                     void *calldata) {
-  double p1[3], p2[3], center[3];
+// void placeAnglePoint(vtkObject *caller, unsigned long eid, void *clientData,
+//                      void *calldata) {
+//   double p1[3], p2[3], center[3];
 
-  auto angleWidget = reinterpret_cast<vtkAngleWidget *>(caller);
+//   auto angleWidget = reinterpret_cast<vtkAngleWidget *>(caller);
 
-  vtkSmartPointer<InteractorStyleSwitch> interactorStyle =
-      static_cast<InteractorStyleSwitch *>(clientData);
+//   vtkSmartPointer<InteractorStyleSwitch> interactorStyle =
+//       static_cast<InteractorStyleSwitch *>(clientData);
 
-  interactorStyle->SetAbstractWidget(angleWidget);
+//   interactorStyle->SetAbstractWidget(angleWidget);
 
-  vtkSmartPointer<vtkAngleRepresentation3D> rep;
+//   vtkSmartPointer<vtkAngleRepresentation3D> rep;
 
-  static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-      ->GetPoint1DisplayPosition(p1);
+//   static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+//       ->GetPoint1DisplayPosition(p1);
 
-  static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-      ->GetPoint2DisplayPosition(p2);
+//   static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+//       ->GetPoint2DisplayPosition(p2);
 
-  static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-      ->GetCenterDisplayPosition(center);
+//   static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+//       ->GetCenterDisplayPosition(center);
 
-  std::cout << "p1: " << p1[0] << ", " << p1[1] << ", " << p1[2] << std::endl;
-  std::cout << "p2: " << p2[0] << ", " << p2[1] << ", " << p2[2] << std::endl;
-  std::cout << "center: " << center[0] << ", " << center[1] << ", " << center[2]
-            << std::endl;
+//   qCDebug(INTERACTOR_STYLE_SWITCH) << "p1: " << p1[0] << ", " << p1[1] << ",
+//   " << p1[2] ; qCDebug(INTERACTOR_STYLE_SWITCH) << "p2: " << p2[0] << ", " <<
+//   p2[1] << ", " << p2[2] ;
+// qCDebug(INTERACTOR_STYLE_SWITCH) << "center: " << center[0] << ", " <<
+// center[1] << ", " << center[2];
 
-  vtkNew<vtkPointPicker> pointPicker;
-  angleWidget->GetInteractor()->SetPicker(pointPicker);
+//   vtkNew<vtkPointPicker> pointPicker;
+//   angleWidget->GetInteractor()->SetPicker(pointPicker);
 
-  if (pointPicker->Pick(p1, angleWidget->GetCurrentRenderer())) {
-    double data[3];
-    pointPicker->GetPickPosition(data);
-    std::cout << "point: " << data[0] << ", " << data[1] << ", " << data[2]
-              << std::endl;
+//   if (pointPicker->Pick(p1, angleWidget->GetCurrentRenderer())) {
+//     double data[3];
+//     pointPicker->GetPickPosition(data);
+//     qCDebug(INTERACTOR_STYLE_SWITCH) << "point: " << data[0] << ", " <<
+//     data[1] << ", " << data[2];
 
-    static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-        ->GetPoint1Representation()
-        ->SetWorldPosition(data);
-  }
+//     static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+//         ->GetPoint1Representation()
+//         ->SetWorldPosition(data);
+//   }
 
-  if (pointPicker->Pick(p2, angleWidget->GetCurrentRenderer())) {
-    double data[3];
-    pointPicker->GetPickPosition(data);
-    std::cout << "point: " << data[0] << ", " << data[1] << ", " << data[2]
-              << std::endl;
+//   if (pointPicker->Pick(p2, angleWidget->GetCurrentRenderer())) {
+//     double data[3];
+//     pointPicker->GetPickPosition(data);
+//     qCDebug(INTERACTOR_STYLE_SWITCH) << "point: " << data[0] << ", " <<
+//     data[1] << ", " << data[2]     << ;
 
-    static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-        ->GetPoint2Representation()
-        ->SetWorldPosition(data);
-  }
+//     static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+//         ->GetPoint2Representation()
+//         ->SetWorldPosition(data);
+//   }
 
-  if (pointPicker->Pick(center, angleWidget->GetCurrentRenderer())) {
-    double data[3];
-    pointPicker->GetPickPosition(data);
-    std::cout << "point: " << data[0] << ", " << data[1] << ", " << data[2]
-              << std::endl;
+//   if (pointPicker->Pick(center, angleWidget->GetCurrentRenderer())) {
+//     double data[3];
+//     pointPicker->GetPickPosition(data);
+//     qCDebug(INTERACTOR_STYLE_SWITCH) << "point: " << data[0] << ", " <<
+//     data[1] << ", " << data[2]               ;
 
-    static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-        ->GetCenterRepresentation()
-        ->SetWorldPosition(data);
-  }
+//     static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+//         ->GetCenterRepresentation()
+//         ->SetWorldPosition(data);
+//   }
 
-  interactorStyle->m_interactionMode = INTERACTION_MODE::CAMERA;
-  interactorStyle->m_txtModeIndicator->SetInput("Camera Mode");
-  interactorStyle->SetCurrentStyle();
-}
+//   interactorStyle->m_interactionMode = INTERACTION_MODE::CAMERA;
+//   interactorStyle->m_txtModeIndicator->SetInput("Camera Mode");
+//   interactorStyle->SetCurrentStyle();
+// }
 
 void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
                 void *calldata) {
   double p1[3], p2[3];
 
-  // auto distanceWidget = reinterpret_cast<vtkDistanceWidget *>(clientData);
   auto distanceWidget = reinterpret_cast<vtkDistanceWidget *>(caller);
 
   vtkSmartPointer<InteractorStyleSwitch> interactorStyle =
@@ -181,10 +163,10 @@ void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
       distanceWidget->GetRepresentation())
       ->GetPoint2DisplayPosition(p2);
 
-  std::cout << "placePoint p1: " << p1[0] << ", " << p1[1] << ", " << p1[2]
-            << std::endl;
-  std::cout << "placePoint p2: " << p2[0] << ", " << p2[1] << ", " << p2[2]
-            << std::endl;
+  qCDebug(INTERACTOR_STYLE_SWITCH)
+      << "placePoint p1: " << p1[0] << ", " << p1[1] << ", " << p1[2];
+  qCDebug(INTERACTOR_STYLE_SWITCH)
+      << "placePoint p2: " << p2[0] << ", " << p2[1] << ", " << p2[2];
 
   vtkNew<vtkPointPicker> pointPicker;
   distanceWidget->GetInteractor()->SetPicker(pointPicker);
@@ -193,8 +175,8 @@ void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
   if (pointPicker->Pick(p1, distanceWidget->GetCurrentRenderer())) {
 
     pointPicker->GetPickPosition(data1);
-    std::cout << "point: " << data1[0] << ", " << data1[1] << ", " << data1[2]
-              << std::endl;
+    qCDebug(INTERACTOR_STYLE_SWITCH)
+        << "point: " << data1[0] << ", " << data1[1] << ", " << data1[2];
 
     static_cast<vtkDistanceRepresentation3D *>(
         distanceWidget->GetRepresentation())
@@ -206,8 +188,8 @@ void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
   if (pointPicker->Pick(p2, distanceWidget->GetCurrentRenderer())) {
 
     pointPicker->GetPickPosition(data2);
-    std::cout << "point: " << data2[0] << ", " << data2[1] << ", " << data2[2]
-              << std::endl;
+    qCDebug(INTERACTOR_STYLE_SWITCH)
+        << "point: " << data2[0] << ", " << data2[1] << ", " << data2[2];
 
     static_cast<vtkDistanceRepresentation3D *>(
         distanceWidget->GetRepresentation())
@@ -219,7 +201,7 @@ void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
                       std::pow(data1[1] - data2[1], 2) +
                       std::pow(data1[2] - data2[2], 2);
   double distance = std::pow(sumSquared, 0.5);
-  std::cout << "distance: " << distance << std::endl;
+  qCDebug(INTERACTOR_STYLE_SWITCH) << "distance: " << distance;
 
   interactorStyle->m_interactionMode = INTERACTION_MODE::CAMERA;
   interactorStyle->m_txtModeIndicator->SetInput("Camera Mode");
@@ -239,7 +221,7 @@ void InteractorStyleSwitch::OnChar() {
     break;
   case 'h':
   case 'H':
-    std::cout << "Handling Mode" << std::endl;
+    qCDebug(INTERACTOR_STYLE_SWITCH) << "Handling Mode";
     m_txtModeIndicator->SetInput("Handling Mode");
 
     m_interactionMode = INTERACTION_MODE::ACTOR;
@@ -260,7 +242,7 @@ void InteractorStyleSwitch::OnChar() {
     //   m_abstractWidget = nullptr;
 
     // } else {
-    //   std::cout << "no widget to delete " << std::endl;
+    //  qCDebug(INTERACTOR_STYLE_SWITCH) << "no widget to delete " ;
     // }
 
     m_interactionMode = INTERACTION_MODE::CAMERA;
@@ -304,7 +286,6 @@ void InteractorStyleSwitch::OnChar() {
     vtkDistanceWidget *distanceWidget;
     distanceWidget = vtkDistanceWidget::New();
     distanceWidget->SetInteractor(m_iren);
-    std::cout << "m_iren type name: " << typeid(m_iren).name() << "\n";
 
     vtkSmartPointer<vtkCallbackCommand> placePointCallback =
         vtkSmartPointer<vtkCallbackCommand>::New();
@@ -355,8 +336,8 @@ void InteractorStyleSwitch::OnChar() {
   }
 
   default:
-    std::cout << "InteractorStyleSwitch::OnChar() " << m_iren->GetKeyCode()
-              << std::endl;
+    qCDebug(INTERACTOR_STYLE_SWITCH)
+        << "InteractorStyleSwitch::OnChar() " << m_iren->GetKeyCode();
   }
 
   SetCurrentStyle();
@@ -372,7 +353,8 @@ void InteractorStyleSwitch::OnChar() {
 //                  [](unsigned char c) { return std::tolower(c); });
 
 //   // Output the key that was pressed
-//   std::cout << "InteractorStyleSwitch::OnKeyPress(): " << key << std::endl;
+//   qCDebug(INTERACTOR_STYLE_SWITCH) << "InteractorStyleSwitch::OnKeyPress(): "
+//   << key ;
 // }
 
 void InteractorStyleSwitch::SetCurrentStyle() {
@@ -397,31 +379,23 @@ void InteractorStyleSwitch::SetCurrentStyle() {
     m_currentStyle->SetTDxStyle(TDxStyle);
   }
   CurrentRenderer->AddActor(m_txtModeIndicator);
-  std::cout << "InteractorStyleSwitch::SetCurrentStyle" << std::endl;
 }
 
 void InteractorStyleSwitch::SetInteractor(vtkRenderWindowInteractor *iren) {
-  std::cout << "(((((((((((((((((((((((((((())))))))))))))))))))))))))))"
-            << std::endl;
+
   if (iren == m_iren) {
     return;
   }
   // if we already have an Interactor then stop observing it
   if (m_iren) {
     m_iren->RemoveObserver(EventCallbackCommand);
-    // Interactor->RemoveObserver(EventCallbackCommand);
-    std::cout << "m_iren->RemoveObserver" << std::endl;
   }
   m_iren = iren;
   m_trackballCameraStyle->SetInteractor(m_iren);
-  // Interactor = iren;
   // add observers for each of the events handled in ProcessEvents
   if (iren) {
     iren->AddObserver(vtkCommand::CharEvent, EventCallbackCommand, Priority);
-
     iren->AddObserver(vtkCommand::DeleteEvent, EventCallbackCommand, Priority);
-
-    std::cout << "-------************-----------" << std::endl;
   }
   SetCurrentStyle();
 }

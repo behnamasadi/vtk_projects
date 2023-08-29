@@ -1,4 +1,8 @@
 #include "ActorManipulationInteractorStyle.hpp"
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(ACTOR_INTERACTOR_STYLE)
+Q_LOGGING_CATEGORY(ACTOR_INTERACTOR_STYLE, "ACTOR_INTERACTOR_STYLE", QtInfoMsg);
 
 ActorManipulationInteractorStyle::ActorManipulationInteractorStyle() {
   m_lastPickedActor = nullptr;
@@ -10,7 +14,7 @@ ActorManipulationInteractorStyle::~ActorManipulationInteractorStyle() {
 }
 
 void ActorManipulationInteractorStyle::OnLeftButtonDown() {
-  // std::cout << "Pressed left mouse button." << std::endl;
+  qCDebug(ACTOR_INTERACTOR_STYLE) << "Pressed left mouse button.";
 
   int x = Interactor->GetEventPosition()[0];
   int y = Interactor->GetEventPosition()[1];
@@ -24,19 +28,19 @@ void ActorManipulationInteractorStyle::OnLeftButtonDown() {
 
   vtkNew<vtkMatrix4x4> m;
   InteractionProp->GetMatrix(m);
-  std::cout << "Matrix: " << endl << *m << std::endl;
+  // qCDebug(CAMERA_INTERACTOR_STYLE) << "Matrix: " << endl << *m;
 
   // Forward events
   vtkInteractorStyleTrackballActor::OnLeftButtonDown();
 }
 
 void ActorManipulationInteractorStyle::OnLeftButtonUp() {
-  // std::cout << "Released left mouse button." << std::endl;
+  qCDebug(ACTOR_INTERACTOR_STYLE) << "Released left mouse button.";
 
   vtkNew<vtkMatrix4x4> m;
   if (InteractionProp != nullptr) {
     InteractionProp->GetMatrix(m);
-    std::cout << "Matrix: " << endl << *m << std::endl;
+    // qCDebug(CAMERA_INTERACTOR_STYLE) << "Matrix: " << endl << *m;
   }
 
   // Forward events
@@ -55,7 +59,7 @@ void ActorManipulationInteractorStyle::OnMiddleButtonDown() {
 
   vtkNew<vtkMatrix4x4> m;
   InteractionProp->GetMatrix(m);
-  std::cout << "Matrix: " << endl << *m << std::endl;
+  // qCDebug(ACTOR_INTERACTOR_STYLE) << "Matrix: " << endl << *m ;
 
   GrabFocus(EventCallbackCommand);
   if (Interactor->GetControlKey()) {

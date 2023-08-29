@@ -82,14 +82,10 @@ public:
     renderWindow->AddRenderer(vtk->renderer);
     renderWindow->SetMultiSamples(16);
 
-    // vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
-    //     vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-
     vtkNew<InteractorStyleSwitch> style;
 
     style->SetCurrentRenderer(vtk->renderer);
     style->SetInteractor(vtk->iRen);
-    std::cout << "Interactor type name: " << typeid(vtk->iRen).name() << "\n";
 
     renderWindow->AddRenderer(vtk->renderer);
     vtk->iRen->SetInteractorStyle(style);

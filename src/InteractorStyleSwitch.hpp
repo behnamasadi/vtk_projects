@@ -2,6 +2,7 @@
 
 #include "ActorManipulationInteractorStyle.hpp"
 #include "CameraInteractorStyle.hpp"
+#include <QLoggingCategory>
 #include <list>
 #include <vtkActor.h>
 #include <vtkAngleRepresentation3D.h>
@@ -14,6 +15,8 @@
 #include <vtkSmartPointer.h>
 #include <vtkTextActor.h>
 #include <vtkWorldPointPicker.h>
+
+Q_DECLARE_LOGGING_CATEGORY(INTERACTOR_STYLE_SWITCH)
 
 /*
 class InteractorStyleSwitch
@@ -52,16 +55,9 @@ class CameraInteractorStyle
 
 vtkInteractorStyleTrackballCamera   <|--  CameraInteractorStyle
 vtkInteractorStyleTrackballActor  <|-- ActorManipulationInteractorStyle
-
-
-
-
 */
 
 enum class INTERACTION_MODE { CAMERA, ACTOR };
-
-// VTK_ABI_NAMESPACE_BEGIN
-
 class InteractorStyleSwitch : public vtkInteractorStyleSwitchBase {
 public:
   static InteractorStyleSwitch *New();
@@ -115,8 +111,6 @@ private:
   vtkSmartPointer<vtkInteractorStyle> m_currentStyle;
 
 public:
-  // vtkNew<vtkRenderWindowInteractor> m_iren;
-  //  vtkRenderWindowInteractor *m_iren;
   vtkSmartPointer<vtkRenderWindowInteractor> m_iren;
   INTERACTION_MODE m_interactionMode;
 };

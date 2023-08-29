@@ -1,8 +1,8 @@
 #include "CameraInteractorStyle.hpp"
 
+#include <QLoggingCategory>
 #include <algorithm>
 #include <vtkAngleWidget.h>
-#include <vtkCallbackCommand.h>
 #include <vtkCamera.h>
 #include <vtkCommand.h>
 #include <vtkDistanceRepresentation3D.h>
@@ -23,6 +23,10 @@
 #include <vtkTransform.h>
 #include <vtkWidgetEvent.h>
 
+Q_DECLARE_LOGGING_CATEGORY(CAMERA_INTERACTOR_STYLE)
+Q_LOGGING_CATEGORY(CAMERA_INTERACTOR_STYLE, "CAMERA_INTERACTOR_STYLE",
+                   QtInfoMsg);
+
 CameraInteractorStyle::CameraInteractorStyle() {
   m_lastPickedActor = nullptr;
   m_lastPickedProperty = vtkProperty::New();
@@ -31,8 +35,6 @@ CameraInteractorStyle::CameraInteractorStyle() {
 
   m_numberOfClicks = 0;
   m_resetPixelDistance = 5;
-
-  // CurrentRenderer->GetActiveCamera()->SetViewUp(0, 1, 0);
 }
 CameraInteractorStyle::~CameraInteractorStyle() {
   m_lastPickedProperty->Delete();
@@ -47,15 +49,15 @@ void CameraInteractorStyle::OnKeyPress() {
                  [](unsigned char c) { return std::tolower(c); });
 
   // Output the key that was pressed
-  std::cout << "CameraInteractorStyle::OnKeyPress() " << key << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "CameraInteractorStyle::OnKeyPress() ";
 
   // Handle an arrow key
   if (key == "up") {
-    std::cout << "The up arrow was pressed." << std::endl;
+    qCDebug(CAMERA_INTERACTOR_STYLE) << "The up arrow was pressed.";
   }
 
   if (key == "delete") {
-    std::cout << "The delete key was pressed." << std::endl;
+    qCDebug(CAMERA_INTERACTOR_STYLE) << "The delete key was pressed.";
   }
 
   // Forward events
@@ -71,15 +73,15 @@ void CameraInteractorStyle::OnChar() {
                  [](unsigned char c) { return std::tolower(c); });
 
   // Output the key that was pressed
-  std::cout << "OnChar() " << key << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "OnChar() " << key.c_str();
 
   // Handle an arrow key
   if (key == "up") {
-    std::cout << "The up arrow was pressed." << std::endl;
+    qCDebug(CAMERA_INTERACTOR_STYLE) << "The up arrow was pressed.";
   }
 
   if (key == "delete") {
-    std::cout << "The delete key was pressed." << std::endl;
+    qCDebug(CAMERA_INTERACTOR_STYLE) << "The delete key was pressed.";
   }
 
   // Forward events
@@ -87,7 +89,7 @@ void CameraInteractorStyle::OnChar() {
 }
 
 void CameraInteractorStyle::Spin() {
-  std::cout << "------------------- Spin ----------------------" << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "CameraInteractorStyle::Spin()";
   vtkInteractorStyleTrackballCamera::Spin();
 }
 
@@ -101,14 +103,14 @@ void CameraInteractorStyle::Dolly() {
   //   in the direction of forward vector and calculate the new camera focal
   //   point
 
-  std::cout << "Dolly." << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "Dolly.";
 
   vtkTimeStamp timeStamp;
-  std::cout << "Time stamp: " << timeStamp << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "Time stamp: " << timeStamp;
   timeStamp.Modified();
-  std::cout << "Time stamp: " << timeStamp << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "Time stamp: " << timeStamp;
 
-  std::cout << " RightButtonDown " << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << " RightButtonDown ";
 
   if (CurrentRenderer == nullptr) {
     return;
@@ -120,12 +122,12 @@ void CameraInteractorStyle::Dolly() {
   int dx = rwi->GetEventPosition()[0] - rwi->GetLastEventPosition()[0];
   int dy = rwi->GetEventPosition()[1] - rwi->GetLastEventPosition()[1];
 
-  std::cout << "dx: " << dx << " dy: " << dy << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "dx: " << dx << " dy: " << dy;
 
   const int *size = CurrentRenderer->GetRenderWindow()->GetSize();
 
-  double delta_elevation = +20.0 / size[1];
-  double delta_azimuth = -20.0 / size[0];
+  double delta_elevation = +10.0 / size[1];
+  double delta_azimuth = -10.0 / size[0];
 
   double rxf = dx * delta_azimuth * MotionFactor;
   double ryf = dy * delta_elevation * MotionFactor;
@@ -140,18 +142,19 @@ void CameraInteractorStyle::Dolly() {
   previousCameraPosition[1] = cameraPosition[1];
   previousCameraPosition[2] = cameraPosition[2];
 
-  std::cout << "Previous Camera Position: " << previousCameraPosition[0]
-            << " , " << previousCameraPosition[1] << " , "
-            << previousCameraPosition[2] << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE)
+      << "Previous Camera Position: " << previousCameraPosition[0] << " , "
+      << previousCameraPosition[1] << " , " << previousCameraPosition[2];
 
   double *previousDirectionOfProjection = camera->GetDirectionOfProjection();
 
-  std::cout << "Previous Direction Of Projection: "
-            << previousDirectionOfProjection[0] << ", "
-            << previousDirectionOfProjection[1] << " , "
-            << previousDirectionOfProjection[2] << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "Previous Direction Of Projection: "
+                                   << previousDirectionOfProjection[0] << ", "
+                                   << previousDirectionOfProjection[1] << " , "
+                                   << previousDirectionOfProjection[2];
 
-  std::cout << "Previous Distance: " << camera->GetDistance() << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE)
+      << "Previous Distance: " << camera->GetDistance();
 
   camera->Azimuth(rxf);
 
@@ -210,16 +213,16 @@ void CameraInteractorStyle::Dolly() {
 }
 
 void CameraInteractorStyle::Pan() {
-  std::cout << "Pan." << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "Pan.";
   vtkInteractorStyleTrackballCamera::Pan();
 }
 
 void CameraInteractorStyle::EnvironmentRotate() {
-  std::cout << "EnvironmentRotate." << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "EnvironmentRotate.";
 }
 
 void CameraInteractorStyle::Rotate() {
-  std::cout << "****************************************** " << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "CameraInteractorStyle::Rotate() ";
 
   if (CurrentRenderer == nullptr) {
     return;
@@ -231,7 +234,7 @@ void CameraInteractorStyle::Rotate() {
   int dx = rwi->GetEventPosition()[0] - rwi->GetLastEventPosition()[0];
   int dy = rwi->GetEventPosition()[1] - rwi->GetLastEventPosition()[1];
 
-  std::cout << "dx: " << dx << " dy: " << dy << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "dx: " << dx << " dy: " << dy;
 
   const int *size = CurrentRenderer->GetRenderWindow()->GetSize();
 
@@ -244,33 +247,32 @@ void CameraInteractorStyle::Rotate() {
   vtkCamera *camera = CurrentRenderer->GetActiveCamera();
   double *cameraPosition = camera->GetPosition();
 
-  std::cout << "cameraPosition: " << cameraPosition[0] << " , "
-            << cameraPosition[1] << " , " << cameraPosition[2] << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE)
+      << "cameraPosition: " << cameraPosition[0] << " , " << cameraPosition[1]
+      << " , " << cameraPosition[2];
 
   double *cameraGetFocalPoint = camera->GetFocalPoint();
 
-  std::cout << "cameraGetFocalPoint: " << cameraGetFocalPoint[0] << " , "
-            << cameraGetFocalPoint[1] << " , " << cameraGetFocalPoint[2]
-            << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE)
+      << "cameraGetFocalPoint: " << cameraGetFocalPoint[0] << " , "
+      << cameraGetFocalPoint[1] << " , " << cameraGetFocalPoint[2];
 
   camera->SetViewUp(0, 1, 0);
-  // camera->SetViewUp(0, 1, 0);
   camera->OrthogonalizeViewUp();
 
   double *viewUpVector = camera->GetViewUp();
 
-  std::cout << "viewUpVector: " << viewUpVector[0] << " , " << viewUpVector[1]
-            << " , " << viewUpVector[2] << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE)
+      << "viewUpVector: " << viewUpVector[0] << " , " << viewUpVector[1]
+      << " , " << viewUpVector[2];
 
   camera->Azimuth(rxf);
   camera->Elevation(ryf);
 
   // camera->Pro
 
-  std::cout << "rxf: " << rxf << std::endl;
-  std::cout << "ryf: " << ryf << std::endl;
-
-  // camera->OrthogonalizeViewUp();
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "rxf: " << rxf;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "ryf: " << ryf;
 
   if (AutoAdjustCameraClippingRange) {
     CurrentRenderer->ResetCameraClippingRange();
@@ -284,12 +286,12 @@ void CameraInteractorStyle::Rotate() {
 }
 
 void CameraInteractorStyle::OnLeftButtonDown() {
-  std::cout << "Pressed left mouse button." << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "Pressed left mouse button.";
 
   // HighLightActor
-  std::cout << "HighLight Actor" << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "HighLight Actor";
   int *clickPos = GetInteractor()->GetEventPosition();
-  std::cout << clickPos[0] << "," << clickPos[1] << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << clickPos[0] << "," << clickPos[1];
 
   vtkNew<vtkPropPicker> picker;
   if (GetCurrentRenderer())
@@ -325,15 +327,15 @@ void CameraInteractorStyle::OnLeftButtonDown() {
   int xdist = pickPosition[0] - m_previousPosition[0];
   int ydist = pickPosition[1] - m_previousPosition[1];
 
-  std::cout << "xdist: " << xdist << std::endl;
-  std::cout << "ydist: " << ydist << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "xdist: " << xdist;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "ydist: " << ydist;
 
   m_previousPosition[0] = pickPosition[0];
   m_previousPosition[1] = pickPosition[1];
 
   int moveDistance = (int)sqrt((double)(xdist * xdist + ydist * ydist));
 
-  std::cout << "moveDistance: " << moveDistance << std::endl;
+  qCDebug(CAMERA_INTERACTOR_STYLE) << "moveDistance: " << moveDistance;
 
   // Reset numClicks - If mouse moved further than resetPixelDistance
   if (moveDistance > m_resetPixelDistance) {
@@ -341,15 +343,16 @@ void CameraInteractorStyle::OnLeftButtonDown() {
   }
 
   if (m_numberOfClicks == 2) {
-    std::cout << "Double clicked." << std::endl;
+    qCDebug(CAMERA_INTERACTOR_STYLE) << "Double clicked.";
 
     // move camera focal point to here
     // picker->GetPickPosition();
     // //picker->GetProp3D
     // //picker->Getpick
 
-    std::cout << "Picking pixel: " << GetInteractor()->GetEventPosition()[0]
-              << " " << GetInteractor()->GetEventPosition()[1] << std::endl;
+    qCDebug(CAMERA_INTERACTOR_STYLE)
+        << "Picking pixel: " << GetInteractor()->GetEventPosition()[0] << " "
+        << GetInteractor()->GetEventPosition()[1];
     GetInteractor()->GetPicker()->Pick(
         GetInteractor()->GetEventPosition()[0],
         GetInteractor()->GetEventPosition()[1],
@@ -357,8 +360,8 @@ void CameraInteractorStyle::OnLeftButtonDown() {
         GetInteractor()->GetRenderWindow()->GetRenderers()->GetFirstRenderer());
     double picked[3];
     Interactor->GetPicker()->GetPickPosition(picked);
-    std::cout << "Picked value: " << picked[0] << " " << picked[1] << " "
-              << picked[2] << std::endl;
+    qCDebug(CAMERA_INTERACTOR_STYLE) << "Picked value: " << picked[0] << " "
+                                     << picked[1] << " " << picked[2];
 
     m_numberOfClicks = 0;
 
