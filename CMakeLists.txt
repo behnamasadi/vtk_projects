@@ -484,6 +484,10 @@ add_executable(Frustum src/Frustum.cxx)
 target_link_libraries(Frustum PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS Frustum MODULES ${VTK_LIBRARIES})
 
+add_executable(MyVTKQtApp src/MyVTKQtApp.cpp)
+target_link_libraries(MyVTKQtApp PRIVATE ${VTK_LIBRARIES} Qt5::Widgets)
+vtk_module_autoinit(TARGETS MyVTKQtApp MODULES ${VTK_LIBRARIES})
+
 # # vtk_module_autoinit is needed
 # vtk_module_autoinit(
 # TARGETS VisualDebugging

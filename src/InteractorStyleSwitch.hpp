@@ -87,7 +87,7 @@ public:
   vtkNew<vtkTextActor> m_txtModeIndicator;
   void SetCurrentStyle();
 
-  std::vector<unsigned long> observerIds;
+  std::vector<vtkDistanceWidget *> m_distanceWidgets;
 
 protected:
   InteractorStyleSwitch();

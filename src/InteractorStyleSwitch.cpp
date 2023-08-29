@@ -236,8 +236,6 @@ void InteractorStyleSwitch::OnChar() {
     EventCallbackCommand->SetAbortFlag(1);
     m_txtModeIndicator->SetInput("Camera Mode");
 
-    //->RemoveObserver(observerId);
-
     break;
   case 'h':
   case 'H':
@@ -250,48 +248,55 @@ void InteractorStyleSwitch::OnChar() {
     break;
   case 'd':
   case 'D':
-    m_txtModeIndicator->SetInput("Deletion Mode");
+    // m_txtModeIndicator->SetInput("Deletion Mode");
 
-    if (m_abstractWidget) {
-      std::cout << "deleting last selected widget" << std::endl;
-
-      m_abstractWidget->Off();
-      m_abstractWidget = nullptr;
-
-    } else {
-      std::cout << "no widget to delete " << std::endl;
+    for (auto const &distanceWidget : m_distanceWidgets) {
+      distanceWidget->Off();
     }
+
+    // if (m_abstractWidget) {
+
+    //   m_abstractWidget->Off();
+    //   m_abstractWidget = nullptr;
+
+    // } else {
+    //   std::cout << "no widget to delete " << std::endl;
+    // }
+
+    m_interactionMode = INTERACTION_MODE::CAMERA;
+    m_txtModeIndicator->SetInput("Camera Mode");
+
+    SetCurrentStyle();
+
     break;
-  case 'a':
-  case 'A': {
-    m_txtModeIndicator->SetInput("Angle Measurement Mode");
+    // case 'a':
+    // case 'A': {
+    //   m_txtModeIndicator->SetInput("Angle Measurement Mode");
 
-    vtkAngleWidget *angleWidget;
-    angleWidget = vtkAngleWidget::New();
-    angleWidget->SetInteractor(m_iren);
-    angleWidget->CreateDefaultRepresentation();
+    //   vtkAngleWidget *angleWidget;
+    //   angleWidget = vtkAngleWidget::New();
+    //   angleWidget->SetInteractor(m_iren);
+    //   angleWidget->CreateDefaultRepresentation();
 
-    vtkSmartPointer<vtkCallbackCommand> placeAnglePointCallback =
-        vtkSmartPointer<vtkCallbackCommand>::New();
-    placeAnglePointCallback->SetCallback(placeAnglePoint);
-    unsigned long observerId = angleWidget->AddObserver(
-        vtkCommand::EndInteractionEvent, placeAnglePointCallback);
+    //   vtkSmartPointer<vtkCallbackCommand> placeAnglePointCallback =
+    //       vtkSmartPointer<vtkCallbackCommand>::New();
+    //   placeAnglePointCallback->SetCallback(placeAnglePoint);
+    //   angleWidget->AddObserver(vtkCommand::EndInteractionEvent,
+    //                            placeAnglePointCallback);
 
-    observerIds.push_back(observerId);
+    //   placeAnglePointCallback->SetClientData((void *)this);
 
-    placeAnglePointCallback->SetClientData((void *)this);
+    //   vtkSmartPointer<vtkPointHandleRepresentation3D> handle =
+    //       vtkSmartPointer<vtkPointHandleRepresentation3D>::New();
 
-    vtkSmartPointer<vtkPointHandleRepresentation3D> handle =
-        vtkSmartPointer<vtkPointHandleRepresentation3D>::New();
+    //   vtkSmartPointer<vtkAngleRepresentation3D> rep;
+    //   rep = vtkSmartPointer<vtkAngleRepresentation3D>::New();
+    //   rep->SetHandleRepresentation(handle);
+    //   angleWidget->SetRepresentation(rep);
+    //   angleWidget->On();
+    // }
 
-    vtkSmartPointer<vtkAngleRepresentation3D> rep;
-    rep = vtkSmartPointer<vtkAngleRepresentation3D>::New();
-    rep->SetHandleRepresentation(handle);
-    angleWidget->SetRepresentation(rep);
-    angleWidget->On();
-  }
-
-  break;
+    break;
 
   case 'm':
   case 'M': {
@@ -305,10 +310,10 @@ void InteractorStyleSwitch::OnChar() {
         vtkSmartPointer<vtkCallbackCommand>::New();
     placePointCallback->SetCallback(placePoint);
 
-    unsigned long observerId = distanceWidget->AddObserver(
-        vtkCommand::EndInteractionEvent, placePointCallback);
+    distanceWidget->AddObserver(vtkCommand::EndInteractionEvent,
+                                placePointCallback);
 
-    observerIds.push_back(observerId);
+    m_distanceWidgets.push_back(distanceWidget);
 
     placePointCallback->SetClientData((void *)this);
 
