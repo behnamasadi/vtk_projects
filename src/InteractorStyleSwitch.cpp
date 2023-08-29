@@ -217,6 +217,19 @@ void InteractorStyleSwitch::OnChar() {
     EventCallbackCommand->SetAbortFlag(1);
     m_txtModeIndicator->SetInput("Camera Mode");
 
+    // m_iren->RemoveObserver()
+
+    // m_iren->RemoveObserver(EventCallbackCommand);
+    // m_iren->RemoveObserver(KeyPressCallbackCommand);
+    // m_iren->RemoveObserver(vtkCommand::EndInteractionEvent);
+
+    // for (const auto &observer : m_iren->GetObserverMediator() ) {
+    // }
+    // {
+    //   vtkIndent indent;
+    //   m_iren->PrintSelf(std::cout, indent);
+    // }
+
     break;
   case 'h':
   case 'H':
@@ -284,6 +297,8 @@ void InteractorStyleSwitch::OnChar() {
     if (m_interactionMode == INTERACTION_MODE::MEASUREMENT) {
       break;
     }
+
+    // m_iren->RemoveAllObservers();
     m_interactionMode = INTERACTION_MODE::MEASUREMENT;
     m_txtModeIndicator->SetInput("Measurement Mode");
     vtkSmartPointer<vtkDistanceWidget> distanceWidget;
