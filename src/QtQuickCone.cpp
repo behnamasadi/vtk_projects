@@ -45,6 +45,8 @@
 #include "MyVtkItem.hpp"
 vtkStandardNewMacro(MyVtkItem::Data);
 
+// export QT_LOGGING_RULES="CAMERA_INTERACTOR_STYLE=false"
+// export QT_LOGGING_RULES="INTERACTOR_STYLE_SWITCH=false"
 int main(int argc, char *argv[]) {
   QQuickVTKItem::setGraphicsApi();
 
