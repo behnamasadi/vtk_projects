@@ -43,7 +43,7 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 ## Viewport
 
 [Multiple Renderers within a Render Window, Viewport](docs/multiple_renderers_within_a_render_window.md)  
-[ShareCamera, Viewport](docs/shareCamera_viewport.md)  
+[ShareCamera, Viewport](docs/shareCamera_viewport.md)
 
 ## Widget
 
@@ -53,42 +53,42 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [AngleWidget](docs/angleWidget.md)  
 [TextWidget](docs/textWidget.md)  
 [Gizmo, CameraOrientationWidget](docs/gizmo_camera_orientation_widget.md)
-[Add/ remove multiple Widget](docs/add_remove_multiple_widget.md) 
+[Add/ remove multiple Widget](docs/add_remove_multiple_widget.md)
 
 ## Axes
 
-[AxesActor](docs/axesActor.md)  
+[AxesActor](docs/axesActor.md)
 
 ## Point Picker
 
 [World Point Picker](docs/world_point_picker.md)  
 [Area Picker](docs/area_picker.md)  
 [Prop /Actor Picker](docs/prop_actor_picker.md)  
-[Pickable Off](docs/pickable_off.md)  
+[Pickable Off](docs/pickable_off.md)
 
 ## Following Camera
 
 [Follower](docs/follower.md)  
 [Prop3DFollower, Image Actor](docs/prop3DFollower_image_actor.md)  
-[BillboardTextActor3D](docs/billboard_text_actor3D.md)  
+[BillboardTextActor3D](docs/billboard_text_actor3D.md)
 
 ## Window Interaction
 
 [Setting Interaction Style](docs/setting_interaction_style.md)  
- * [vtkInteractorStyleTrackballCamera](docs/setting_interaction_style.md#vtkInteractorStyleTrackballCamera)
- * [vtkInteractorStyleTrackballActor](docs/setting_interaction_style.md#vtkInteractorStyleTrackballActor)
+[vtkInteractorStyleTrackballCamera](docs/setting_interaction_style.md#vtkInteractorStyleTrackballCamera)  
+[vtkInteractorStyleTrackballActor](docs/setting_interaction_style.md#vtkInteractorStyleTrackballActor)  
 [Rotate/ Transform Actor](docs/rotate_actor.md)  
 [Key Press Interactor](docs/key_press_interactor.md)  
-[InteractorStyleSwitch](docs/interactor_style_switch.md)  
+[InteractorStyleSwitch](docs/interactor_style_switch.md)
 
 ## Camera
 
 [Modify Renderer Camera](docs/modify_renderer_camera.md)  
-[Renderer Camera Position Call back](docs/camera_position.md)  
+[Renderer Camera Position Call back](docs/camera_position.md)
 
 ## PCL
 
-[PCL Pointcloud](docs/pcl_pointcloud.md)  
+[PCL Pointcloud](docs/pcl_pointcloud.md)
 
 ## QML, QT
 

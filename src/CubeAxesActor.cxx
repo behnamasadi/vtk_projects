@@ -1,5 +1,4 @@
 #include <vtkActor.h>
-#include <vtkActorCollection.h>
 #include <vtkCamera.h>
 #include <vtkColor.h>
 #include <vtkCubeAxesActor.h>
@@ -14,8 +13,7 @@
 #include <vtkSuperquadricSource.h>
 #include <vtkTextProperty.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   // Define colors for this example
   vtkNew<vtkNamedColors> colors;
 

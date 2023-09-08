@@ -1,5 +1,6 @@
 //
 #include "vtkProp3DFollower.h"
+#include "arguments_parser.hpp"
 #include "vtkCellPicker.h"
 #include "vtkColorTransferFunction.h"
 #include "vtkCommand.h"
@@ -57,6 +58,19 @@ public:
 
 int main(int argc, char **argv) {
 
+  ArgumentsParser input(argc, argv);
+  if (input.argExists("-h") || input.argExists("--help") || argc == 1) {
+    std::cerr << "usage error: please specify input image, -i <input_image>"
+              << std::endl;
+    return 1;
+  }
+  std::string inputFilename = input.getArg("-i");
+  if (inputFilename.empty()) {
+    std::cerr << "no intput file is given, please specify the input file, -i "
+                 "<input_image>"
+              << std::endl;
+  }
+
   vtkNew<vtkNamedColors> colors;
   // Create some simple actors
   // vtkNew<>
@@ -81,7 +95,7 @@ int main(int argc, char **argv) {
   // vtkNew<vtkJPEGReader> pnmReader;
   // pnmReader->SetFileName("maps-marker.png");
   vtkNew<vtkPNGReader> pnmReader;
-  pnmReader->SetFileName("../images/maps-marker.png");
+  pnmReader->SetFileName(inputFilename.c_str());
 
   vtkNew<vtkImageActor> ia;
   ia->GetMapper()->SetInputConnection(pnmReader->GetOutputPort());
