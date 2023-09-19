@@ -1,38 +1,15 @@
-# ActorCollection
+#include <vtkActor.h>
+#include <vtkCommand.h>
+#include <vtkCubeSource.h>
+#include <vtkIndent.h>
+#include <vtkInteractorStyleTrackballActor.h>
+#include <vtkNew.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkTransform.h>
 
-```
-  // Create an actor collection and add actors
-  vtkNew<vtkActorCollection> actorCollection;
-  actorCollection->AddItem(sphereActor);
-  actorCollection->AddItem(cubeActor);
-
-
-  vtkNew<vtkTransform> transform;
-  transform->PostMultiply(); // This is the key line.
-  transform->Translate(0.0, 0, 0);
-
-  // very important, Apply the transform to all actors in the collection so if we move one, all other actors get moved
-  actorCollection->InitTraversal();
-  vtkActor *actor;
-  while ((actor = actorCollection->GetNextActor()) != nullptr) {
-    actor->SetUserTransform(transform);
-    renderer->AddActor(actor);
-  }
-
-
-  // adding more
-  actorCollection->AddItem(sphereActor);
-  actorCollection->GetLastActor()->SetUserTransform(transform);
-  renderer->AddActor(actorCollection->GetLastActor());
-```
-
-[code](../src/TransformActorCollection.cxx)
-
-Refs: [1](https://examples.vtk.org/site/Cxx/Visualization/TransformActorCollection/)
-
-An other approach is is using observer:
-
-```cpp
 // Custom command to sync transformations
 class SyncTransformationsCommand : public vtkCommand {
 public:
@@ -67,11 +44,30 @@ public:
   vtkActor *TargetActor = nullptr;
   vtkNew<vtkMatrix4x4> previousMatrix;
 };
-```
 
-in your cpp code:
+int main(int, char *[]) {
+  vtkNew<vtkCubeSource> cubeSource1;
+  vtkNew<vtkCubeSource> cubeSource2;
 
-```cpp
+  vtkNew<vtkPolyDataMapper> mapper1;
+  mapper1->SetInputConnection(cubeSource1->GetOutputPort());
+  vtkNew<vtkPolyDataMapper> mapper2;
+  mapper2->SetInputConnection(cubeSource2->GetOutputPort());
+
+  vtkNew<vtkActor> actor1;
+  actor1->SetMapper(mapper1);
+  vtkNew<vtkActor> actor2;
+  actor2->SetMapper(mapper2);
+  actor2->SetPosition(2, 0,
+                      0); // Offset the second cube for visualization  purposes
+
+  vtkNew<vtkRenderer> renderer;
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
+
+  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  renderWindowInteractor->SetRenderWindow(renderWindow);
+
   vtkNew<vtkInteractorStyleTrackballActor> style;
   renderWindowInteractor->SetInteractorStyle(style);
 
@@ -83,6 +79,9 @@ in your cpp code:
   syncCommand->SourceActor = actor1;
   syncCommand->TargetActor = actor2;
   style->AddObserver(vtkCommand::InteractionEvent, syncCommand);
-```
 
-[code](../src/SyncTransformations.cpp)
+  renderWindow->Render();
+  renderWindowInteractor->Start();
+
+  return EXIT_SUCCESS;
+}

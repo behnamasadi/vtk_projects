@@ -357,9 +357,7 @@ add_executable(multi_interactor src/multi_interactor.cpp src/InteractorStyleSwit
 target_link_libraries(multi_interactor PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS multi_interactor MODULES ${VTK_LIBRARIES})
 
-add_executable(foo src/foo.cpp)
-target_link_libraries(foo PRIVATE ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS foo MODULES ${VTK_LIBRARIES})
+
 
 add_executable(DistanceWidget3D src/DistanceWidget3D.cpp)
 target_link_libraries(DistanceWidget3D PRIVATE ${VTK_LIBRARIES})
@@ -421,9 +419,9 @@ add_executable(the_basic_setup src/the_basic_setup.cpp)
 target_link_libraries(the_basic_setup PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS the_basic_setup MODULES ${VTK_LIBRARIES})
 
-add_executable(command_observer_for_events src/command_observer_for_events.cpp)
-target_link_libraries(command_observer_for_events PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS command_observer_for_events MODULES ${VTK_LIBRARIES})
+add_executable(CommandObserverClass src/CommandObserverClass.cpp)
+target_link_libraries(CommandObserverClass PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS CommandObserverClass MODULES ${VTK_LIBRARIES})
 
 add_executable(multiple_renderers_within_a_render_window src/multiple_renderers_within_a_render_window.cpp)
 target_link_libraries(multiple_renderers_within_a_render_window PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
@@ -468,14 +466,6 @@ add_executable(OutlineFilter src/OutlineFilter.cpp)
 target_link_libraries(OutlineFilter PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS OutlineFilter MODULES ${VTK_LIBRARIES})
 
-add_executable(bar src/bar.cpp)
-target_link_libraries(bar PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS bar MODULES ${VTK_LIBRARIES})
-
-add_executable(transform_multiple_actors_group src/transform_multiple_actors_group.cpp)
-target_link_libraries(transform_multiple_actors_group PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS transform_multiple_actors_group MODULES ${VTK_LIBRARIES})
-
 add_executable(camera_frustum src/camera_frustum.cpp)
 target_link_libraries(camera_frustum PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS camera_frustum MODULES ${VTK_LIBRARIES})
@@ -487,6 +477,22 @@ vtk_module_autoinit(TARGETS Frustum MODULES ${VTK_LIBRARIES})
 add_executable(MyVTKQtApp src/MyVTKQtApp.cpp)
 target_link_libraries(MyVTKQtApp PRIVATE ${VTK_LIBRARIES} Qt5::Widgets)
 vtk_module_autoinit(TARGETS MyVTKQtApp MODULES ${VTK_LIBRARIES})
+
+
+add_executable(SyncTransformations src/SyncTransformations.cpp)
+target_link_libraries(SyncTransformations PRIVATE ${VTK_LIBRARIES} )
+vtk_module_autoinit(TARGETS SyncTransformations MODULES ${VTK_LIBRARIES})
+
+
+add_executable(CommandObserverFunction src/CommandObserverFunction.cpp)
+target_link_libraries(CommandObserverFunction PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS CommandObserverFunction MODULES ${VTK_LIBRARIES})
+
+
+add_executable(AppendFilter src/AppendFilter.cpp)
+target_link_libraries(AppendFilter PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS AppendFilter MODULES ${VTK_LIBRARIES})
+
 
 # # vtk_module_autoinit is needed
 # vtk_module_autoinit(

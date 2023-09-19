@@ -28,7 +28,8 @@ void ActorManipulationInteractorStyle::OnLeftButtonDown() {
 
   vtkNew<vtkMatrix4x4> m;
   InteractionProp->GetMatrix(m);
-  // qCDebug(CAMERA_INTERACTOR_STYLE) << "Matrix: " << endl << *m;
+  // qCDebug(ACTOR_INTERACTOR_STYLE) << "Matrix: " << endl << *m;
+  std::cout << "Matrix: " << endl << *m << std::endl;
 
   // Forward events
   vtkInteractorStyleTrackballActor::OnLeftButtonDown();

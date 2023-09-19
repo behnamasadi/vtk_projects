@@ -1,11 +1,22 @@
-## Callback
+# Adding Observer
 
 There are times when VTK will know that something has happened and it will send out a command notifying all observers of the event. To catch these commands:
+
+## Callback Function
 
 First Create a function with this signature:
 
 ```cpp
-void func(vtkObject* caller, unsigned long eid, void* clientdata, void *calldata)
+void func(vtkObject *caller, long unsigned int eventId, void *clientData,
+          void *callData) {
+
+  std::cout << "Click callback" << std::endl;
+  std::cout << "Event: " << vtkCommand::GetStringFromEventId(eventId)
+            << std::endl;
+
+  // Get the interactor like this:
+  auto *iren = static_cast<vtkRenderWindowInteractor *>(caller);
+}
 ```
 
 Now you have two options,
@@ -13,11 +24,23 @@ Now you have two options,
 1. Create a `vtkCallbackCommand` and set its callback to the function you have just created:
 
 ```cpp
-vtkSmartPointer<vtkCallbackCommand> keypressCallback =  vtkSmartPointer<vtkCallbackCommand>::New();
-keypressCallback->SetCallback ( func );
+vtkNew<vtkCallbackCommand> keypressCallback;
+keypressCallback->SetCallback(func);
 ```
 
-2. Alternatively, you can create a class that inherit from `vtkCommand`  and reimplement  `virtual void Execute(vtkObject *caller, unsigned long, void*)`
+now you can add it to your `vtkRenderWindowInteractor`:
+
+```cpp
+  i_Ren->AddObserver(vtkCommand::LeftButtonPressEvent, keypressCallback);
+  i_Ren->AddObserver(vtkCommand::RightButtonPressEvent, keypressCallback);
+  i_Ren->AddObserver(vtkCommand::KeyPressEvent, keypressCallback);
+```
+
+[code](../src/CommandObserverFunction.cpp)
+
+## Callback Class
+
+Alternatively, you can create a class that inherit from `vtkCommand` and re-implement `virtual void Execute(vtkObject *caller, unsigned long, void*)`
 
 ```cpp
 struct MyCallback : public vtkCommand {
@@ -47,7 +70,7 @@ clientdata provides a way to provide access to data that will be necessary in th
 
 calldata is data that may be sent with the callback. For example, when the ProgressEvent event is sent, it sends the progress value as calldata.
 
-## Observer
+## Observer Design Pattern
 
 VTK uses a command/observer design pattern. That is, observers watch for particular events that any vtkObject (or subclass) may invoke on itself. For example, the vtkRenderer invokes a "StartEvent" as it begins to render.
 
@@ -72,8 +95,6 @@ renderer->AddObserver(vtkCommand::StartEvent, mycallback);
 
 
 ```
-
-[code](../vtk/command_observer_for_events.cpp)
 
 Refs: [1](https://examples.vtk.org/site/Cxx/Tutorial/Tutorial_Step2)
 
@@ -100,10 +121,10 @@ void PickCallbackFunction(vtkObject* caller,
 
 and in your code:
 
-```
+```cpp
 vtkNew<vtkCallbackCommand> pickCallback;
 pickCallback->SetCallback(PickCallbackFunction);
 areaPicker->AddObserver(vtkCommand::EndPickEvent, pickCallback);
 ```
 
-[code](../vtk/AreaPicking.cxx)
+[code](../src/CommandObserverClass.cpp)
