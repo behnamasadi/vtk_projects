@@ -15,10 +15,7 @@ struct MyCallback : public vtkCommand {
 };
 ```
 
-
- 
- 
-```cpp 
+```cpp
 vtkNew<vtkRenderWindowInteractor> iren;
 iren->SetRenderWindow(renWin);
 
@@ -33,11 +30,6 @@ boxWidget->AddObserver(vtkCommand::InteractionEvent, mycallback);
 boxWidget->On();
 ```
 
-
-
- 
-
-[code](../vtk/boxWidget.cpp)
-
+[code](../src/boxWidget.cpp)
 
 Refs: [1](https://examples.vtk.org/site/Cxx/Tutorial/Tutorial_Step6/)

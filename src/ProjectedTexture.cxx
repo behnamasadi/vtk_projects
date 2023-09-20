@@ -29,14 +29,14 @@
 #include <vtksys/SystemTools.hxx>
 
 namespace {
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
 }
 
-int main(int argc, char* argv[])
-{
-  if (argc < 3)
-  {
-    std::cout << "Usage: " << argv[0] << " polydata texture" << std::endl;
+int main(int argc, char *argv[]) {
+  if (argc < 3) {
+    std::cout << "Usage: " << argv[0]
+              << " polydata texture, i.e. fran_cut.vtk fran_cut.png"
+              << std::endl;
     return EXIT_FAILURE;
   }
   vtkSmartPointer<vtkPolyData> polyData = ReadPolyData(argc > 1 ? argv[1] : "");
@@ -142,55 +142,41 @@ int main(int argc, char* argv[])
 }
 
 namespace {
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
-{
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName) {
   vtkSmartPointer<vtkPolyData> polyData;
   std::string extension =
       vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
-  if (extension == ".ply")
-  {
+  if (extension == ".ply") {
     vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".vtp")
-  {
+  } else if (extension == ".vtp") {
     vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".obj")
-  {
+  } else if (extension == ".obj") {
     vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".stl")
-  {
+  } else if (extension == ".stl") {
     vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".vtk")
-  {
+  } else if (extension == ".vtk") {
     vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".g")
-  {
+  } else if (extension == ".g") {
     vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else
-  {
+  } else {
     vtkNew<vtkSphereSource> source;
     source->Update();
     polyData = source->GetOutput();

@@ -79,6 +79,42 @@ void InteractorStyleSwitch::SetCurrentStyle() {
 }
 ```
 
-[code](../src/InteractorStyleSwitch.cpp)
+Now to use it:
+
+```cpp
+vtkNew<vtkRenderer> renderer;
+vtkNew<vtkRenderWindow> winRen;
+vtkNew<vtkRenderWindowInteractor> iRen;
+
+vtkNew<InteractorStyleSwitch> style;
+
+style->SetCurrentRenderer(renderer);
+
+renderer->AddActor(actor);
+winRen->AddRenderer(renderer);
+iRen->SetInteractorStyle(style);
+
+winRen->SetInteractor(iRen);
+iRen->Start();
+```
+
+
+code [1](../src/InteractorStyleSwitch.cpp), [2](../src/InteractorStyleSwitchExample.cpp)
+
+
+If you want to use it in QML applications:
+
+```cpp
+
+```
+
+
+
+
+
+code: [1](../src/QtQuickCone.cpp)
+
+
+
 
 source code of vtkInteractorStyleSwitch: [1](https://github.com/Kitware/VTK/blob/master/Interaction/Style/vtkInteractorStyleSwitch.h), [2](https://github.com/Kitware/VTK/blob/master/Interaction/Style/vtkInteractorStyleSwitch.cxx)

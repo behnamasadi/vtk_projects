@@ -26,6 +26,8 @@ int main() {
   coneActor->GetProperty()->SetDiffuseColor(
       namedColor->GetColor3d("Red").GetData());
 
+  coneActor->GetProperty()->SetOpacity(0.2);
+
   coneActor->GetProperty()->SetSpecular(0.3);
   coneActor->GetProperty()->SetSpecularPower(30);
 

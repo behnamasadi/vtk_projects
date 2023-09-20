@@ -1,5 +1,3 @@
-
-
 ```cpp
 vtkNew<vtkTransform> transform;
 transform->Translate(1.0, 0.0, 0.0);
@@ -20,5 +18,4 @@ axes->SetUserTransform(transform);
 renderer->AddActor(axes);
 ```
 
-[code](../vtk/Axes.cxx)
-
+[code](../src/Axes.cxx)

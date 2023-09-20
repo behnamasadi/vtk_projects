@@ -94,18 +94,9 @@ add_executable(BillboardTextActor3D src/BillboardTextActor3D.cxx)
 target_link_libraries(BillboardTextActor3D PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS BillboardTextActor3D MODULES ${VTK_LIBRARIES})
 
-# Prevent a "command line is too long" failure in Windows.
 add_executable(Camera MACOSX_BUNDLE src/Camera.cxx)
 target_link_libraries(Camera PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS Camera MODULES ${VTK_LIBRARIES})
-
-add_executable(CameraModel2 src/CameraModel2.cxx)
-target_link_libraries(CameraModel2 PRIVATE ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS CameraModel2 MODULES ${VTK_LIBRARIES})
-
-add_executable(CameraModel1 src/CameraModel1.cxx)
-target_link_libraries(CameraModel1 PRIVATE ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS CameraModel1 MODULES ${VTK_LIBRARIES})
 
 add_executable(ShareCamera src/ShareCamera.cxx)
 target_link_libraries(ShareCamera PRIVATE ${VTK_LIBRARIES})
@@ -123,9 +114,9 @@ add_executable(InteractorStyleTerrain src/InteractorStyleTerrain.cxx)
 target_link_libraries(InteractorStyleTerrain PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS InteractorStyleTerrain MODULES ${VTK_LIBRARIES})
 
-add_executable(CameraOrientationWidget src/CameraOrientationWidget.cxx)
-target_link_libraries(CameraOrientationWidget PRIVATE ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS CameraOrientationWidget MODULES ${VTK_LIBRARIES})
+add_executable(CameraOrientationWidgetGizmo src/CameraOrientationWidgetGizmo.cxx)
+target_link_libraries(CameraOrientationWidgetGizmo PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS CameraOrientationWidgetGizmo MODULES ${VTK_LIBRARIES})
 
 add_executable(AffineWidget src/AffineWidget.cxx)
 target_link_libraries(AffineWidget PRIVATE ${VTK_LIBRARIES})
@@ -250,7 +241,6 @@ add_executable(AlignTwoPolyDatas src/AlignTwoPolyDatas.cxx)
 target_link_libraries(AlignTwoPolyDatas PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS AlignTwoPolyDatas MODULES ${VTK_LIBRARIES})
 
-# frustum
 add_executable(CameraActor src/CameraActor.cxx)
 target_link_libraries(CameraActor PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS CameraActor MODULES ${VTK_LIBRARIES})
@@ -275,22 +265,9 @@ add_executable(MultipleViewports src/MultipleViewports.cxx)
 target_link_libraries(MultipleViewports PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS MultipleViewports MODULES ${VTK_LIBRARIES})
 
-add_executable(Opacity src/Opacity.cxx)
-target_link_libraries(Opacity PRIVATE ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS Opacity MODULES ${VTK_LIBRARIES})
-
-add_executable(SimpleRayCast src/SimpleRayCast.cxx)
-target_link_libraries(SimpleRayCast PRIVATE ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS SimpleRayCast MODULES ${VTK_LIBRARIES})
-
 add_executable(SmartVolumeMapper src/SmartVolumeMapper.cxx)
 target_link_libraries(SmartVolumeMapper PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS SmartVolumeMapper MODULES ${VTK_LIBRARIES})
-
-# ./TexturePlane marker.png
-add_executable(TexturePlane src/TexturePlane.cxx)
-target_link_libraries(TexturePlane PRIVATE ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS TexturePlane MODULES ${VTK_LIBRARIES})
 
 # ./ProjectedTexture fran_cut.vtk fran_cut.png
 add_executable(ProjectedTexture src/ProjectedTexture.cxx)
@@ -383,41 +360,28 @@ add_executable(SeedWidgetWithCustomCallback src/SeedWidgetWithCustomCallback.cxx
 target_link_libraries(SeedWidgetWithCustomCallback PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS SeedWidgetWithCustomCallback MODULES ${VTK_LIBRARIES})
 
-add_executable(custom_camera src/custom_camera.cpp)
-target_link_libraries(custom_camera PRIVATE ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS custom_camera MODULES ${VTK_LIBRARIES})
+add_executable(ActorProperties src/ActorProperties.cpp)
+target_link_libraries(ActorProperties PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS ActorProperties MODULES ${VTK_LIBRARIES})
 
-add_executable(actor_properties src/actor_properties.cpp)
-target_link_libraries(actor_properties PRIVATE ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS actor_properties MODULES ${VTK_LIBRARIES})
 
-# add_subdirectory(src/QtQuickProperty)
-# add_subdirectory(src/QtQuickBoxWidget)
-# add_subdirectory(src/QtQuickChartsOn3DScene)
+add_executable(PlaneSource src/PlaneSource.cpp)
+target_link_libraries(PlaneSource PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS PlaneSource MODULES ${VTK_LIBRARIES})
 
-# add_subdirectory(src/QtQuickCone)
 
-# find_package(VTK
-# COMPONENTS
-# CommonCore
-# FiltersSources
-# GUISupportQtQuick
-# InteractionStyle
-# CommonColor)
 add_executable(QtQuickCone src/QtQuickCone.cpp src/MyVtkItem.hpp qml.qrc src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
 target_link_libraries(QtQuickCone PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 
-# add_executable(main src/main.cpp src/VTKBackend.hpp src/VTKBackend.cpp qml.qrc)
-# target_link_libraries(main PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
+ add_executable(main src/main.cpp src/VTKBackend.hpp src/VTKBackend.cpp qml.qrc)
+ target_link_libraries(main PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS QtQuickCone MODULES ${VTK_LIBRARIES})
 
 add_executable(dynamic_split_view qml.qrc src/dynamic_split_view.cpp)
 target_link_libraries(dynamic_split_view PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS dynamic_split_view MODULES ${VTK_LIBRARIES})
 
-add_executable(the_basic_setup src/the_basic_setup.cpp)
-target_link_libraries(the_basic_setup PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS the_basic_setup MODULES ${VTK_LIBRARIES})
+
 
 add_executable(CommandObserverClass src/CommandObserverClass.cpp)
 target_link_libraries(CommandObserverClass PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
@@ -431,10 +395,10 @@ add_executable(setting_interaction_style src/setting_interaction_style.cpp)
 target_link_libraries(setting_interaction_style PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS setting_interaction_style MODULES ${VTK_LIBRARIES})
 
-add_executable(interactor_style_switch_example src/interactor_style_switch_example.cpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
-target_link_libraries(interactor_style_switch_example PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+add_executable(InteractorStyleSwitchExample src/InteractorStyleSwitchExample.cpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
+target_link_libraries(InteractorStyleSwitchExample PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS InteractorStyleSwitchExample MODULES ${VTK_LIBRARIES})
 
-# vtk_module_autoinit(TARGETS interactor_style_switch_example MODULES ${VTK_LIBRARIES})
 add_executable(boxWidget src/boxWidget.cpp)
 target_link_libraries(boxWidget PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS boxWidget MODULES ${VTK_LIBRARIES})
@@ -466,10 +430,6 @@ add_executable(OutlineFilter src/OutlineFilter.cpp)
 target_link_libraries(OutlineFilter PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS OutlineFilter MODULES ${VTK_LIBRARIES})
 
-add_executable(camera_frustum src/camera_frustum.cpp)
-target_link_libraries(camera_frustum PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS camera_frustum MODULES ${VTK_LIBRARIES})
-
 add_executable(Frustum src/Frustum.cxx)
 target_link_libraries(Frustum PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS Frustum MODULES ${VTK_LIBRARIES})
@@ -493,21 +453,11 @@ add_executable(AppendFilter src/AppendFilter.cpp)
 target_link_libraries(AppendFilter PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS AppendFilter MODULES ${VTK_LIBRARIES})
 
+add_executable(Assembly src/Assembly.cpp)
+target_link_libraries(Assembly PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS Assembly MODULES ${VTK_LIBRARIES})
 
-# # vtk_module_autoinit is needed
-# vtk_module_autoinit(
-# TARGETS VisualDebugging
-# MODULES ${VTK_LIBRARIES}
-# )
 
-# RestoreSceneFromFile
-# https://kitware.github.io-examples/site/Cxx/Snippets/RestoreSceneFromFile/
-
-# CameraPosition
-# https://kitware.github.io-examples/site/Cxx/Snippets/CameraPosition/
-
-# vtkInteractorStyle
-# https:/.org/doc/nightly/html/classvtkInteractorStyle.html
-
-# vtkRenderWindowInteractor
-# https:/.org/doc/nightly/html/classvtkRenderWindowInteractor.html
+add_executable(LegendScaleActor src/LegendScaleActor.cpp)
+target_link_libraries(LegendScaleActor PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS LegendScaleActor MODULES ${VTK_LIBRARIES})

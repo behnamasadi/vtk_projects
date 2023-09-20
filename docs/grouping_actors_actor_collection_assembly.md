@@ -86,3 +86,18 @@ in your cpp code:
 ```
 
 [code](../src/SyncTransformations.cpp)
+
+
+# Assembly
+
+To group multiple VTK widgets and actors such that moving one of them results in all of them moving together, you can use the vtkAssembly class. The vtkAssembly class is a composite data structure that allows you to group multiple actors together and treat them as a single entity.
+
+```cpp
+vtkNew<vtkAssembly> assembly;
+assembly->AddPart(actor1);
+assembly->AddPart(actor2);
+assembly->RotateZ(45);
+renderer->AddActor(assembly);
+```
+
+[code](../src/Assembly.cpp)

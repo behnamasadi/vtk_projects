@@ -18,6 +18,7 @@ void PickCallbackFunction(vtkObject* caller,
   }
 }
 ```
+
 In your main
 
 ```cpp
@@ -27,13 +28,14 @@ vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
 renderWindowInteractor->SetRenderWindow(renderWindow);
 renderWindowInteractor->SetPicker(areaPicker);
 ```
-For `vtkInteractorStyleRubberBandPick` - use 'r' and left-mouse to draw a  selection box used to pick
+
+For `vtkInteractorStyleRubberBandPick` - use 'r' and left-mouse to draw a selection box used to pick
 
 ```cpp
 vtkNew<vtkInteractorStyleRubberBandPick> style;
 ```
 
-For `vtkInteractorStyleTrackballCamera` - use 'p' to pick at the current mouse position 
+For `vtkInteractorStyleTrackballCamera` - use 'p' to pick at the current mouse position
 
 ```cpp
 vtkNew<vtkInteractorStyleTrackballCamera> style;
@@ -48,6 +50,4 @@ pickCallback->SetCallback(PickCallbackFunction);
 areaPicker->AddObserver(vtkCommand::EndPickEvent, pickCallback);
 ```
 
-[code](../vtk/AreaPicking.cxx)
-
-
+[code](../src/AreaPicking.cxx)

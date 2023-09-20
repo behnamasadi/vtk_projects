@@ -6,8 +6,9 @@ coneActor->GetProperty()->SetRepresentationToWireframe();
 coneActor->GetProperty()->SetDiffuseColor(namedColor->GetColor3d("Red").GetData());
 coneActor->GetProperty()->SetSpecular(0.3);
 coneActor->GetProperty()->SetSpecularPower(30);
+coneActor->GetProperty()->SetOpacity(0.2);
 ```
 
-[code](../vtk/actor_properties.cpp)
+[code](../src/ActorProperties.cpp)
 
 Refs: [1](https://vtk.org/doc/nightly/html/classvtkProperty.html)

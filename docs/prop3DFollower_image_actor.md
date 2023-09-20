@@ -1,6 +1,3 @@
-
-
-
 ```cpp
 vtkNew<vtkFollower> follower;
 
@@ -20,5 +17,4 @@ vtkNew<vtkProp3DFollower> p3dFollower;
 p3dFollower->SetProp3D(ia);
 ```
 
-[code](../vtk/vtkProp3DFollower.cxx)
-
+[code](../src/vtkProp3DFollower.cxx)

@@ -1,5 +1,4 @@
-## Prop (Actor) Picker 
-
+## Prop (Actor) Picker
 
 ```cpp
 class MouseInteractorHighLightActor : public vtkInteractorStyleTrackballCamera
@@ -14,7 +13,7 @@ public:
     vtkNew<vtkPropPicker> picker;
     picker->Pick(clickPos[0], clickPos[1], 0, this->GetDefaultRenderer());
     this->LastPickedActor = picker->GetActor();
-    
+
     // Forward events
     vtkInteractorStyleTrackballCamera::OnLeftButtonDown();
   }
@@ -26,6 +25,7 @@ private:
 vtkStandardNewMacro(MouseInteractorHighLightActor);
 }
 ```
+
 In your main:
 
 ```cpp
@@ -35,4 +35,4 @@ style->SetDefaultRenderer(renderer);
 renderWindowInteractor->SetInteractorStyle(style);
 ```
 
-[code](../vtk/HighlightPickedActor.cxx)
+[code](../src/HighlightPickedActor.cxx)

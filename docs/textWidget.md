@@ -1,4 +1,3 @@
-
 ```cpp
 
 vtkNew<vtkRenderWindowInteractor> interactor;
@@ -21,4 +20,4 @@ textWidget->SelectableOff();
 textWidget->On();
 ```
 
-[code](../vtk/TextWidget.cxx)
+[code](../src/TextWidget.cxx)

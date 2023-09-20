@@ -177,9 +177,9 @@ int main() {
   renderWindow->AddRenderer(renderer);
 
   // Interactor Style
-  // vtkNew<KeyPressInteractorStyle> style;
   vtkNew<InteractorStyleSwitch> style;
   style->SetCurrentRenderer(renderer);
+  // style->
   // style->SetActor(coneActor);
 
   // Window Interactor

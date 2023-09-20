@@ -21,7 +21,7 @@ angleWidget->On();
 iren->Start();
 ```
 
-code: [AngleWidget](../vtk/AngleWidget.cxx)
+code: [AngleWidget](../src/AngleWidget.cxx)
 
 Changing the Representation of AngleWidget
 
@@ -31,6 +31,7 @@ rep->ArcVisibilityOff();
 angleWidget->CreateDefaultRepresentation();
 angleWidget->SetRepresentation(rep);
 ```
+
 and you can set it:
 
 ```
@@ -120,7 +121,4 @@ void func(vtkObject *caller, unsigned long eid, void *clientdata,
 }
 ```
 
-
-[AngleWidget2D](../vtk/AngleWidget2D.cxx)
-
-
+[AngleWidget2D](../src/AngleWidget2D.cxx)

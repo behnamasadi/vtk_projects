@@ -5,5 +5,4 @@ vtkNew<vtkActor> coneActor1;
 coneActor1->PickableOff();
 ```
 
-[code](../vtk/PickableOff.cxx)
-
+[code](../src/PickableOff.cxx)

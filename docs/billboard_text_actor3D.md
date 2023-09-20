@@ -18,6 +18,7 @@ actorCallback->SetCallback(ActorCallback);
 actorCallback->SetClientData(textActor);
 actor->AddObserver(vtkCommand::ModifiedEvent, actorCallback);
 ```
+
 definition of callback:
 
 ```cpp
@@ -34,5 +35,4 @@ void ActorCallback(vtkObject *caller, long unsigned int vtkNotUsed(eventId),
 }
 ```
 
-[code](../vtk/BillboardTextActor3D.cxx)
-
+[code](../src/BillboardTextActor3D.cxx)

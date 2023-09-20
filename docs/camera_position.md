@@ -1,5 +1,13 @@
 ## Camera Position
 
+In your main:
+
+```cpp
+vtkNew<vtkCallbackCommand> cameraCallbackCommand;
+cameraCallbackCommand->SetCallback(CameraCallback);
+renderer->GetActiveCamera()->AddObserver(vtkCommand::ModifiedEvent, cameraCallbackCommand);
+```
+
 Call back function:
 ```cpp
 void CameraCallback(vtkObject *caller, long unsigned int vtkNotUsed(eventId),
@@ -27,13 +35,6 @@ void CameraCallback(vtkObject *caller, long unsigned int vtkNotUsed(eventId),
 }
 ```
 
-In your main:
-
-```cpp
-vtkNew<vtkCallbackCommand> cameraCallbackCommand;
-cameraCallbackCommand->SetCallback(CameraCallback);
-renderer->GetActiveCamera()->AddObserver(vtkCommand::ModifiedEvent, cameraCallbackCommand);
-```
 
 Refs: [1](https://examples.vtk.org/site/Cxx/Snippets/CameraPosition/)  
-[code](../vtk/CameraPosition.cpp)
+[code](../src/CameraPosition.cpp)

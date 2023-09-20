@@ -16,7 +16,7 @@ In your main:
 
   vtkNew<vtkActor> actor;
   actor->SetMapper(mapper);
-  
+
   qquickvtkItem->renderer()->AddActor(actor);
   qquickvtkItem->renderer()->ResetCamera();
   qquickvtkItem->renderer()->SetBackground(0.5, 0.5, 0.7);
@@ -34,7 +34,7 @@ import VTK 9.2
     width: 600
     height: 600
   }
- 
+
   // add one or more vtk render items
   VTKRenderItem {
     objectName: "View"
@@ -47,7 +47,6 @@ import VTK 9.2
   }
 ```
 
-[code](../vtk/qml_pcl.cpp)
+[code](../src/qml_pcl.cpp)
 
 Refs: [1](https://vtk.org/doc/nightly/html/classQQuickVTKRenderItem.html)
-  

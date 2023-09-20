@@ -16,7 +16,7 @@ public:
     // Forward events
     vtkInteractorStyleTrackballActor::OnLeftButtonDown();
 
-    
+
   }
 
   virtual void OnLeftButtonUp() {
@@ -37,7 +37,7 @@ private:
 };
 ```
 
-or you could 
+or you could
 
 ```cpp
 virtual void OnLeftButtonDown() override
@@ -49,8 +49,9 @@ virtual void OnLeftButtonDown() override
     vtkNew<vtkPropPicker> picker;
     picker->Pick(clickPos[0], clickPos[1], 0, this->GetDefaultRenderer());
     this->LastPickedActor = picker->GetActor();
-}    
+}
 ```
+
 also:
 
 ```cpp
@@ -70,10 +71,6 @@ vtkNew<MyInteractorStyle> style;
 style->SetActor(actor);
 
 renderWindowInteractor->SetInteractorStyle(style);
-```  
+```
 
- 
-    
-
-[code](../vtk/RotateActor.cxx)
-
+[code](../src/RotateActor.cxx)

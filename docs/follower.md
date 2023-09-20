@@ -1,4 +1,3 @@
-
 `vtkFollower` remains facing the camera
 
 ```cpp
@@ -18,6 +17,4 @@ renderer->AddActor(follower);
 follower->SetCamera(renderer->GetActiveCamera());
 ```
 
-[code](../vtk/Follower.cxx)
-
-
+[code](../src/Follower.cxx)
