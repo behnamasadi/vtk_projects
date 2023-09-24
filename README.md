@@ -62,7 +62,7 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 
 ## Axes
 
-[AxesActor](docs/axesActor.md)
+[AxesActor](docs/axesActor.md)  
 
 ## Point Picker
 
@@ -75,7 +75,7 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 
 [Follower](docs/follower.md)  
 [Prop3DFollower, Image Actor](docs/prop3DFollower_image_actor.md)  
-[BillboardTextActor3D](docs/billboard_text_actor3D.md)
+[BillboardTextActor3D](docs/billboard_text_actor3D.md)  
 
 ## Window Interaction
 
@@ -84,16 +84,16 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [vtkInteractorStyleTrackballActor](docs/setting_interaction_style.md#vtkInteractorStyleTrackballActor)  
 [InteractorStyleTrackballActor Rotate/ Transform Actor](docs/rotate_actor.md)  
 [Key Press Interactor](docs/key_press_interactor.md)  
-[InteractorStyleSwitch](docs/interactor_style_switch.md)
+[InteractorStyleSwitch](docs/interactor_style_switch.md)  
 
 ## Camera
 
 [Modify Renderer Camera, SetPosition, SetFocalPoint, SetViewUp, Azimuth, Elevation, SetViewAngle](docs/modify_renderer_camera.md)  
-[Renderer Camera Position Call back](docs/camera_position.md)
-[Camera Frustum](docs/frustum.md)
+[Renderer Camera Position Call back](docs/camera_position.md)  
+[Camera Frustum](docs/frustum.md)  
 ## PCL
 
-[PCL Pointcloud](docs/pcl_pointcloud.md)
+[PCL Pointcloud](docs/pcl_pointcloud.md)  
 
 ## QML, QT
 

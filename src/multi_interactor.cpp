@@ -179,13 +179,13 @@ int main() {
   // Interactor Style
   vtkNew<InteractorStyleSwitch> style;
   style->SetCurrentRenderer(renderer);
-  // style->
-  // style->SetActor(coneActor);
 
   // Window Interactor
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
   renderWindowInteractor->SetInteractorStyle(style);
+
+  style->SetCurrentStyleToTrackballActor();
 
   // Camera
   vtkNew<vtkCameraOrientationWidget> camOrientManipulator;

@@ -418,9 +418,15 @@ add_executable(TransformActorCollection src/TransformActorCollection.cxx)
 target_link_libraries(TransformActorCollection PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS TransformActorCollection MODULES ${VTK_LIBRARIES})
 
-add_executable(sandbox src/sandbox.cpp)
+add_executable(sandbox src/sandbox.cpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp )
 target_link_libraries(sandbox PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS sandbox MODULES ${VTK_LIBRARIES})
+
+
+ 
+
+
+
 
 add_executable(BoundingBox src/BoundingBox.cpp)
 target_link_libraries(BoundingBox PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})

@@ -62,6 +62,10 @@ Refs: [1](https://vtk.org/Wiki/VTK/Tutorials/Callbacks), [2](https://vtk.org/doc
 
 The `vtkObject` "caller" is a pointer to the observer and it can be cast to the type of observer. for instance if you add `renderer->AddObserver` then you can `auto renderer = reinterpret_cast<vtkRenderer *>(caller);`
 
+### eventId
+
+Full list of EventIds: [here](https://vtk.org/doc/nightly/html/classvtkCommand.html#a59a8690330ebcb1af6b66b0f3121f8fe)
+
 ### clientdata
 
 clientdata provides a way to provide access to data that will be necessary in the callback function, you can set anything

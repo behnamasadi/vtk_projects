@@ -396,6 +396,7 @@ void InteractorStyleSwitch::SetCurrentStyle() {
         m_currentStyle->SetInteractor(nullptr);
       }
       m_currentStyle = m_trackballCameraStyle;
+      m_txtModeIndicator->SetInput("Camera Mode");
     }
 
   } else if (m_interactionMode == INTERACTION_MODE::ACTOR) {
@@ -404,6 +405,7 @@ void InteractorStyleSwitch::SetCurrentStyle() {
         m_currentStyle->SetInteractor(nullptr);
       }
       m_currentStyle = m_trackballActorStyle;
+      m_txtModeIndicator->SetInput("Handling Mode");
     }
   }
   if (m_currentStyle) {
