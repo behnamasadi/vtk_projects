@@ -467,3 +467,7 @@ vtk_module_autoinit(TARGETS Assembly MODULES ${VTK_LIBRARIES})
 add_executable(LegendScaleActor src/LegendScaleActor.cpp)
 target_link_libraries(LegendScaleActor PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS LegendScaleActor MODULES ${VTK_LIBRARIES})
+
+add_executable(BackfaceCulling src/BackfaceCulling.cxx)
+target_link_libraries(BackfaceCulling PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS BackfaceCulling MODULES ${VTK_LIBRARIES})
