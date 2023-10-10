@@ -274,12 +274,16 @@
 #include <vtkActor.h>
 #include <vtkCubeSource.h>
 #include <vtkLegendBoxActor.h>
+#include <vtkLookupTable.h>
+#include <vtkNew.h>
 #include <vtkPlaneSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkScalarBarActor.h>
+#include <vtkSphereSource.h>
 
 double FindClosest(const std::vector<double> &values, double target) {
   double closest = values[0];
@@ -298,9 +302,9 @@ int main(int, char *[]) {
   // Create a sample actor (a cube in this case)
   vtkSmartPointer<vtkCubeSource> cube = vtkSmartPointer<vtkCubeSource>::New();
 
-  cube->SetXLength(5300.3);
-  cube->SetYLength(237.26);
-  cube->SetZLength(125.23);
+  cube->SetXLength(30.3);
+  cube->SetYLength(20.26);
+  cube->SetZLength(40.23);
 
   vtkSmartPointer<vtkPolyDataMapper> cubeMapper =
       vtkSmartPointer<vtkPolyDataMapper>::New();
@@ -316,7 +320,8 @@ int main(int, char *[]) {
   double maxSize = std::max(width, height);
 
   // Define the desired sizes
-  std::vector<double> desiredSizes = {1, 2, 5, 10, 20, 50, 100, 200, 500, 1000};
+  std::vector<double> desiredSizes = {1,   2,   5,    10,   20,   50,   100,
+                                      200, 500, 1000, 2000, 5000, 10000};
   double idealSize = maxSize * 2 / 20;
   double squareSize = FindClosest(desiredSizes, idealSize);
 
@@ -371,8 +376,56 @@ int main(int, char *[]) {
   // Add the actors and legend to the scene
   renderer->AddActor(cubeActor);
   renderer->AddActor(planeActor);
-  renderer->AddActor(legend);
+  // renderer->AddActor(legend);
   renderer->SetBackground(.1, .2, .3); // Background color
+
+  const int numStripes = 5;
+  double maxValue = squareSize; // Set this to your desired value
+  // Create a lookup table with alternating black and white stripes
+  vtkNew<vtkLookupTable> lut;
+  lut->SetNumberOfTableValues(numStripes);
+  for (int i = 0; i < numStripes; ++i) {
+    if (i % 2 == 0) {
+      lut->SetTableValue(i, 1.0, 1.0, 1.0, 1.0); // white
+    } else {
+      lut->SetTableValue(i, 0.0, 0.0, 0.0, 1.0); // black
+    }
+  }
+  lut->SetRange(0, maxValue);
+
+  lut->Build();
+  planeMapper->SetScalarRange(0, maxValue);
+
+  planeMapper->SetLookupTable(lut);
+
+  // Create a scalar bar
+  vtkNew<vtkScalarBarActor> scalarBar;
+  scalarBar->SetLookupTable(planeMapper->GetLookupTable());
+  scalarBar->SetTitle("unit: ");
+  scalarBar->SetNumberOfLabels(numStripes);
+  scalarBar->SetOrientationToHorizontal();
+
+  /*
+  For positioning the scalar bar in the top-right corner and making it smaller,
+  you can adjust these values accordingly:
+  GetPositionCoordinate(): This sets the position of the scalar bar. The
+  position is given in normalized display coordinates, which means values
+  between 0.0 and 1.0. A value of (1.0, 1.0) would be the top-right corner,
+  while (0.0, 0.0) is the bottom-left.
+
+
+  */
+  scalarBar->GetPositionCoordinate()->SetCoordinateSystemToNormalizedDisplay();
+  scalarBar->GetPositionCoordinate()->SetValue(0.8, 0.0); // Adjust as needed
+  scalarBar->SetWidth(0.20);  // Adjust width as needed
+  scalarBar->SetHeight(0.10); // Adjust height as needed
+
+  // Position the scalar bar at the bottom of the window
+  // scalarBar->GetPositionCoordinate()->SetCoordinateSystemToNormalizedDisplay();
+  // scalarBar->GetPositionCoordinate()->SetValue(0.1, 0.05);
+  // scalarBar->SetWidth(0.8);
+  // scalarBar->SetHeight(0.1);
+  renderer->AddActor2D(scalarBar);
 
   // Reset the camera to show the full scene
   renderer->ResetCamera();
