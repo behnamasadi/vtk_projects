@@ -464,6 +464,25 @@ target_link_libraries(Assembly PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS Assembly MODULES ${VTK_LIBRARIES})
 
 
-add_executable(LegendScaleActor src/LegendScaleActor.cpp)
+add_executable(LegendScale src/LegendScale.cpp)
+target_link_libraries(LegendScale PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS LegendScale MODULES ${VTK_LIBRARIES})
+
+
+add_executable(LegendScaleActor src/LegendScaleActor.cxx)
 target_link_libraries(LegendScaleActor PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS LegendScaleActor MODULES ${VTK_LIBRARIES})
+
+
+
+
+
+# add_executable(DisplayTrackball src/DisplayTrackball.cpp)
+# target_link_libraries(DisplayTrackball PRIVATE  ${VTK_LIBRARIES})
+# vtk_module_autoinit(TARGETS DisplayTrackball MODULES ${VTK_LIBRARIES})
+
+
+
+# add_executable(vtk_basic src/vtk_basic.cpp src/vtk_basic.hpp src/vtk_basic_main.cpp)
+# target_link_libraries(vtk_basic PRIVATE ${VTK_LIBRARIES})
+# vtk_module_autoinit(TARGETS vtk_basic MODULES ${VTK_LIBRARIES})

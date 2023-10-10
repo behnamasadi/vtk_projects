@@ -48,6 +48,9 @@ public:
     dispatch_async([this](vtkRenderWindow *renderWindow, vtkUserData userData) {
       Data *vtk = Data::SafeDownCast(userData);
 
+      for (int i = 0; i < 20; i++)
+        vtk->renderer->Render();
+
       double s;
       s = 1.1;
       vtk->actor->SetScale(vtk->actor->GetScale()[0] * s);

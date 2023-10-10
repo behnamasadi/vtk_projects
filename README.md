@@ -91,6 +91,9 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [Modify Renderer Camera, SetPosition, SetFocalPoint, SetViewUp, Azimuth, Elevation, SetViewAngle](docs/modify_renderer_camera.md)  
 [Renderer Camera Position Call back](docs/camera_position.md)  
 [Camera Frustum](docs/frustum.md)  
+[Definition of Pan, Tilt and Spin](docs/images/Definition-of-pan-tilt-and-spin.png)  
+
+
 ## PCL
 
 [PCL Pointcloud](docs/pcl_pointcloud.md)  

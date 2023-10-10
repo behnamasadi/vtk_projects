@@ -1,6 +1,8 @@
 #include "InteractorStyleSwitch.hpp"
 #include <QQuickVTKItem.h>
 #include <vtkActor.h>
+#include <vtkAppendPolyData.h>
+#include <vtkArcSource.h>
 #include <vtkAxesActor.h>
 #include <vtkBillboardTextActor3D.h>
 #include <vtkCallbackCommand.h>
@@ -18,6 +20,8 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSphereSource.h>
+#include <vtkTransform.h>
+#include <vtkTransformPolyDataFilter.h>
 
 // int main(int argc, char **argv) {
 
@@ -110,7 +114,62 @@ int main() {
 
   sphereActor->SetMapper(sphereMapper);
 
+  ////////////////////////// adding  trackball //////////////////////////
+
+  // Create arcs for visual representation of the trackball
+  vtkSmartPointer<vtkArcSource> arcSource =
+      vtkSmartPointer<vtkArcSource>::New();
+  arcSource->SetPoint1(0, 1, 0);
+  arcSource->SetPoint2(0, -1, 0);
+  arcSource->SetCenter(0, 0, 0);
+  arcSource->Update();
+
+  // Create the X, Y and Z arcs using transformation
+  vtkSmartPointer<vtkTransform> transformX =
+      vtkSmartPointer<vtkTransform>::New();
+  transformX->RotateY(90);
+
+  vtkSmartPointer<vtkTransform> transformY =
+      vtkSmartPointer<vtkTransform>::New();
+  // No need for rotation on Y as it's the default orientation of arc
+
+  vtkSmartPointer<vtkTransform> transformZ =
+      vtkSmartPointer<vtkTransform>::New();
+  transformZ->RotateX(90);
+
+  // Apply the transformations
+  vtkSmartPointer<vtkTransformPolyDataFilter> transformFilterX =
+      vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  transformFilterX->SetTransform(transformX);
+  transformFilterX->SetInputConnection(arcSource->GetOutputPort());
+
+  vtkSmartPointer<vtkTransformPolyDataFilter> transformFilterZ =
+      vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  transformFilterZ->SetTransform(transformZ);
+  transformFilterZ->SetInputConnection(arcSource->GetOutputPort());
+
+  // Append all arcs together
+  vtkSmartPointer<vtkAppendPolyData> appendFilter =
+      vtkSmartPointer<vtkAppendPolyData>::New();
+  appendFilter->AddInputConnection(arcSource->GetOutputPort());
+  appendFilter->AddInputConnection(transformFilterX->GetOutputPort());
+  appendFilter->AddInputConnection(transformFilterZ->GetOutputPort());
+  appendFilter->Update();
+
+  vtkSmartPointer<vtkPolyDataMapper> arcMapper =
+      vtkSmartPointer<vtkPolyDataMapper>::New();
+  arcMapper->SetInputConnection(appendFilter->GetOutputPort());
+
+  vtkSmartPointer<vtkActor> arcActor = vtkSmartPointer<vtkActor>::New();
+  arcActor->SetMapper(arcMapper);
+  arcActor->GetProperty()->SetColor(1.0, 0.5, 0.0); // Color the arcs
+
+  // Add actors to the render
+
   vtkNew<vtkRenderer> ren;
+
+  ren->AddActor(arcActor);
+  ren->SetBackground(0.1, 0.1, 0.1);
 
   // ren->GetActiveCamera()->SetPosition(10, 10, 10);
   // ren->GetActiveCamera()->SetFocalPoint(2, 2, 2);
