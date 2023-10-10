@@ -473,9 +473,9 @@ add_executable(LegendScaleActor src/LegendScaleActor.cxx)
 target_link_libraries(LegendScaleActor PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS LegendScaleActor MODULES ${VTK_LIBRARIES})
 
-
-
-
+add_executable(BackfaceCulling src/BackfaceCulling.cxx)
+target_link_libraries(BackfaceCulling PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS BackfaceCulling MODULES ${VTK_LIBRARIES})
 
 # add_executable(DisplayTrackball src/DisplayTrackball.cpp)
 # target_link_libraries(DisplayTrackball PRIVATE  ${VTK_LIBRARIES})
