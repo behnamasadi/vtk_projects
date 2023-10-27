@@ -45,7 +45,7 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [LegendScale](src/LegendScaleActor.cpp)  
 [Anti-Aliasing](docs/anti-aliasing.md)  
 [Vertex Glyph Filter](docs/vertex_glyph_filter.md)  
-
+[Anti-alias in vtkRenderWindow](docs/anti_alias_in_vtkRenderWindow.md)  
 
 ## Viewport
 
