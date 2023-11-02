@@ -2,6 +2,8 @@
 #include <vtkCallbackCommand.h>
 #include <vtkCamera.h>
 #include <vtkCommand.h>
+#include <vtkFollower.h>
+#include <vtkMapper.h>
 #include <vtkPointHandleRepresentation3D.h>
 #include <vtkPointPicker.h>
 #include <vtkRenderWindow.h>
@@ -321,8 +323,25 @@ void InteractorStyleSwitch::OnChar() {
     vtkSmartPointer<vtkDistanceRepresentation3D> rep;
     rep = vtkSmartPointer<vtkDistanceRepresentation3D>::New();
     rep->SetHandleRepresentation(handle);
-    distanceWidget->SetRepresentation(rep);
-    rep->SetMaximumNumberOfRulerTicks(2);
+
+    distanceWidget->CreateDefaultRepresentation();
+
+    // distanceWidget->GetRepresentation();
+
+    // handle->AllOff();
+    // distanceWidget->SetRepresentation(rep);
+    // rep->RulerModeOff();
+
+    // rep->GetGlyphActor()->SetScale(0, 0, 0);
+
+    // rep->GetLabelActor()->GetProperty()->SetDisplayLocationToForeground();
+
+    // rep->GetLabelActor()->GetProperty()->SetRenderingOrder(vtkProperty::VTK_RENDERING_TRANSPARENT);
+
+    rep->SetNumberOfRulerTicks(0);
+
+    rep->GetLabelActor()->SetScale(15, 15, 15);
+
     distanceWidget->On();
     break;
   }
@@ -355,7 +374,9 @@ void InteractorStyleSwitch::OnChar() {
     rep = vtkSmartPointer<vtkDistanceRepresentation3D>::New();
     rep->SetHandleRepresentation(handle);
     m_scalingWidget->SetRepresentation(rep);
-    rep->SetMaximumNumberOfRulerTicks(2);
+    rep->SetMaximumNumberOfRulerTicks(0);
+
+    rep->RulerModeOff();
 
     rep->GetLineProperty()->SetColor(
         m_namedColors->GetColor3d("Gold").GetData());
