@@ -1,4 +1,5 @@
 #include <vtkActor.h>
+#include <vtkAxesActor.h>
 #include <vtkLegendScaleActor.h>
 #include <vtkLineSource.h>
 #include <vtkNew.h>
@@ -9,6 +10,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
+#include <vtkTransform.h>
 #include <vtkVectorText.h>
 
 int main(int, char *[]) {
@@ -18,6 +20,36 @@ int main(int, char *[]) {
       10); // Set the number of grid lines in the X direction
   planeSource->SetYResolution(
       10); // Set the number of grid lines in the Y direction
+
+  vtkNew<vtkTransform> transformOrigin;
+  vtkNew<vtkTransform> transformPoint1;
+  vtkNew<vtkTransform> transformPoint2;
+
+  vtkNew<vtkAxesActor> axesOrigin;
+  vtkNew<vtkAxesActor> axesPoint1;
+  vtkNew<vtkAxesActor> axesPoint2;
+
+  planeSource->SetOrigin(0, 0, 0);
+  transformOrigin->Translate(0.0, 0.0, 0.0);
+  axesOrigin->SetUserTransform(transformOrigin);
+  // axesOrigin->SetAxisLabels(false);
+  axesOrigin->SetXAxisLabelText("O");
+  axesOrigin->SetYAxisLabelText("");
+  axesOrigin->SetZAxisLabelText("");
+
+  planeSource->SetPoint1(10, 0, 0);
+  transformPoint1->Translate(10.0, 0.0, 0.0);
+  axesPoint1->SetUserTransform(transformPoint1);
+  axesPoint1->SetXAxisLabelText("1");
+  axesPoint1->SetYAxisLabelText("");
+  axesPoint1->SetZAxisLabelText("");
+
+  planeSource->SetPoint2(0, 10, 0);
+  transformPoint2->Translate(0.0, 10.0, 0.0);
+  axesPoint2->SetUserTransform(transformPoint2);
+  axesPoint2->SetXAxisLabelText("2");
+  axesPoint2->SetYAxisLabelText("");
+  axesPoint2->SetZAxisLabelText("");
 
   // Map the plane's data to graphics primitives
   vtkNew<vtkPolyDataMapper> planeMapper;
@@ -46,18 +78,11 @@ int main(int, char *[]) {
   renderer->AddActor(planeActor);
   renderer->SetBackground(0.1, 0.1, 0.1); // Set background color to dark gray
 
-  // Create a LegendScaleActor
-  vtkNew<vtkLegendScaleActor> legendScaleActor;
+  renderer->AddActor(axesOrigin);
 
-  // Configure the LegendScaleActor
-  legendScaleActor->SetLegendVisibility(1);     // Display the numerical scale
-  legendScaleActor->SetRightAxisVisibility(1);  // Display the right axis
-  legendScaleActor->SetTopAxisVisibility(1);    // Display the top axis
-  legendScaleActor->SetLeftAxisVisibility(1);   // Display the left axis
-  legendScaleActor->SetBottomAxisVisibility(1); // Display the bottom axis
+  renderer->AddActor(axesPoint1);
 
-  // Add the LegendScaleActor to the renderer
-  renderer->AddActor(legendScaleActor);
+  renderer->AddActor(axesPoint2);
 
   // Start the rendering loop
   renderWindow->Render();

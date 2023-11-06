@@ -19,123 +19,52 @@
 #include <vtkSphereSource.h>
 #include <vtkTransform.h>
 
+#include <vtkActor.h>
+#include <vtkCubeSource.h>
+#include <vtkLegendScaleActor.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+
 int main(int, char *[]) {
-  // Create a simple sphere
-  vtkNew<vtkSphereSource> sphereSource;
-  sphereSource->Update();
+  // Create a cube.
+  vtkSmartPointer<vtkCubeSource> cubeSource =
+      vtkSmartPointer<vtkCubeSource>::New();
 
-  vtkNew<vtkConeSource> coneSource;
-  coneSource->Update();
+  cubeSource->SetXLength(1.0);
+  cubeSource->SetYLength(1.0);
+  cubeSource->SetZLength(1.0);
+  cubeSource->Update();
 
-  // Create a mapper and actor
-  vtkNew<vtkPolyDataMapper> sphereMapper;
-  sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
+  // Create a mapper and actor.
+  vtkSmartPointer<vtkPolyDataMapper> mapper =
+      vtkSmartPointer<vtkPolyDataMapper>::New();
+  mapper->SetInputConnection(cubeSource->GetOutputPort());
 
-  vtkNew<vtkPolyDataMapper> coneMapper;
-  coneMapper->SetInputConnection(coneSource->GetOutputPort());
+  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  actor->SetMapper(mapper);
 
-  vtkNew<vtkActor> sphereActor;
-  sphereActor->SetMapper(sphereMapper);
-
-  vtkNew<vtkActor> coneActor;
-  coneActor->SetMapper(coneMapper);
-
-  // coneActor->SetPosition(5, 2, 3);
-
-  // Create a renderer, render window, and interactor
-  vtkNew<vtkRenderer> renderer;
-  vtkNew<vtkRenderWindow> renderWindow;
+  // Create a renderer, render window, and interactor.
+  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkSmartPointer<vtkRenderWindow> renderWindow =
+      vtkSmartPointer<vtkRenderWindow>::New();
   renderWindow->AddRenderer(renderer);
-  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
+      vtkSmartPointer<vtkRenderWindowInteractor>::New();
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  // Add the actor and scalar bar to the scene
-  // renderer->AddActor(sphereActor);
-  // renderer->AddActor(coneActor);
+  // Add the actor to the scene.
+  renderer->AddActor(actor);
 
-  vtkNew<vtkTransform> transform;
-  vtkNew<vtkMatrix4x4> m;
+  // Create the legend scale actor.
+  vtkSmartPointer<vtkLegendScaleActor> legendScaleActor =
+      vtkSmartPointer<vtkLegendScaleActor>::New();
+  renderer->AddActor(legendScaleActor); // Add scale actor to the renderer.
 
-  m->Identity();
-  m->SetElement(0, 0, .3);
-  m->SetElement(1, 1, .3);
-  m->SetElement(2, 2, .3);
-
-  m->SetElement(0, 3, 10);
-  m->SetElement(1, 3, 3);
-
-  transform->SetMatrix(m);
-  // transform->Scale(5, 5, 5);
-  double scale[3];
-
-  transform->GetScale(scale);
-
-  std::cout << "-----------" << scale[0] << "," << scale[1] << "," << scale[2]
-            << std::endl;
-
-  sphereActor->GlobalWarningDisplayOn();
-  // sphereActor->SetUserTransform(transform);
-
-  // vtkNew<renderWindowInteractor> i_ren;
-
-  // // actor->SetUserMatrix(m);
-
-  // // Render and interact
-
-  /*
-    vtkNew<vtkPNGReader> pnmReader;
-    pnmReader->SetFileName("../../images/maps-marker.png");
-
-    vtkNew<vtkImageActor> ia;
-    ia->GetMapper()->SetInputConnection(pnmReader->GetOutputPort());
-    ia->SetScale(0.01, 0.01, 0.01);
-
-    vtkNew<vtkProp3DFollower> p3dFollower;
-
-    p3dFollower->SetProp3D(ia);
-    p3dFollower->SetCamera(renderer->GetActiveCamera());
-
-    vtkNew<vtkAssembly> assembly;
-    assembly->AddPart(sphereActor);
-    assembly->AddPart(coneActor);
-    assembly->AddPart(p3dFollower);
-
-    renderer->AddActor(assembly);
-    // renderer->AddActor(p3dFollower);
-
-    renderWindow->Render();
-
-    */
-
-  vtkNew<vtkPNGReader> pnmReader;
-  pnmReader->SetFileName("../../images/maps-marker.png");
-
-  vtkNew<vtkImageActor> ia;
-  ia->GetMapper()->SetInputConnection(pnmReader->GetOutputPort());
-  ia->SetScale(0.01, 0.01, 0.01);
-
-  vtkNew<vtkProp3DFollower> p3dFollower;
-
-  p3dFollower->SetProp3D(ia);
-  p3dFollower->SetCamera(renderer->GetActiveCamera());
-
-  vtkNew<vtkAssembly> assembly;
-  assembly->AddPart(sphereActor);
-  assembly->AddPart(coneActor);
-
-  renderer->AddActor(assembly);
-  renderer->AddActor(p3dFollower); // Add the follower directly to the renderer
-
-  assembly->SetUserMatrix(m);
-
-  // Ensure the camera settings and update the view
-  renderer->ResetCamera();
+  // Render and interact.
   renderWindow->Render();
-
-  vtkNew<vtkInteractorStyleTrackballActor> style;
-
-  // renderWindowInteractor->SetInteractorStyle(style);
-
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
