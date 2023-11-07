@@ -10,8 +10,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkPointSource> pointSource;
@@ -82,4 +81,3 @@ int main(int, char*[])
 
   return EXIT_SUCCESS;
 }
-
