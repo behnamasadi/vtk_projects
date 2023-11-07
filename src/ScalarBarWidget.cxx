@@ -13,13 +13,11 @@
 #include <vtkUnstructuredGrid.h>
 #include <vtkUnstructuredGridReader.h>
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
   vtkNew<vtkNamedColors> colors;
 
   // Parse command line arguments
-  if (argc != 2)
-  {
+  if (argc != 2) {
     std::cerr << "Usage: " << argv[0] << " Filename(.vtk) e.g.uGridEx.vtk"
               << std::endl;
     return EXIT_FAILURE;

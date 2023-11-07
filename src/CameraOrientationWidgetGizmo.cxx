@@ -9,10 +9,8 @@
 #include <vtkRenderer.h>
 #include <vtkXMLPolyDataReader.h>
 
-int main(int argc, char* argv[])
-{
-  if (argc < 2)
-  {
+int main(int argc, char *argv[]) {
+  if (argc < 2) {
     std::cout << "Demonstrates a 3D camera orientation widget." << std::endl;
     std::cout << "Usage: " << argv[0] << " fileName" << std::endl;
     std::cout << "where: fileName is cow.vtp." << std::endl;

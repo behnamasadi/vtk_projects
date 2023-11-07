@@ -16,8 +16,7 @@
 #include <vtkTextActor.h>
 #include <vtkTextProperty.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // Sphere

@@ -14,25 +14,20 @@
 namespace {
 
 class MouseInteractorStyleShiftAndControl
-  : public vtkInteractorStyleTrackballActor
-{
+    : public vtkInteractorStyleTrackballActor {
 public:
-  static MouseInteractorStyleShiftAndControl* New();
+  static MouseInteractorStyleShiftAndControl *New();
 
-  virtual void OnLeftButtonDown()
-  {
-    if (this->Interactor->GetShiftKey())
-    {
+  virtual void OnLeftButtonDown() {
+    if (this->Interactor->GetShiftKey()) {
       std::cout << "Shift held. ";
     }
 
-    if (this->Interactor->GetControlKey())
-    {
+    if (this->Interactor->GetControlKey()) {
       std::cout << "Control held. ";
     }
 
-    if (this->Interactor->GetAltKey())
-    {
+    if (this->Interactor->GetAltKey()) {
       std::cout << "Alt held. ";
     }
 
@@ -47,8 +42,7 @@ vtkStandardNewMacro(MouseInteractorStyleShiftAndControl);
 
 } // namespace
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkSphereSource> sphereSource;

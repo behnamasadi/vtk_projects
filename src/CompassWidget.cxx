@@ -14,18 +14,15 @@
 #define VTK_HAS_IMPROVED_COMPASSWIDGETREPRESENTATION 1
 #endif
 
-class vtkICWValueChangedCallback : public vtkCommand
-{
+class vtkICWValueChangedCallback : public vtkCommand {
 public:
-  static vtkICWValueChangedCallback* New()
-  {
+  static vtkICWValueChangedCallback *New() {
     return new vtkICWValueChangedCallback();
   }
-  virtual void Execute(vtkObject* caller, unsigned long vtkNotUsed(eventId),
-                       void* vtkNotUsed(callData))
-  {
-    vtkCompassWidget* widget = vtkCompassWidget::SafeDownCast(caller);
-    vtkCamera* camera = widget->GetCurrentRenderer()->GetActiveCamera();
+  virtual void Execute(vtkObject *caller, unsigned long vtkNotUsed(eventId),
+                       void *vtkNotUsed(callData)) {
+    vtkCompassWidget *widget = vtkCompassWidget::SafeDownCast(caller);
+    vtkCamera *camera = widget->GetCurrentRenderer()->GetActiveCamera();
 
     // calculate new camera position from compass widget parameters
     double distance = widget->GetDistance();
@@ -34,9 +31,9 @@ public:
 
     double pos[3] = {0, 0, 0};
     pos[0] = distance * cos(vtkMath::RadiansFromDegrees(heading)) *
-        cos(vtkMath::RadiansFromDegrees(tilt));
+             cos(vtkMath::RadiansFromDegrees(tilt));
     pos[1] = distance * sin(vtkMath::RadiansFromDegrees(heading)) *
-        cos(vtkMath::RadiansFromDegrees(tilt));
+             cos(vtkMath::RadiansFromDegrees(tilt));
     pos[2] = distance * sin(vtkMath::RadiansFromDegrees(tilt));
 
     camera->SetPosition(pos);
@@ -46,13 +43,10 @@ public:
 
     widget->GetCurrentRenderer()->Render();
   }
-  vtkICWValueChangedCallback()
-  {
-  }
+  vtkICWValueChangedCallback() {}
 };
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // a cube with text on its faces

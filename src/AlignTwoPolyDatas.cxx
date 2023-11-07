@@ -56,18 +56,16 @@ namespace {
  */
 std::string ShowUsage(std::string fn);
 
-vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName);
-void AlignBoundingBoxes(vtkPolyData*, vtkPolyData*);
-void BestBoundingBox(std::string const& axis, vtkPolyData* target,
-                     vtkPolyData* source, vtkPolyData* targetLandmarks,
-                     vtkPolyData* sourceLandmarks, double& distance,
-                     vtkPoints* bestPoints);
+vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const &fileName);
+void AlignBoundingBoxes(vtkPolyData *, vtkPolyData *);
+void BestBoundingBox(std::string const &axis, vtkPolyData *target,
+                     vtkPolyData *source, vtkPolyData *targetLandmarks,
+                     vtkPolyData *sourceLandmarks, double &distance,
+                     vtkPoints *bestPoints);
 } // namespace
 
-int main(int argc, char* argv[])
-{
-  if (argc != 3)
-  {
+int main(int argc, char *argv[]) {
+  if (argc != 3) {
     std::cout << ShowUsage(argv[0]) << std::endl;
     return EXIT_FAILURE;
   }
@@ -107,8 +105,7 @@ int main(int argc, char* argv[])
   auto targetFound =
       std::string(argv[2]).find("greatWhite.stl") != std::string::npos;
   vtkNew<vtkTransform> trnf;
-  if (sourceFound && targetFound)
-  {
+  if (sourceFound && targetFound) {
     trnf->RotateY(90);
   }
   vtkNew<vtkTransformPolyDataFilter> tpd;
@@ -121,10 +118,11 @@ int main(int argc, char* argv[])
   distance->SetInputData(1, sourcePolyData);
   distance->Update();
 
-  double distanceBeforeAlign = static_cast<vtkPointSet*>(distance->GetOutput(0))
-                                   ->GetFieldData()
-                                   ->GetArray("HausdorffDistance")
-                                   ->GetComponent(0, 0);
+  double distanceBeforeAlign =
+      static_cast<vtkPointSet *>(distance->GetOutput(0))
+          ->GetFieldData()
+          ->GetArray("HausdorffDistance")
+          ->GetComponent(0, 0);
 
   // Get initial alignment using oriented bounding boxes
   AlignBoundingBoxes(sourcePolyData, tpd->GetOutput());
@@ -133,15 +131,14 @@ int main(int argc, char* argv[])
   distance->SetInputData(1, sourcePolyData);
   distance->Modified();
   distance->Update();
-  double distanceAfterAlign = static_cast<vtkPointSet*>(distance->GetOutput(0))
+  double distanceAfterAlign = static_cast<vtkPointSet *>(distance->GetOutput(0))
                                   ->GetFieldData()
                                   ->GetArray("HausdorffDistance")
                                   ->GetComponent(0, 0);
 
   double bestDistance = std::min(distanceBeforeAlign, distanceAfterAlign);
 
-  if (distanceAfterAlign > distanceBeforeAlign)
-  {
+  if (distanceAfterAlign > distanceBeforeAlign) {
     sourcePolyData->DeepCopy(originalSourcePolyData);
   }
 
@@ -173,14 +170,12 @@ int main(int argc, char* argv[])
 
   // Note: If there is an error extracting eigenfunctions, then this will be
   // zero.
-  double distanceAfterICP = static_cast<vtkPointSet*>(distance->GetOutput(0))
+  double distanceAfterICP = static_cast<vtkPointSet *>(distance->GetOutput(0))
                                 ->GetFieldData()
                                 ->GetArray("HausdorffDistance")
                                 ->GetComponent(0, 0);
-  if (!(std::isnan(icpMeanDistance) || std::isinf(icpMeanDistance)))
-  {
-    if (distanceAfterICP < bestDistance)
-    {
+  if (!(std::isnan(icpMeanDistance) || std::isinf(icpMeanDistance))) {
+    if (distanceAfterICP < bestDistance) {
       bestDistance = distanceAfterICP;
     }
   }
@@ -197,18 +192,13 @@ int main(int argc, char* argv[])
 
   // Select the source to use.
   vtkNew<vtkDataSetMapper> sourceMapper;
-  if (bestDistance == distanceBeforeAlign)
-  {
+  if (bestDistance == distanceBeforeAlign) {
     sourceMapper->SetInputData(originalSourcePolyData);
     std::cout << "Using original alignment" << std::endl;
-  }
-  else if (bestDistance == distanceAfterAlign)
-  {
+  } else if (bestDistance == distanceAfterAlign) {
     sourceMapper->SetInputData(sourcePolyData);
     std::cout << "Using alignment by OBB" << std::endl;
-  }
-  else
-  {
+  } else {
     sourceMapper->SetInputConnection(transform->GetOutputPort());
     std::cout << "Using alignment by ICP" << std::endl;
   }
@@ -261,18 +251,15 @@ int main(int argc, char* argv[])
 }
 namespace {
 
-std::string ShowUsage(std::string fn)
-{
+std::string ShowUsage(std::string fn) {
   // Remove the folder (if present) then remove the extension in this order
   // since the folder name may contain periods.
   auto last_slash_idx = fn.find_last_of("\\/");
-  if (std::string::npos != last_slash_idx)
-  {
+  if (std::string::npos != last_slash_idx) {
     fn.erase(0, last_slash_idx + 1);
   }
   auto period_idx = fn.rfind('.');
-  if (std::string::npos != period_idx)
-  {
+  if (std::string::npos != period_idx) {
     fn.erase(period_idx);
   }
   std::ostringstream os;
@@ -287,61 +274,46 @@ std::string ShowUsage(std::string fn)
   return os.str();
 }
 
-vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
-{
+vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const &fileName) {
   vtkSmartPointer<vtkPolyData> polyData;
   std::string extension = "";
-  if (fileName.find_last_of(".") != std::string::npos)
-  {
+  if (fileName.find_last_of(".") != std::string::npos) {
     extension = fileName.substr(fileName.find_last_of("."));
   }
   // Make the extension lowercase
   std::transform(extension.begin(), extension.end(), extension.begin(),
                  ::tolower);
-  if (extension == ".ply")
-  {
+  if (extension == ".ply") {
     vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".vtp")
-  {
+  } else if (extension == ".vtp") {
     vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".obj")
-  {
+  } else if (extension == ".obj") {
     vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".stl")
-  {
+  } else if (extension == ".stl") {
     vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".vtk")
-  {
+  } else if (extension == ".vtk") {
     vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".g")
-  {
+  } else if (extension == ".g") {
     vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName.c_str());
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else
-  {
+  } else {
     // Return a polydata sphere if the extension is unknown.
     vtkNew<vtkSphereSource> source;
     source->SetThetaResolution(20);
@@ -352,8 +324,7 @@ vtkSmartPointer<vtkPolyData> ReadPolyData(std::string const& fileName)
   return polyData;
 }
 
-void AlignBoundingBoxes(vtkPolyData* source, vtkPolyData* target)
-{
+void AlignBoundingBoxes(vtkPolyData *source, vtkPolyData *target) {
   // Use OBBTree to create an oriented bounding box for target and source
   vtkNew<vtkOBBTree> sourceOBBTree;
   sourceOBBTree->SetDataSet(source);
@@ -394,11 +365,10 @@ void AlignBoundingBoxes(vtkPolyData* source, vtkPolyData* target)
 
   source->DeepCopy(transformPD->GetOutput());
 }
-void BestBoundingBox(std::string const& axis, vtkPolyData* target,
-                     vtkPolyData* source, vtkPolyData* targetLandmarks,
-                     vtkPolyData* sourceLandmarks, double& bestDistance,
-                     vtkPoints* bestPoints)
-{
+void BestBoundingBox(std::string const &axis, vtkPolyData *target,
+                     vtkPolyData *source, vtkPolyData *targetLandmarks,
+                     vtkPolyData *sourceLandmarks, double &bestDistance,
+                     vtkPoints *bestPoints) {
   vtkNew<vtkHausdorffDistancePointSetFilter> distance;
   vtkNew<vtkTransform> testTransform;
   vtkNew<vtkTransformPolyDataFilter> testTransformPD;
@@ -412,22 +382,16 @@ void BestBoundingBox(std::string const& axis, vtkPolyData* target,
   sourceLandmarks->GetCenter(sourceCenter);
 
   auto delta = 90.0;
-  for (auto i = 0; i < 4; ++i)
-  {
+  for (auto i = 0; i < 4; ++i) {
     auto angle = delta * i;
     // Rotate about center
     testTransform->Identity();
     testTransform->Translate(sourceCenter[0], sourceCenter[1], sourceCenter[2]);
-    if (axis == "X")
-    {
+    if (axis == "X") {
       testTransform->RotateX(angle);
-    }
-    else if (axis == "Y")
-    {
+    } else if (axis == "Y") {
       testTransform->RotateY(angle);
-    }
-    else
-    {
+    } else {
       testTransform->RotateZ(angle);
     }
     testTransform->Translate(-sourceCenter[0], -sourceCenter[1],
@@ -448,12 +412,11 @@ void BestBoundingBox(std::string const& axis, vtkPolyData* target,
     distance->SetInputData(1, lmTransformPD->GetOutput());
     distance->Update();
 
-    double testDistance = static_cast<vtkPointSet*>(distance->GetOutput(0))
+    double testDistance = static_cast<vtkPointSet *>(distance->GetOutput(0))
                               ->GetFieldData()
                               ->GetArray("HausdorffDistance")
                               ->GetComponent(0, 0);
-    if (testDistance < bestDistance)
-    {
+    if (testDistance < bestDistance) {
       bestDistance = testDistance;
       bestPoints->DeepCopy(testTransformPD->GetOutput()->GetPoints());
     }

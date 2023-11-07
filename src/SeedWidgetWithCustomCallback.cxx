@@ -14,37 +14,27 @@
 #include <vtkSphereSource.h>
 
 namespace {
-class vtkSeedCallback : public vtkCommand
-{
+class vtkSeedCallback : public vtkCommand {
 public:
-  static vtkSeedCallback* New()
-  {
-    return new vtkSeedCallback;
-  }
+  static vtkSeedCallback *New() { return new vtkSeedCallback; }
 
-  vtkSeedCallback()
-  {
-  }
+  vtkSeedCallback() {}
 
-  virtual void Execute(vtkObject*, unsigned long event, void* calldata)
-  {
-    if (event == vtkCommand::PlacePointEvent)
-    {
+  virtual void Execute(vtkObject *, unsigned long event, void *calldata) {
+    if (event == vtkCommand::PlacePointEvent) {
       std::cout << "Point placed, total of: "
                 << this->SeedRepresentation->GetNumberOfSeeds() << std::endl;
     }
-    if (event == vtkCommand::InteractionEvent)
-    {
-      if (calldata)
-      {
+    if (event == vtkCommand::InteractionEvent) {
+      if (calldata) {
         std::cout << "Interacting with seed : "
-                  << *(static_cast<int*>(calldata)) << std::endl;
+                  << *(static_cast<int *>(calldata)) << std::endl;
       }
     }
 
     std::cout << "List of seeds (Display coordinates):" << std::endl;
-    for (vtkIdType i = 0; i < this->SeedRepresentation->GetNumberOfSeeds(); i++)
-    {
+    for (vtkIdType i = 0; i < this->SeedRepresentation->GetNumberOfSeeds();
+         i++) {
       double pos[3];
       this->SeedRepresentation->GetSeedDisplayPosition(i, pos);
       std::cout << "(" << pos[0] << " " << pos[1] << " " << pos[2] << ")"
@@ -52,18 +42,16 @@ public:
     }
   }
 
-  void SetRepresentation(vtkSeedRepresentation* rep)
-  {
+  void SetRepresentation(vtkSeedRepresentation *rep) {
     this->SeedRepresentation = rep;
   }
 
 private:
-  vtkSeedRepresentation* SeedRepresentation;
+  vtkSeedRepresentation *SeedRepresentation;
 };
 } // namespace
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkSphereSource> sphereSource;

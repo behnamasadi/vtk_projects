@@ -18,12 +18,11 @@
 #include <vtkXMLPolyDataWriter.h>
 
 namespace {
-void PickCallbackFunction(vtkObject* caller, long unsigned int eventId,
-                          void* clientData, void* callData);
+void PickCallbackFunction(vtkObject *caller, long unsigned int eventId,
+                          void *clientData, void *callData);
 }
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   // Create a set of points
   vtkNew<vtkPoints> points;
   vtkNew<vtkCellArray> vertices;
@@ -90,21 +89,18 @@ int main(int, char*[])
 }
 
 namespace {
-void PickCallbackFunction(vtkObject* caller,
+void PickCallbackFunction(vtkObject *caller,
                           long unsigned int vtkNotUsed(eventId),
-                          void* vtkNotUsed(clientData),
-                          void* vtkNotUsed(callData))
-{
+                          void *vtkNotUsed(clientData),
+                          void *vtkNotUsed(callData)) {
   std::cout << "Pick." << std::endl;
-  vtkAreaPicker* areaPicker = static_cast<vtkAreaPicker*>(caller);
-  vtkProp3DCollection* props = areaPicker->GetProp3Ds();
+  vtkAreaPicker *areaPicker = static_cast<vtkAreaPicker *>(caller);
+  vtkProp3DCollection *props = areaPicker->GetProp3Ds();
   props->InitTraversal();
 
-  for (vtkIdType i = 0; i < props->GetNumberOfItems(); i++)
-  {
-    vtkProp3D* prop = props->GetNextProp3D();
+  for (vtkIdType i = 0; i < props->GetNumberOfItems(); i++) {
+    vtkProp3D *prop = props->GetNextProp3D();
     std::cout << "Picked prop: " << prop << std::endl;
   }
 }
 } // namespace
-

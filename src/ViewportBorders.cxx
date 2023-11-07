@@ -17,15 +17,13 @@
 #include <vtkRenderer.h>
 
 namespace {
-void ViewportBorder(vtkRenderer* renderer, double* color, bool last = false);
+void ViewportBorder(vtkRenderer *renderer, double *color, bool last = false);
 }
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
   //
   int numberOfFiles = argc - 1;
-  if (numberOfFiles == 0)
-  {
+  if (numberOfFiles == 0) {
     std::cout << "Usage" << argv[0]
               << " file1 file2 file3 ... fileN e.g. v.vtk t.vtk k.vtk"
               << std::endl;
@@ -39,8 +37,7 @@ int main(int argc, char* argv[])
   renderWindow->SetWindowName("ViewportBorders");
 
   double size = 1.0 / numberOfFiles;
-  for (unsigned int i = 0; static_cast<int>(i) < numberOfFiles; ++i)
-  {
+  for (unsigned int i = 0; static_cast<int>(i) < numberOfFiles; ++i) {
     vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(argv[i + 1]);
 
@@ -76,8 +73,7 @@ int main(int argc, char* argv[])
 }
 namespace {
 // draw the borders of a renderer's viewport
-void ViewportBorder(vtkRenderer* renderer, double* color, bool last)
-{
+void ViewportBorder(vtkRenderer *renderer, double *color, bool last) {
   // points start at upper right and proceed anti-clockwise
   vtkNew<vtkPoints> points;
   points->SetNumberOfPoints(4);
@@ -96,20 +92,15 @@ void ViewportBorder(vtkRenderer* renderer, double* color, bool last)
   // this prevents double vertical lines at right border
   // if different colors are used for each border, then do
   // not specify last
-  if (last)
-  {
+  if (last) {
     lines->GetPointIds()->SetNumberOfIds(5);
-  }
-  else
-  {
+  } else {
     lines->GetPointIds()->SetNumberOfIds(4);
   }
-  for (unsigned int i = 0; i < 4; ++i)
-  {
+  for (unsigned int i = 0; i < 4; ++i) {
     lines->GetPointIds()->SetId(i, i);
   }
-  if (last)
-  {
+  if (last) {
     lines->GetPointIds()->SetId(4, 0);
   }
   cells->InsertNextCell(lines);

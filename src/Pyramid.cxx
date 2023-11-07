@@ -12,8 +12,7 @@
 #include <vtkRenderer.h>
 #include <vtkUnstructuredGrid.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkPoints> points;
 
   float p0[3] = {1.0, 1.0, 1.0};

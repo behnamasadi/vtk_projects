@@ -10,8 +10,7 @@
 #include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 
-int main(int /* argc */, char* /* argv */[])
-{
+int main(int /* argc */, char * /* argv */[]) {
   vtkNew<vtkNamedColors> colors;
 
   // A renderer and render window

@@ -14,8 +14,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkSphereSource> sphereSource;
@@ -23,7 +22,7 @@ int main(int, char*[])
   sphereSource->SetRadius(1.0);
   sphereSource->Update();
 
-  vtkPolyData* polydata = sphereSource->GetOutput();
+  vtkPolyData *polydata = sphereSource->GetOutput();
 
   // Create a mapper
   vtkNew<vtkPolyDataMapper> mapper;

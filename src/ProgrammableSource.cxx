@@ -12,8 +12,7 @@
 #include <vtkVertexGlyphFilter.h>
 
 // https://en.wikipedia.org/wiki/Lorenz_system
-static void Lorenz(void* arg)
-{
+static void Lorenz(void *arg) {
   double sigma = 10.0; /* The Lorenz paramaters */
   double beta = 8.0 / 3.0;
   double rho = 28.0;
@@ -26,8 +25,7 @@ static void Lorenz(void* arg)
   z = 0.1;
   vtkNew<vtkPoints> points;
   // Get to a stable starting point
-  for (int i = 0; i < 1000; ++i)
-  {
+  for (int i = 0; i < 1000; ++i) {
     xx = x + h * sigma * (y - x);
     yy = y + h * (x * (rho - z) - y);
     zz = z + h * (x * y - (beta * z));
@@ -35,8 +33,7 @@ static void Lorenz(void* arg)
     y = yy;
     z = zz;
   }
-  for (int i = 0; i < 500000; ++i)
-  {
+  for (int i = 0; i < 500000; ++i) {
     xx = x + h * sigma * (y - x);
     yy = y + h * (x * (rho - z) - y);
     zz = z + h * (x * y - (beta * z));
@@ -50,13 +47,12 @@ static void Lorenz(void* arg)
   vtkNew<vtkVertexGlyphFilter> vertexFilter;
   vertexFilter->SetInputData(pointsPolydata);
   vertexFilter->Update();
-  vtkProgrammableSource* ps = static_cast<vtkProgrammableSource*>(arg);
-  vtkPolyData* output = ps->GetPolyDataOutput();
+  vtkProgrammableSource *ps = static_cast<vtkProgrammableSource *>(arg);
+  vtkPolyData *output = ps->GetPolyDataOutput();
   output->DeepCopy(vertexFilter->GetOutput());
 }
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkProgrammableSource> source;

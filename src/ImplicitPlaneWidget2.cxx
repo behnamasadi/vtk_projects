@@ -19,33 +19,27 @@ namespace {
 // Callback for the interaction
 // This does the actual work: updates the vtkPlane implicit function.
 // This in turn causes the pipeline to update and clip the object.
-class vtkIPWCallback : public vtkCommand
-{
+class vtkIPWCallback : public vtkCommand {
 public:
-  static vtkIPWCallback* New()
-  {
-    return new vtkIPWCallback;
-  }
+  static vtkIPWCallback *New() { return new vtkIPWCallback; }
 
-  virtual void Execute(vtkObject* caller, unsigned long, void*)
-  {
-    vtkImplicitPlaneWidget2* planeWidget =
-        reinterpret_cast<vtkImplicitPlaneWidget2*>(caller);
-    vtkImplicitPlaneRepresentation* rep =
-        reinterpret_cast<vtkImplicitPlaneRepresentation*>(
+  virtual void Execute(vtkObject *caller, unsigned long, void *) {
+    vtkImplicitPlaneWidget2 *planeWidget =
+        reinterpret_cast<vtkImplicitPlaneWidget2 *>(caller);
+    vtkImplicitPlaneRepresentation *rep =
+        reinterpret_cast<vtkImplicitPlaneRepresentation *>(
             planeWidget->GetRepresentation());
     rep->GetPlane(this->plane);
   }
 
   vtkIPWCallback() = default;
 
-  vtkPlane* plane{nullptr};
+  vtkPlane *plane{nullptr};
 };
 
 } // namespace
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkSphereSource> sphereSource;
@@ -58,12 +52,9 @@ int main(int argc, char* argv[])
   vtkNew<vtkClipPolyData> clipper;
   clipper->SetClipFunction(plane);
   clipper->InsideOutOn();
-  if (argc < 2)
-  {
+  if (argc < 2) {
     clipper->SetInputConnection(sphereSource->GetOutputPort());
-  }
-  else
-  {
+  } else {
     reader->SetFileName(argv[1]);
     clipper->SetInputConnection(reader->GetOutputPort());
   }

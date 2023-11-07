@@ -30,28 +30,25 @@
 
 namespace {
 // Define interaction style
-class InteractorStyle : public vtkInteractorStyleRubberBandPick
-{
+class InteractorStyle : public vtkInteractorStyleRubberBandPick {
 public:
-  static InteractorStyle* New();
+  static InteractorStyle *New();
   vtkTypeMacro(InteractorStyle, vtkInteractorStyleRubberBandPick);
 
-  InteractorStyle()
-  {
+  InteractorStyle() {
     this->SelectedMapper = vtkSmartPointer<vtkDataSetMapper>::New();
     this->SelectedActor = vtkSmartPointer<vtkActor>::New();
     this->SelectedActor->SetMapper(SelectedMapper);
   }
 
-  virtual void OnLeftButtonUp() override
-  {
+  virtual void OnLeftButtonUp() override {
     vtkNew<vtkNamedColors> colors;
 
     // Forward events
     vtkInteractorStyleRubberBandPick::OnLeftButtonUp();
 
-    vtkPlanes* frustum =
-        static_cast<vtkAreaPicker*>(this->GetInteractor()->GetPicker())
+    vtkPlanes *frustum =
+        static_cast<vtkAreaPicker *>(this->GetInteractor()->GetPicker())
             ->GetFrustum();
 
     vtkNew<vtkExtractGeometry> extractGeometry;
@@ -63,7 +60,7 @@ public:
     glyphFilter->SetInputConnection(extractGeometry->GetOutputPort());
     glyphFilter->Update();
 
-    vtkPolyData* selected = glyphFilter->GetOutput();
+    vtkPolyData *selected = glyphFilter->GetOutput();
     std::cout << "Selected " << selected->GetNumberOfPoints() << " points."
               << std::endl;
     std::cout << "Selected " << selected->GetNumberOfCells() << " cells."
@@ -71,10 +68,9 @@ public:
     this->SelectedMapper->SetInputData(selected);
     this->SelectedMapper->ScalarVisibilityOff();
 
-    vtkIdTypeArray* ids = dynamic_cast<vtkIdTypeArray*>(
+    vtkIdTypeArray *ids = dynamic_cast<vtkIdTypeArray *>(
         selected->GetPointData()->GetArray("OriginalIds"));
-    for (vtkIdType i = 0; i < ids->GetNumberOfTuples(); i++)
-    {
+    for (vtkIdType i = 0; i < ids->GetNumberOfTuples(); i++) {
       std::cout << "Id " << i << " : " << ids->GetValue(i) << std::endl;
     }
 
@@ -87,10 +83,7 @@ public:
     this->HighlightProp(NULL);
   }
 
-  void SetPoints(vtkSmartPointer<vtkPolyData> points)
-  {
-    this->Points = points;
-  }
+  void SetPoints(vtkSmartPointer<vtkPolyData> points) { this->Points = points; }
 
 private:
   vtkSmartPointer<vtkPolyData> Points;
@@ -101,8 +94,7 @@ private:
 vtkStandardNewMacro(InteractorStyle);
 } // namespace
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkPointSource> pointSource;
@@ -123,7 +115,7 @@ int main(int, char*[])
   surfaceFilter->SetInputConnection(idFilter->GetOutputPort());
   surfaceFilter->Update();
 
-  vtkPolyData* input = surfaceFilter->GetOutput();
+  vtkPolyData *input = surfaceFilter->GetOutput();
 
   // Create a mapper and actor
   vtkNew<vtkPolyDataMapper> mapper;

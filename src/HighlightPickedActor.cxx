@@ -14,40 +14,32 @@
 
 namespace {
 // Handle mouse events
-class MouseInteractorHighLightActor : public vtkInteractorStyleTrackballCamera
-{
+class MouseInteractorHighLightActor : public vtkInteractorStyleTrackballCamera {
 public:
-  static MouseInteractorHighLightActor* New();
+  static MouseInteractorHighLightActor *New();
   vtkTypeMacro(MouseInteractorHighLightActor,
                vtkInteractorStyleTrackballCamera);
 
-  MouseInteractorHighLightActor()
-  {
+  MouseInteractorHighLightActor() {
     LastPickedActor = NULL;
     LastPickedProperty = vtkProperty::New();
   }
-  virtual ~MouseInteractorHighLightActor()
-  {
-    LastPickedProperty->Delete();
-  }
-  virtual void OnLeftButtonDown() override
-  {
+  virtual ~MouseInteractorHighLightActor() { LastPickedProperty->Delete(); }
+  virtual void OnLeftButtonDown() override {
     vtkNew<vtkNamedColors> colors;
 
-    int* clickPos = this->GetInteractor()->GetEventPosition();
+    int *clickPos = this->GetInteractor()->GetEventPosition();
 
     // Pick from this location.
     vtkNew<vtkPropPicker> picker;
     picker->Pick(clickPos[0], clickPos[1], 0, this->GetDefaultRenderer());
 
     // If we picked something before, reset its property
-    if (this->LastPickedActor)
-    {
+    if (this->LastPickedActor) {
       this->LastPickedActor->GetProperty()->DeepCopy(this->LastPickedProperty);
     }
     this->LastPickedActor = picker->GetActor();
-    if (this->LastPickedActor)
-    {
+    if (this->LastPickedActor) {
       // Save the property of the picked actor so that we can
       // restore it next time
       this->LastPickedProperty->DeepCopy(this->LastPickedActor->GetProperty());
@@ -64,21 +56,19 @@ public:
   }
 
 private:
-  vtkActor* LastPickedActor;
-  vtkProperty* LastPickedProperty;
+  vtkActor *LastPickedActor;
+  vtkProperty *LastPickedProperty;
 };
 
 vtkStandardNewMacro(MouseInteractorHighLightActor);
 } // namespace
 
 // Execute application.
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
   vtkNew<vtkNamedColors> colors;
 
   int numberOfSpheres = 10;
-  if (argc > 1)
-  {
+  if (argc > 1) {
     numberOfSpheres = atoi(argv[1]);
   }
   // A renderer and render window
@@ -100,8 +90,7 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
   randomSequence->SetSeed(8775070);
-  for (int i = 0; i < numberOfSpheres; ++i)
-  {
+  for (int i = 0; i < numberOfSpheres; ++i) {
     vtkNew<vtkSphereSource> source;
     double x, y, z, radius;
     // random position and radius

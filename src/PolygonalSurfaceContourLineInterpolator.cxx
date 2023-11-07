@@ -21,22 +21,18 @@
 #include <vtkTriangleFilter.h>
 #include <vtkXMLPolyDataReader.h>
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkSmartPointer<vtkPolyData> polyData;
-  if (argc < 2)
-  {
+  if (argc < 2) {
     vtkNew<vtkSphereSource> sphereSource;
     sphereSource->SetThetaResolution(40);
     sphereSource->SetPhiResolution(20);
     sphereSource->Update();
 
     polyData = sphereSource->GetOutput();
-  }
-  else
-  {
+  } else {
     vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(argv[1]);
     reader->Update();
@@ -79,7 +75,7 @@ int main(int argc, char* argv[])
   vtkNew<vtkContourWidget> contourWidget;
   contourWidget->SetInteractor(interactor);
   vtkSmartPointer<vtkOrientedGlyphContourRepresentation> rep =
-      dynamic_cast<vtkOrientedGlyphContourRepresentation*>(
+      dynamic_cast<vtkOrientedGlyphContourRepresentation *>(
           contourWidget->GetRepresentation());
   rep->GetLinesProperty()->SetColor(colors->GetColor3d("Crimson").GetData());
   rep->GetLinesProperty()->SetLineWidth(3.0);

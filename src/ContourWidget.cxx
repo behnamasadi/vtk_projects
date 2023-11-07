@@ -12,8 +12,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
-int main(int /* argc */, char* /* argv */[])
-{
+int main(int /* argc */, char * /* argv */[]) {
   vtkNew<vtkNamedColors> colors;
 
   // Create the contour widget
@@ -29,8 +28,7 @@ int main(int /* argc */, char* /* argv */[])
   // Generate a set of points arranged in a circle
   int numPts = 10;
   vtkNew<vtkPoints> points;
-  for (int i = 0; i < numPts; i++)
-  {
+  for (int i = 0; i < numPts; i++) {
     // Create numPts points evenly spread around a circumference of radius 0.1
     const double angle = 2.0 * vtkMath::Pi() * i / numPts;
     points->InsertPoint(static_cast<vtkIdType>(i), 0.1 * cos(angle),
@@ -38,9 +36,8 @@ int main(int /* argc */, char* /* argv */[])
   }
 
   // Create a cell array to connect the points into meaningful geometry
-  vtkIdType* vertexIndices = new vtkIdType[numPts + 1];
-  for (int i = 0; i < numPts; i++)
-  {
+  vtkIdType *vertexIndices = new vtkIdType[numPts + 1];
+  for (int i = 0; i < numPts; i++) {
     vertexIndices[i] = static_cast<vtkIdType>(i);
   }
   // Set the last vertex to 0; this means the last line segment will join the

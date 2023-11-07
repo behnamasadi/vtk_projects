@@ -19,8 +19,7 @@
 #include <map>
 #include <vector>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // We store background colors in a vector. Then we extract the red, green and
@@ -45,15 +44,13 @@ int main(int, char*[])
   double ymins[4] = {0, 0, 0.5, 0.5};
   double ymaxs[4] = {0.5, 0.5, 1, 1};
 
-  vtkCamera* camera = nullptr;
+  vtkCamera *camera = nullptr;
 
   // Using the superclass for the sources
   std::vector<vtkSmartPointer<vtkPolyDataAlgorithm>> sources;
 
-  for (unsigned i = 0; i < 4; i++)
-  {
-    switch (i)
-    {
+  for (unsigned i = 0; i < 4; i++) {
+    switch (i) {
     case 0: {
       // Create a sphere
       vtkNew<vtkSphereSource> sphereSource;
@@ -105,14 +102,11 @@ int main(int, char*[])
 
     renderWindow->AddRenderer(renderer);
 
-    if (i == 0)
-    {
+    if (i == 0) {
       camera = renderer->GetActiveCamera();
       camera->Azimuth(30);
       camera->Elevation(30);
-    }
-    else
-    {
+    } else {
       renderer->SetActiveCamera(camera);
     }
     renderer->SetViewport(xmins[i], ymins[i], xmaxs[i], ymaxs[i]);

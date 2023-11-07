@@ -3,8 +3,7 @@
 #include <vtkPolyData.h>
 #include <vtkTriangle.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   // Create a triangle
   vtkNew<vtkPoints> points;
   points->InsertNextPoint(1.0, 0.0, 0.0);

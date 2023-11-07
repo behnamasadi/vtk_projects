@@ -41,30 +41,26 @@
 
 namespace {
 // Define interaction style
-class HighlightInteractorStyle : public vtkInteractorStyleRubberBandPick
-{
+class HighlightInteractorStyle : public vtkInteractorStyleRubberBandPick {
 public:
-  static HighlightInteractorStyle* New();
+  static HighlightInteractorStyle *New();
   vtkTypeMacro(HighlightInteractorStyle, vtkInteractorStyleRubberBandPick);
 
-  HighlightInteractorStyle() : vtkInteractorStyleRubberBandPick()
-  {
+  HighlightInteractorStyle() : vtkInteractorStyleRubberBandPick() {
     this->SelectedMapper = vtkSmartPointer<vtkDataSetMapper>::New();
     this->SelectedActor = vtkSmartPointer<vtkActor>::New();
     this->SelectedActor->SetMapper(SelectedMapper);
   }
 
-  virtual void OnLeftButtonUp() override
-  {
+  virtual void OnLeftButtonUp() override {
     // Forward events
     vtkInteractorStyleRubberBandPick::OnLeftButtonUp();
 
-    if (this->CurrentMode == VTKISRBP_SELECT)
-    {
+    if (this->CurrentMode == VTKISRBP_SELECT) {
       vtkNew<vtkNamedColors> colors;
 
-      vtkPlanes* frustum =
-          static_cast<vtkAreaPicker*>(this->GetInteractor()->GetPicker())
+      vtkPlanes *frustum =
+          static_cast<vtkAreaPicker *>(this->GetInteractor()->GetPicker())
               ->GetFrustum();
 
       vtkNew<vtkExtractPolyDataGeometry> extractPolyDataGeometry;
@@ -96,8 +92,7 @@ public:
     }
   }
 
-  void SetPolyData(vtkSmartPointer<vtkPolyData> polyData)
-  {
+  void SetPolyData(vtkSmartPointer<vtkPolyData> polyData) {
     this->PolyData = polyData;
   }
 
@@ -108,11 +103,10 @@ private:
 };
 vtkStandardNewMacro(HighlightInteractorStyle);
 
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
 } // namespace
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
   auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
   vtkNew<vtkNamedColors> colors;
@@ -133,7 +127,7 @@ int main(int argc, char* argv[])
   surfaceFilter->SetInputConnection(idFilter->GetOutputPort());
   surfaceFilter->Update();
 
-  vtkPolyData* input = surfaceFilter->GetOutput();
+  vtkPolyData *input = surfaceFilter->GetOutput();
 
   // Create a mapper and actor
   vtkNew<vtkPolyDataMapper> mapper;
@@ -173,55 +167,41 @@ int main(int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 namespace {
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
-{
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName) {
   vtkSmartPointer<vtkPolyData> polyData;
   std::string extension =
       vtksys::SystemTools::GetFilenameLastExtension(std::string(fileName));
-  if (extension == ".ply")
-  {
+  if (extension == ".ply") {
     vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".vtp")
-  {
+  } else if (extension == ".vtp") {
     vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".obj")
-  {
+  } else if (extension == ".obj") {
     vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".stl")
-  {
+  } else if (extension == ".stl") {
     vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".vtk")
-  {
+  } else if (extension == ".vtk") {
     vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".g")
-  {
+  } else if (extension == ".g") {
     vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else
-  {
+  } else {
     vtkNew<vtkSphereSource> source;
     source->SetPhiResolution(21);
     source->SetThetaResolution(40);

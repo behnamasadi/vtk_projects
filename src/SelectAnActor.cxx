@@ -19,37 +19,31 @@
 namespace {
 
 // Handle mouse events
-class MouseInteractorStyle5 : public vtkInteractorStyleTrackballActor
-{
+class MouseInteractorStyle5 : public vtkInteractorStyleTrackballActor {
 public:
-  static MouseInteractorStyle5* New();
+  static MouseInteractorStyle5 *New();
   vtkTypeMacro(MouseInteractorStyle5, vtkInteractorStyleTrackballActor);
 
-  virtual void OnLeftButtonDown() override
-  {
+  virtual void OnLeftButtonDown() override {
     // Forward events
     vtkInteractorStyleTrackballActor::OnLeftButtonDown();
 
-    if (this->InteractionProp == this->Cube)
-    {
+    if (this->InteractionProp == this->Cube) {
       std::cout << "Picked cube." << std::endl;
-    }
-    else if (this->InteractionProp == this->Sphere)
-    {
+    } else if (this->InteractionProp == this->Sphere) {
       std::cout << "Picked sphere." << std::endl;
     }
   }
 
-  vtkActor* Cube;
-  vtkActor* Sphere;
+  vtkActor *Cube;
+  vtkActor *Sphere;
 };
 
 vtkStandardNewMacro(MouseInteractorStyle5);
 
 } // namespace
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // Create a cube

@@ -15,25 +15,20 @@
 
 namespace {
 // Handle mouse events
-class MouseInteractorHighLightActor : public vtkInteractorStyleTrackballCamera
-{
+class MouseInteractorHighLightActor : public vtkInteractorStyleTrackballCamera {
 public:
-  static MouseInteractorHighLightActor* New();
+  static MouseInteractorHighLightActor *New();
   vtkTypeMacro(MouseInteractorHighLightActor,
                vtkInteractorStyleTrackballCamera);
 
-  MouseInteractorHighLightActor()
-  {
+  MouseInteractorHighLightActor() {
     LastPickedActor = nullptr;
     SilhouetteActor = nullptr;
     Silhouette = nullptr;
   }
-  virtual ~MouseInteractorHighLightActor()
-  {
-  }
-  virtual void OnLeftButtonDown() override
-  {
-    int* clickPos = this->GetInteractor()->GetEventPosition();
+  virtual ~MouseInteractorHighLightActor() {}
+  virtual void OnLeftButtonDown() override {
+    int *clickPos = this->GetInteractor()->GetEventPosition();
 
     // Pick from this location.
     vtkNew<vtkPropPicker> picker;
@@ -42,13 +37,12 @@ public:
 
     // If we picked something before, remove the silhouette actor and
     // generate a new one
-    if (this->LastPickedActor)
-    {
+    if (this->LastPickedActor) {
       this->GetDefaultRenderer()->RemoveActor(this->SilhouetteActor);
 
       // Highlight the picked actor by generating a silouhette
       this->Silhouette->SetInputData(
-          dynamic_cast<vtkPolyDataMapper*>(this->LastPickedActor->GetMapper())
+          dynamic_cast<vtkPolyDataMapper *>(this->LastPickedActor->GetMapper())
               ->GetInput());
       this->GetDefaultRenderer()->AddActor(this->SilhouetteActor);
     }
@@ -56,33 +50,29 @@ public:
     // Forward events
     vtkInteractorStyleTrackballCamera::OnLeftButtonDown();
   }
-  void SetSilhouette(vtkPolyDataSilhouette* silhouette)
-  {
+  void SetSilhouette(vtkPolyDataSilhouette *silhouette) {
     this->Silhouette = silhouette;
   }
-  void SetSilhouetteActor(vtkActor* silhouetteActor)
-  {
+  void SetSilhouetteActor(vtkActor *silhouetteActor) {
     this->SilhouetteActor = silhouetteActor;
   }
 
 private:
-  vtkActor* LastPickedActor;
-  vtkActor* SilhouetteActor;
-  vtkPolyDataSilhouette* Silhouette;
+  vtkActor *LastPickedActor;
+  vtkActor *SilhouetteActor;
+  vtkPolyDataSilhouette *Silhouette;
 };
 
 vtkStandardNewMacro(MouseInteractorHighLightActor);
 } // namespace
 
 // Execute application.
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
   vtkNew<vtkNamedColors> colors;
   colors->SetColor("Bkg", 0.3, 0.4, 0.5);
 
   int numberOfSpheres = 10;
-  if (argc > 1)
-  {
+  if (argc > 1) {
     numberOfSpheres = atoi(argv[1]);
   }
   // Create a renderer and render window
@@ -98,8 +88,7 @@ int main(int argc, char* argv[])
 
   vtkNew<vtkMinimalStandardRandomSequence> randomSequence;
   randomSequence->SetSeed(8775070);
-  for (int i = 0; i < numberOfSpheres; ++i)
-  {
+  for (int i = 0; i < numberOfSpheres; ++i) {
     vtkNew<vtkSphereSource> source;
     double x, y, z, radius;
     // random position and radius

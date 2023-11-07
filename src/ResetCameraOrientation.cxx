@@ -21,12 +21,9 @@
 namespace {
 
 //! The positional information relating to the camera.
-struct Orientation
-{
-  void ToVector(const double* from, std::vector<double>& to)
-  {
-    for (size_t i = 0; i < to.size(); ++i)
-    {
+struct Orientation {
+  void ToVector(const double *from, std::vector<double> &to) {
+    for (size_t i = 0; i < to.size(); ++i) {
       to[i] = from[i];
     }
   };
@@ -47,7 +44,7 @@ struct Orientation
  * @param width - the width.
  * @return A comma-separated string.
  */
-std::string CommaSeparatedList(std::vector<double> const& v,
+std::string CommaSeparatedList(std::vector<double> const &v,
                                const int precision = 6, const int width = 10);
 
 //! Get the camera orientation.
@@ -55,7 +52,7 @@ std::string CommaSeparatedList(std::vector<double> const& v,
  * @param ren - the renderer.
  * @return The orientation parameters.
  */
-Orientation GetOrientation(vtkRenderer* ren);
+Orientation GetOrientation(vtkRenderer *ren);
 
 //! Set the camera orientation.
 /*
@@ -64,12 +61,11 @@ Orientation GetOrientation(vtkRenderer* ren);
  * @param p - The orientation parameters.
  * @return
  */
-void SetOrientation(vtkRenderer* ren, Orientation const& p);
+void SetOrientation(vtkRenderer *ren, Orientation const &p);
 
 } // namespace
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkConeSource> cone;
@@ -99,7 +95,7 @@ int main(int, char*[])
   vtkNew<vtkInteractorStyleTrackballCamera> style;
   iren->SetInteractorStyle(style);
 
-  vtkCamera* camera = ren->GetActiveCamera();
+  vtkCamera *camera = ren->GetActiveCamera();
   camera->SetRoll(15);
   camera->Elevation(-15);
   camera->Azimuth(30);
@@ -140,12 +136,10 @@ int main(int, char*[])
 }
 
 namespace {
-std::string CommaSeparatedList(std::vector<double> const& v,
-                               const int precision, const int width)
-{
+std::string CommaSeparatedList(std::vector<double> const &v,
+                               const int precision, const int width) {
   std::ostringstream os;
-  for (auto p = v.begin(); p < v.end() - 1; ++p)
-  {
+  for (auto p = v.begin(); p < v.end() - 1; ++p) {
     os << std::fixed << std::setw(width) << std::setprecision(precision) << *p
        << ", ";
   }
@@ -154,11 +148,10 @@ std::string CommaSeparatedList(std::vector<double> const& v,
   return os.str();
 }
 
-Orientation GetOrientation(vtkRenderer* ren)
-{
+Orientation GetOrientation(vtkRenderer *ren) {
   Orientation p;
 
-  vtkCamera* camera = ren->GetActiveCamera();
+  vtkCamera *camera = ren->GetActiveCamera();
   p.ToVector(camera->GetPosition(), p.position);
   p.ToVector(camera->GetFocalPoint(), p.focalPoint);
   p.ToVector(camera->GetViewUp(), p.viewUp);
@@ -169,9 +162,8 @@ Orientation GetOrientation(vtkRenderer* ren)
   return p;
 }
 
-void SetOrientation(vtkRenderer* ren, Orientation const& p)
-{
-  vtkCamera* camera = ren->GetActiveCamera();
+void SetOrientation(vtkRenderer *ren, Orientation const &p) {
+  vtkCamera *camera = ren->GetActiveCamera();
   camera->SetPosition(p.position.data());
   camera->SetFocalPoint(p.focalPoint.data());
   camera->SetViewUp(p.viewUp.data());

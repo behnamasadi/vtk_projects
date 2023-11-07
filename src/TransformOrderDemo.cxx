@@ -12,8 +12,7 @@
 #include <vtkRenderer.h>
 #include <vtkTransform.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // Create an image
@@ -90,7 +89,7 @@ int main(int, char*[])
   axes->AxisLabelsOff();
   axes->SetTotalLength(5, 5, 5);
 
-  vtkCamera* camera;
+  vtkCamera *camera;
   camera = leftRenderer->GetActiveCamera();
   leftRenderer->AddActor(axes);
   leftRenderer->AddActor(actor1a);

@@ -11,8 +11,7 @@
 #include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // Create a sphere

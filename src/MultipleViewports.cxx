@@ -20,8 +20,7 @@ namespace {
 std::vector<vtkSmartPointer<vtkPolyDataAlgorithm>> GetSources();
 }
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkRenderWindow> renderWindow;
@@ -40,25 +39,21 @@ int main(int, char*[])
                                   "Seashell"};
   std::vector<std::string> actorColor{"Bisque", "RosyBrown", "Goldenrod",
                                       "Chocolate"};
-  vtkCamera* camera = nullptr;
+  vtkCamera *camera = nullptr;
   auto sources = GetSources();
 
-  for (unsigned i = 0; i < 4; i++)
-  {
+  for (unsigned i = 0; i < 4; i++) {
     vtkNew<vtkRenderer> renderer;
 
     renderWindow->AddRenderer(renderer);
     renderer->SetViewport(xmins[i], ymins[i], xmaxs[i], ymaxs[i]);
 
     // Share the camera between viewports.
-    if (i == 0)
-    {
+    if (i == 0) {
       camera = renderer->GetActiveCamera();
       camera->Azimuth(30);
       camera->Elevation(30);
-    }
-    else
-    {
+    } else {
       renderer->SetActiveCamera(camera);
     }
 
@@ -84,11 +79,9 @@ int main(int, char*[])
 }
 
 namespace {
-std::vector<vtkSmartPointer<vtkPolyDataAlgorithm>> GetSources()
-{
+std::vector<vtkSmartPointer<vtkPolyDataAlgorithm>> GetSources() {
   std::vector<vtkSmartPointer<vtkPolyDataAlgorithm>> sources;
-  for (unsigned i = 0; i < 4; i++)
-  {
+  for (unsigned i = 0; i < 4; i++) {
     // Create a sphere.
     vtkNew<vtkSphereSource> sphere;
     sphere->SetCenter(0.0, 0.0, 0.0);

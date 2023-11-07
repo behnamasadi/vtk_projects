@@ -14,8 +14,7 @@
 #include <vtkTextRepresentation.h>
 #include <vtkTextWidget.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // Create the RenderWindow, Renderer and both Actors

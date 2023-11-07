@@ -16,8 +16,7 @@
 #include <vtkTriangleFilter.h>
 #include <vtkUnstructuredGrid.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkSphereSource> sphereSource;
@@ -35,7 +34,7 @@ int main(int, char*[])
   sphereActor->GetProperty()->SetColor(
       colors->GetColor3d("MistyRose").GetData());
 
-  vtkPolyData* mesh = triangleFilter->GetOutput();
+  vtkPolyData *mesh = triangleFilter->GetOutput();
   cout << "There are " << mesh->GetNumberOfCells() << " cells." << endl;
 
   vtkNew<vtkMeshQuality> qualityFilter;
@@ -43,15 +42,14 @@ int main(int, char*[])
   qualityFilter->SetTriangleQualityMeasureToArea();
   qualityFilter->Update();
 
-  vtkDataSet* qualityMesh = qualityFilter->GetOutput();
-  auto qualityArray = dynamic_cast<vtkDoubleArray*>(
+  vtkDataSet *qualityMesh = qualityFilter->GetOutput();
+  auto qualityArray = dynamic_cast<vtkDoubleArray *>(
       qualityMesh->GetCellData()->GetArray("Quality"));
 
   cout << "There are " << qualityArray->GetNumberOfTuples() << " values."
        << endl;
 
-  for (vtkIdType i = 0; i < qualityArray->GetNumberOfTuples(); i++)
-  {
+  for (vtkIdType i = 0; i < qualityArray->GetNumberOfTuples(); i++) {
     double val = qualityArray->GetValue(i);
     cout << "value " << i << " : " << val << endl;
   }
@@ -66,7 +64,7 @@ int main(int, char*[])
   selectCells->SetInputData(qualityMesh);
   selectCells->Update();
 
-  vtkUnstructuredGrid* ug = selectCells->GetOutput();
+  vtkUnstructuredGrid *ug = selectCells->GetOutput();
 
   // Create a mapper and actor
   vtkNew<vtkDataSetMapper> mapper;

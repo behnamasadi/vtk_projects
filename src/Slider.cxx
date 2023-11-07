@@ -22,33 +22,26 @@ namespace {
 // controlled. After constructing the callback, the program sets the
 // SphereSource of the callback to
 // the object to be controlled.
-class vtkSliderCallback : public vtkCommand
-{
+class vtkSliderCallback : public vtkCommand {
 public:
-  static vtkSliderCallback* New()
-  {
-    return new vtkSliderCallback;
-  }
-  virtual void Execute(vtkObject* caller, unsigned long, void*)
-  {
-    vtkSliderWidget* sliderWidget = reinterpret_cast<vtkSliderWidget*>(caller);
-    this->SphereSource->SetPhiResolution(
-        static_cast<vtkSliderRepresentation*>(sliderWidget->GetRepresentation())
-            ->GetValue() /
-        2);
+  static vtkSliderCallback *New() { return new vtkSliderCallback; }
+  virtual void Execute(vtkObject *caller, unsigned long, void *) {
+    vtkSliderWidget *sliderWidget = reinterpret_cast<vtkSliderWidget *>(caller);
+    this->SphereSource->SetPhiResolution(static_cast<vtkSliderRepresentation *>(
+                                             sliderWidget->GetRepresentation())
+                                             ->GetValue() /
+                                         2);
     this->SphereSource->SetThetaResolution(
-        static_cast<vtkSliderRepresentation*>(sliderWidget->GetRepresentation())
+        static_cast<vtkSliderRepresentation *>(
+            sliderWidget->GetRepresentation())
             ->GetValue());
   }
-  vtkSliderCallback() : SphereSource(0)
-  {
-  }
-  vtkSphereSource* SphereSource;
+  vtkSliderCallback() : SphereSource(0) {}
+  vtkSphereSource *SphereSource;
 };
 } // namespace
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // A sphere

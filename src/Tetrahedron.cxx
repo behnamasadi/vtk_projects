@@ -13,8 +13,7 @@
 #include <vtkTetra.h>
 #include <vtkUnstructuredGrid.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkPoints> points;

@@ -14,10 +14,8 @@
 #include <vtkStreamTracer.h>
 #include <vtkStructuredGridOutlineFilter.h>
 
-int main(int argc, char* argv[])
-{
-  if (argc < 3)
-  {
+int main(int argc, char *argv[]) {
+  if (argc < 3) {
     std::cerr << "Required arguments: xyzFile qFile e.g. combxyz.bin combq.bin"
               << std::endl;
     return EXIT_FAILURE;

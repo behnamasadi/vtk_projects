@@ -17,30 +17,21 @@
 #include <vtkTransform.h>
 
 namespace {
-class vtkAffineCallback : public vtkCommand
-{
+class vtkAffineCallback : public vtkCommand {
 public:
-  static vtkAffineCallback* New()
-  {
-    return new vtkAffineCallback;
-  }
-  virtual void Execute(vtkObject* caller, unsigned long, void*);
-  vtkAffineCallback() : Actor(0), AffineRep(0)
-  {
+  static vtkAffineCallback *New() { return new vtkAffineCallback; }
+  virtual void Execute(vtkObject *caller, unsigned long, void *);
+  vtkAffineCallback() : Actor(0), AffineRep(0) {
     this->Transform = vtkTransform::New();
   }
-  ~vtkAffineCallback()
-  {
-    this->Transform->Delete();
-  }
-  vtkActor* Actor;
-  vtkAffineRepresentation2D* AffineRep;
-  vtkTransform* Transform;
+  ~vtkAffineCallback() { this->Transform->Delete(); }
+  vtkActor *Actor;
+  vtkAffineRepresentation2D *AffineRep;
+  vtkTransform *Transform;
 };
 } // namespace
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // Create two spheres: a larger one and a smaller one on top of the larger one
@@ -95,7 +86,7 @@ int main(int, char*[])
   // Create an interactor
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
-  dynamic_cast<vtkInteractorStyleSwitch*>(
+  dynamic_cast<vtkInteractorStyleSwitch *>(
       renderWindowInteractor->GetInteractorStyle())
       ->SetCurrentStyleToTrackballCamera();
 
@@ -105,12 +96,12 @@ int main(int, char*[])
   vtkNew<vtkAffineWidget> affineWidget;
   affineWidget->SetInteractor(renderWindowInteractor);
   affineWidget->CreateDefaultRepresentation();
-  dynamic_cast<vtkAffineRepresentation2D*>(affineWidget->GetRepresentation())
+  dynamic_cast<vtkAffineRepresentation2D *>(affineWidget->GetRepresentation())
       ->PlaceWidget(actor->GetBounds());
 
   vtkNew<vtkAffineCallback> affineCallback;
   affineCallback->Actor = actor;
-  affineCallback->AffineRep = dynamic_cast<vtkAffineRepresentation2D*>(
+  affineCallback->AffineRep = dynamic_cast<vtkAffineRepresentation2D *>(
       affineWidget->GetRepresentation());
 
   affineWidget->AddObserver(vtkCommand::InteractionEvent, affineCallback);
@@ -128,9 +119,8 @@ int main(int, char*[])
 }
 
 namespace {
-void vtkAffineCallback::Execute(vtkObject*, unsigned long vtkNotUsed(event),
-                                void*)
-{
+void vtkAffineCallback::Execute(vtkObject *, unsigned long vtkNotUsed(event),
+                                void *) {
   this->AffineRep->GetTransform(this->Transform);
   this->Actor->SetUserTransform(this->Transform);
 }

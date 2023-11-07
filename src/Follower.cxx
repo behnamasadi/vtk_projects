@@ -12,8 +12,7 @@
 #include <vtkRenderer.h>
 #include <vtkVectorText.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // Create some text
@@ -46,7 +45,7 @@ int main(int, char*[])
   renderWindow->SetWindowName("Follower");
 
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
-  dynamic_cast<vtkInteractorStyle*>(
+  dynamic_cast<vtkInteractorStyle *>(
       renderWindowInteractor->GetInteractorStyle())
       ->AutoAdjustCameraClippingRangeOn();
   renderWindowInteractor->SetRenderWindow(renderWindow);

@@ -13,15 +13,14 @@
 #include <vtkRenderer.h>
 #include <vtkSCurveSpline.h>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkPointSource> pointSource;
   pointSource->SetNumberOfPoints(5);
   pointSource->Update();
 
-  vtkPoints* points = pointSource->GetOutput()->GetPoints();
+  vtkPoints *points = pointSource->GetOutput()->GetPoints();
 
   vtkNew<vtkSCurveSpline> xSpline;
   vtkNew<vtkSCurveSpline> ySpline;

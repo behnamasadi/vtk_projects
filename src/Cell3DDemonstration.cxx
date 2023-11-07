@@ -42,8 +42,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeVoxel();
 vtkSmartPointer<vtkUnstructuredGrid> MakeWedge();
 } // namespace
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // Set the background color.
@@ -91,8 +90,7 @@ int main(int, char*[])
   textProperty->SetColor(colors->GetColor3d("LightGoldenrodYellow").GetData());
 
   // Create and link the mappers actors and renderers together.
-  for (unsigned int i = 0; i < uGrids.size(); ++i)
-  {
+  for (unsigned int i = 0; i < uGrids.size(); ++i) {
     textMappers.push_back(vtkSmartPointer<vtkTextMapper>::New());
     textActors.push_back(vtkSmartPointer<vtkActor2D>::New());
 
@@ -122,10 +120,8 @@ int main(int, char*[])
 
   renWin->SetSize(rendererSize * gridDimensions, rendererSize * gridDimensions);
 
-  for (int row = 0; row < gridDimensions; row++)
-  {
-    for (int col = 0; col < gridDimensions; col++)
-    {
+  for (int row = 0; row < gridDimensions; row++) {
+    for (int col = 0; col < gridDimensions; col++) {
       int index = row * gridDimensions + col;
 
       // (xmin, ymin, xmax, ymax)
@@ -138,8 +134,7 @@ int main(int, char*[])
                             static_cast<double>(gridDimensions - row) *
                                 rendererSize / (gridDimensions * rendererSize)};
 
-      if (index > int(actors.size()) - 1)
-      {
+      if (index > int(actors.size()) - 1) {
         // Add a renderer even if there is no actor.
         // This makes the render window background all the same color.
         vtkSmartPointer<vtkRenderer> ren = vtkSmartPointer<vtkRenderer>::New();
@@ -170,8 +165,7 @@ int main(int, char*[])
 }
 
 namespace {
-vtkSmartPointer<vtkUnstructuredGrid> MakeHexagonalPrism()
-{
+vtkSmartPointer<vtkUnstructuredGrid> MakeHexagonalPrism() {
   // 3D: hexagonal prism: a wedge with an hexagonal base.
   // Be careful, the base face ordering is different from wedge.
 
@@ -194,8 +188,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeHexagonalPrism()
   points->InsertNextPoint(-0.5, 0.5, 0.0);
 
   vtkNew<vtkHexagonalPrism> hexagonalPrism;
-  for (int i = 0; i < numberOfVertices; ++i)
-  {
+  for (int i = 0; i < numberOfVertices; ++i) {
     hexagonalPrism->GetPointIds()->SetId(i, i);
   }
 
@@ -208,8 +201,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeHexagonalPrism()
   return ug;
 }
 
-vtkSmartPointer<vtkUnstructuredGrid> MakeHexahedron()
-{
+vtkSmartPointer<vtkUnstructuredGrid> MakeHexahedron() {
   // A regular hexagon (cube) with all faces square and three squares around
   // each vertex is created below.
 
@@ -235,8 +227,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeHexahedron()
 
   // Create a hexahedron from the points
   vtkNew<vtkHexahedron> hex;
-  for (int i = 0; i < numberOfVertices; ++i)
-  {
+  for (int i = 0; i < numberOfVertices; ++i) {
     hex->GetPointIds()->SetId(i, i);
   }
 
@@ -249,8 +240,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeHexahedron()
   return uGrid;
 }
 
-vtkSmartPointer<vtkUnstructuredGrid> MakePentagonalPrism()
-{
+vtkSmartPointer<vtkUnstructuredGrid> MakePentagonalPrism() {
 
   int numberOfVertices = 10;
 
@@ -269,8 +259,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePentagonalPrism()
 
   // Pentagonal Prism
   vtkNew<vtkPentagonalPrism> pentagonalPrism;
-  for (int i = 0; i < numberOfVertices; ++i)
-  {
+  for (int i = 0; i < numberOfVertices; ++i) {
     pentagonalPrism->GetPointIds()->SetId(i, i);
   }
 
@@ -284,8 +273,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePentagonalPrism()
   return uGrid;
 }
 
-vtkSmartPointer<vtkUnstructuredGrid> MakePolyhedron()
-{
+vtkSmartPointer<vtkUnstructuredGrid> MakePolyhedron() {
 
   // Make a regular dodecahedron. It consists of twelve regular pentagonal
   // faces with three faces meeting at each vertex.
@@ -325,11 +313,9 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePolyhedron()
       {18, 13, 8, 12, 17}, {19, 14, 9, 13, 18}, {19, 18, 17, 16, 15}};
 
   vtkNew<vtkIdList> dodechedronFaces;
-  for (int i = 0; i < numberOfFaces; i++)
-  {
+  for (int i = 0; i < numberOfFaces; i++) {
     dodechedronFaces->InsertNextId(numberOfFaceVertices);
-    for (int j = 0; j < numberOfFaceVertices; ++j)
-    {
+    for (int j = 0; j < numberOfFaceVertices; ++j) {
       dodechedronFaces->InsertNextId(dodechedronFace[i][j]);
     }
   }
@@ -343,8 +329,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePolyhedron()
   return uGrid;
 }
 
-vtkSmartPointer<vtkUnstructuredGrid> MakePyramid()
-{
+vtkSmartPointer<vtkUnstructuredGrid> MakePyramid() {
   // Make a regular square pyramid.
   int numberOfVertices = 5;
 
@@ -362,8 +347,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePyramid()
   points->InsertNextPoint(p4);
 
   vtkNew<vtkPyramid> pyramid;
-  for (int i = 0; i < numberOfVertices; ++i)
-  {
+  for (int i = 0; i < numberOfVertices; ++i) {
     pyramid->GetPointIds()->SetId(i, i);
   }
 
@@ -375,8 +359,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakePyramid()
   return ug;
 }
 
-vtkSmartPointer<vtkUnstructuredGrid> MakeTetrahedron()
-{
+vtkSmartPointer<vtkUnstructuredGrid> MakeTetrahedron() {
   // Make a tetrahedron.
   int numberOfVertices = 4;
 
@@ -387,8 +370,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeTetrahedron()
   points->InsertNextPoint(0, 1, 1);
 
   vtkSmartPointer<vtkTetra> tetra = vtkSmartPointer<vtkTetra>::New();
-  for (int i = 0; i < numberOfVertices; ++i)
-  {
+  for (int i = 0; i < numberOfVertices; ++i) {
     tetra->GetPointIds()->SetId(i, i);
   }
 
@@ -403,8 +385,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeTetrahedron()
   return unstructuredGrid;
 }
 
-vtkSmartPointer<vtkUnstructuredGrid> MakeVoxel()
-{
+vtkSmartPointer<vtkUnstructuredGrid> MakeVoxel() {
   // A voxel is a representation of a regular grid in 3-D space.
   int numberOfVertices = 8;
 
@@ -419,8 +400,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeVoxel()
   points->InsertNextPoint(1, 1, 1);
 
   vtkNew<vtkVoxel> voxel;
-  for (int i = 0; i < numberOfVertices; ++i)
-  {
+  for (int i = 0; i < numberOfVertices; ++i) {
     voxel->GetPointIds()->SetId(i, i);
   }
 
@@ -432,8 +412,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeVoxel()
   return ug;
 }
 
-vtkSmartPointer<vtkUnstructuredGrid> MakeWedge()
-{
+vtkSmartPointer<vtkUnstructuredGrid> MakeWedge() {
 
   // A wedge consists of two triangular ends and three rectangular faces.
 
@@ -448,8 +427,7 @@ vtkSmartPointer<vtkUnstructuredGrid> MakeWedge()
   points->InsertNextPoint(1, .5, .5);
 
   vtkNew<vtkWedge> wedge;
-  for (int i = 0; i < numberOfVertices; ++i)
-  {
+  for (int i = 0; i < numberOfVertices; ++i) {
     wedge->GetPointIds()->SetId(i, i);
   }
 

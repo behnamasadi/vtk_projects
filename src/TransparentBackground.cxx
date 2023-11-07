@@ -31,12 +31,11 @@
 #include <iostream>
 
 namespace {
-void KeypressCallbackFunction(vtkObject* caller, long unsigned int eventId,
-                              void* clientData, void* callData);
+void KeypressCallbackFunction(vtkObject *caller, long unsigned int eventId,
+                              void *clientData, void *callData);
 } // namespace
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkCubeSource> cubeSource;
@@ -76,8 +75,7 @@ int main(int argc, char* argv[])
   // The renderers, render window and interactor
   std::array<vtkNew<vtkRenderer>, 2> renderers;
   vtkNew<vtkRenderWindow> renWin;
-  for (auto&& ren : renderers)
-  {
+  for (auto &&ren : renderers) {
     renWin->AddRenderer(ren);
   }
   renWin->SetSize(800, 800);
@@ -112,30 +110,27 @@ int main(int argc, char* argv[])
 }
 
 namespace {
-void KeypressCallbackFunction(vtkObject* caller,
+void KeypressCallbackFunction(vtkObject *caller,
                               long unsigned int vtkNotUsed(eventId),
-                              void* vtkNotUsed(clientData),
-                              void* vtkNotUsed(callData))
-{
-  vtkRenderWindowInteractor* iren =
-      static_cast<vtkRenderWindowInteractor*>(caller);
-  vtkRendererCollection* renderers = iren->GetRenderWindow()->GetRenderers();
-  if (renderers->GetNumberOfItems() < 2)
-  {
+                              void *vtkNotUsed(clientData),
+                              void *vtkNotUsed(callData)) {
+  vtkRenderWindowInteractor *iren =
+      static_cast<vtkRenderWindowInteractor *>(caller);
+  vtkRendererCollection *renderers = iren->GetRenderWindow()->GetRenderers();
+  if (renderers->GetNumberOfItems() < 2) {
     std::cerr << "We need at least two renderers, we have only "
               << renderers->GetNumberOfItems() << std::endl;
     return;
   }
   renderers->InitTraversal();
   // Top item
-  vtkRenderer* ren0 = renderers->GetNextItem();
+  vtkRenderer *ren0 = renderers->GetNextItem();
   // Bottom item
-  vtkRenderer* ren1 = renderers->GetNextItem();
+  vtkRenderer *ren1 = renderers->GetNextItem();
 
   std::string key = iren->GetKeySym();
 
-  if (key == "0")
-  {
+  if (key == "0") {
     iren->GetRenderWindow()
         ->GetInteractor()
         ->GetInteractorStyle()
@@ -143,8 +138,7 @@ void KeypressCallbackFunction(vtkObject* caller,
     ren0->InteractiveOn();
     ren1->InteractiveOff();
   }
-  if (key == "1")
-  {
+  if (key == "1") {
     iren->GetRenderWindow()
         ->GetInteractor()
         ->GetInteractorStyle()

@@ -36,12 +36,11 @@ void AxesLines(vtkSmartPointer<vtkPolyData> linesPolyData);
  *
  * @return The actor.
  */
-vtkSmartPointer<vtkActor> PointToGlyph(vtkPoints* points, double const& scale);
+vtkSmartPointer<vtkActor> PointToGlyph(vtkPoints *points, double const &scale);
 
 } // namespace
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   /*
   This demo creates a coordinate frame (+x, +y, +z) of vectors and a rotated,
   peturbed frame (+z, +y, -x) and aligns the rotated frame to the original as
@@ -97,7 +96,7 @@ int main(int, char*[])
   transformFilter->Update();
 
   // Display the transformation matrix that was computed
-  vtkMatrix4x4* mat = landmarkTransform->GetMatrix();
+  vtkMatrix4x4 *mat = landmarkTransform->GetMatrix();
   std::cout << "Matrix: " << *mat << std::endl;
 
   // Visualize
@@ -145,8 +144,7 @@ int main(int, char*[])
 }
 
 namespace {
-void AxesLines(vtkSmartPointer<vtkPolyData> linesPolyData)
-{
+void AxesLines(vtkSmartPointer<vtkPolyData> linesPolyData) {
   // Create four points
   double origin[3] = {0.0, 0.0, 0.0};
   double p0[3] = {1.2, 0.0, 0.0};
@@ -197,12 +195,10 @@ void AxesLines(vtkSmartPointer<vtkPolyData> linesPolyData)
   linesPolyData->GetCellData()->SetScalars(colors);
 }
 
-vtkSmartPointer<vtkActor> PointToGlyph(vtkPoints* points, double const& scale)
-{
+vtkSmartPointer<vtkActor> PointToGlyph(vtkPoints *points, double const &scale) {
   auto bounds = points->GetBounds();
   double maxLen = 0;
-  for (int i = 1; i < 3; ++i)
-  {
+  for (int i = 1; i < 3; ++i) {
     maxLen = std::max(bounds[i + 1] - bounds[i], maxLen);
   }
 

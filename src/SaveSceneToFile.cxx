@@ -21,21 +21,20 @@
 #include <vtksys/SystemTools.hxx>
 
 namespace {
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName);
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);
 }
 #include <vtkActor.h>
 #include <vtkCamera.h>
 namespace {
-void SaveSceneToFile(std::string fileName, vtkActor* actor, vtkCamera* camera);
+void SaveSceneToFile(std::string fileName, vtkActor *actor, vtkCamera *camera);
 }
 #include <vtkActor.h>
 #include <vtkCamera.h>
 namespace {
-void RestoreSceneFromFile(std::string fileName, vtkActor* actor,
-                          vtkCamera* camera);
+void RestoreSceneFromFile(std::string fileName, vtkActor *actor,
+                          vtkCamera *camera);
 }
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
   auto polyData = ReadPolyData(argc > 1 ? argv[1] : "");
 
   // Visualize
@@ -79,9 +78,8 @@ int main(int argc, char* argv[])
 
 namespace {
 #include <fstream>
-void SaveSceneToFile(std::string fileName, vtkActor* /* actor */,
-                     vtkCamera* camera)
-{
+void SaveSceneToFile(std::string fileName, vtkActor * /* actor */,
+                     vtkCamera *camera) {
   // Actor
   //  Position, orientation, origin, scale, usrmatrix, usertransform
   // Camera
@@ -109,9 +107,8 @@ void SaveSceneToFile(std::string fileName, vtkActor* /* actor */,
 } // namespace
 namespace {
 #include <fstream>
-void RestoreSceneFromFile(std::string fileName, vtkActor* /* actor */,
-                          vtkCamera* camera)
-{
+void RestoreSceneFromFile(std::string fileName, vtkActor * /* actor */,
+                          vtkCamera *camera) {
   std::ifstream saveFile(fileName);
   std::string line;
 
@@ -125,57 +122,40 @@ void RestoreSceneFromFile(std::string fileName, vtkActor* /* actor */,
       "\\-]*([0-9e\\.\\-]*[^,])");
   vtksys::RegularExpression floatScalar("[^0-9\\.\\-]*([0-9\\.\\-e]*[^,])");
 
-  while (std::getline(saveFile, line) && !saveFile.eof())
-  {
-    if (reCFP.find(line))
-    {
+  while (std::getline(saveFile, line) && !saveFile.eof()) {
+    if (reCFP.find(line)) {
       std::string rest(line, reCFP.end());
-      if (floatNumber.find(rest))
-      {
+      if (floatNumber.find(rest)) {
         camera->SetFocalPoint(atof(floatNumber.match(1).c_str()),
                               atof(floatNumber.match(2).c_str()),
                               atof(floatNumber.match(3).c_str()));
       }
-    }
-    else if (reCP.find(line))
-    {
+    } else if (reCP.find(line)) {
       std::string rest(line, reCP.end());
-      if (floatNumber.find(rest))
-      {
+      if (floatNumber.find(rest)) {
         camera->SetPosition(atof(floatNumber.match(1).c_str()),
                             atof(floatNumber.match(2).c_str()),
                             atof(floatNumber.match(3).c_str()));
       }
-    }
-    else if (reCVU.find(line))
-    {
+    } else if (reCVU.find(line)) {
       std::string rest(line, reCVU.end());
-      if (floatNumber.find(rest))
-      {
+      if (floatNumber.find(rest)) {
         camera->SetViewUp(atof(floatNumber.match(1).c_str()),
                           atof(floatNumber.match(2).c_str()),
                           atof(floatNumber.match(3).c_str()));
       }
-    }
-    else if (reCVA.find(line))
-    {
+    } else if (reCVA.find(line)) {
       std::string rest(line, reCVA.end());
-      if (floatScalar.find(rest))
-      {
+      if (floatScalar.find(rest)) {
         camera->SetViewAngle(atof(floatScalar.match(1).c_str()));
       }
-    }
-    else if (reCCR.find(line))
-    {
+    } else if (reCCR.find(line)) {
       std::string rest(line, reCCR.end());
-      if (floatNumber.find(rest))
-      {
+      if (floatNumber.find(rest)) {
         camera->SetClippingRange(atof(floatNumber.match(1).c_str()),
                                  atof(floatNumber.match(2).c_str()));
       }
-    }
-    else
-    {
+    } else {
       std::cout << "Unrecognized line: " << line << std::endl;
     }
   }
@@ -183,55 +163,41 @@ void RestoreSceneFromFile(std::string fileName, vtkActor* /* actor */,
 }
 } // namespace
 namespace {
-vtkSmartPointer<vtkPolyData> ReadPolyData(const char* fileName)
-{
+vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName) {
   vtkSmartPointer<vtkPolyData> polyData;
   std::string extension =
       vtksys::SystemTools::GetFilenameExtension(std::string(fileName));
-  if (extension == ".ply")
-  {
+  if (extension == ".ply") {
     vtkNew<vtkPLYReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".vtp")
-  {
+  } else if (extension == ".vtp") {
     vtkNew<vtkXMLPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".obj")
-  {
+  } else if (extension == ".obj") {
     vtkNew<vtkOBJReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".stl")
-  {
+  } else if (extension == ".stl") {
     vtkNew<vtkSTLReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".vtk")
-  {
+  } else if (extension == ".vtk") {
     vtkNew<vtkPolyDataReader> reader;
     reader->SetFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else if (extension == ".g")
-  {
+  } else if (extension == ".g") {
     vtkNew<vtkBYUReader> reader;
     reader->SetGeometryFileName(fileName);
     reader->Update();
     polyData = reader->GetOutput();
-  }
-  else
-  {
+  } else {
     vtkNew<vtkSphereSource> source;
     source->Update();
     polyData = source->GetOutput();

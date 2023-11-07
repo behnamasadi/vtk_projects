@@ -14,30 +14,26 @@
 namespace {
 
 // Define interaction style
-class KeyPressInteractorStyle : public vtkInteractorStyleTrackballCamera
-{
+class KeyPressInteractorStyle : public vtkInteractorStyleTrackballCamera {
 public:
-  static KeyPressInteractorStyle* New();
+  static KeyPressInteractorStyle *New();
   vtkTypeMacro(KeyPressInteractorStyle, vtkInteractorStyleTrackballCamera);
 
-  virtual void OnKeyPress() override
-  {
+  virtual void OnKeyPress() override {
     // Get the keypress
-    vtkRenderWindowInteractor* rwi = this->Interactor;
+    vtkRenderWindowInteractor *rwi = this->Interactor;
     std::string key = rwi->GetKeySym();
 
     // Output the key that was pressed
     std::cout << "Pressed " << key << std::endl;
 
     // Handle an arrow key
-    if (key == "Up")
-    {
+    if (key == "Up") {
       std::cout << "The up arrow was pressed." << std::endl;
     }
 
     // Handle a "normal" key
-    if (key == "a")
-    {
+    if (key == "a") {
       std::cout << "The a key was pressed." << std::endl;
     }
 
@@ -49,8 +45,7 @@ vtkStandardNewMacro(KeyPressInteractorStyle);
 
 } // namespace
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   vtkNew<vtkSphereSource> sphereSource;
