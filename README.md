@@ -18,6 +18,22 @@ or be more specific:
 cmake --build build --target all --config Release
 ```
 
+If you prefer `preset` use:
+
+```
+cmake --preset ninja-multi
+```
+and 
+
+```
+cmake --build --preset ninja-multi-debug
+```
+or 
+```
+cmake --build --preset ninja-multi-release
+```
+
+
 Prevent a "command line is too long" failure in Windows:
 
 ```
