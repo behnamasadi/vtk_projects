@@ -1,5 +1,6 @@
 #include <vtkActor.h>
 #include <vtkAxesActor.h>
+#include <vtkCubeSource.h>
 #include <vtkLegendScaleActor.h>
 #include <vtkLineSource.h>
 #include <vtkNew.h>
@@ -12,14 +13,45 @@
 #include <vtkSmartPointer.h>
 #include <vtkTransform.h>
 #include <vtkVectorText.h>
-
 int main(int, char *[]) {
+
+  vtkNew<vtkCubeSource> cubeSource;
+
+  cubeSource->SetXLength(2.0);
+  cubeSource->SetYLength(1.5);
+  cubeSource->SetZLength(4.0);
+
+  cubeSource->Update();
+
+  // Create a mapper and actor.
+  vtkNew<vtkPolyDataMapper> cubeMapper;
+  cubeMapper->SetInputConnection(cubeSource->GetOutputPort());
+
+  vtkNew<vtkActor> cubeActor;
+  cubeActor->SetMapper(cubeMapper);
+
+  vtkNew<vtkTransform> transformCube;
+  transformCube->Translate(2.0, 0.0, 0.0);
+  cubeActor->SetUserTransform(transformCube);
+
+  double bounds[6];
+  // cubeActor->GetMapper()->GetBounds(bounds);
+
+  cubeActor->GetBounds(bounds);
+
+  for (const auto &bound : bounds)
+    std::cout << bound << std::endl;
+
+  int planeSourceXResolution = 10;
+
   // Create a plane source with grid lines
   vtkNew<vtkPlaneSource> planeSource;
   planeSource->SetXResolution(
-      10); // Set the number of grid lines in the X direction
+      planeSourceXResolution); // Set the number of grid lines in the X
+                               // direction
   planeSource->SetYResolution(
-      10); // Set the number of grid lines in the Y direction
+      planeSourceXResolution); // Set the number of grid lines in the Y
+                               // direction
 
   vtkNew<vtkTransform> transformOrigin;
   vtkNew<vtkTransform> transformPoint1;
@@ -44,12 +76,43 @@ int main(int, char *[]) {
   axesPoint1->SetYAxisLabelText("");
   axesPoint1->SetZAxisLabelText("");
 
-  planeSource->SetPoint2(0, 10, 0);
-  transformPoint2->Translate(0.0, 10.0, 0.0);
+  planeSource->SetPoint2(0, 0, 10);
+  transformPoint2->Translate(0.0, 0.0, 10.0);
   axesPoint2->SetUserTransform(transformPoint2);
   axesPoint2->SetXAxisLabelText("2");
   axesPoint2->SetYAxisLabelText("");
   axesPoint2->SetZAxisLabelText("");
+
+  double centerX = (bounds[0] + bounds[1]) / 2.0;
+  double centerY = (bounds[2] + bounds[3]) / 2.0;
+  double centerZ = (bounds[4] + bounds[5]) / 2.0;
+
+  std::cout << "centerX: " << centerX << std::endl;
+
+  std::cout << "centerY: " << centerY << std::endl;
+
+  std::cout << "centerZ: " << centerZ << std::endl;
+
+  // This is the with in X direction
+  double length = bounds[1] - bounds[0];
+
+  // This is the with in Y direction
+  double width = bounds[3] - bounds[2];
+
+  // This is the depth in Z direction
+  double height = bounds[5] - bounds[4];
+
+  double maxDimension = std::max(length, height);
+
+  int grid_multiplier = 4;
+
+  int squareSize = 1;
+
+  double gridHalfSize = squareSize * planeSourceXResolution / 2;
+
+  planeSource->SetOrigin(centerX - gridHalfSize, 0, centerZ - gridHalfSize);
+  planeSource->SetPoint1(centerX + gridHalfSize, 0, centerZ - gridHalfSize);
+  planeSource->SetPoint2(centerX - gridHalfSize, 0, centerZ + gridHalfSize);
 
   // Map the plane's data to graphics primitives
   vtkNew<vtkPolyDataMapper> planeMapper;
@@ -83,6 +146,8 @@ int main(int, char *[]) {
   renderer->AddActor(axesPoint1);
 
   renderer->AddActor(axesPoint2);
+
+  renderer->AddActor(cubeActor);
 
   // Start the rendering loop
   renderWindow->Render();
