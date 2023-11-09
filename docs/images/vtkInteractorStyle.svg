@@ -1,0 +1,492 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1010pt" height="651pt" viewBox="0.00 0.00 1010.00 650.50"><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"/><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"/><style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"/>
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 646.5)">
+<title>vtkInteractorStyle</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-646.5 1006,-646.5 1006,4 -4,4"/>
+<!-- Node1 -->
+<g id="node1" class="node">
+<title>Node1</title>
+<g id="a_node1"><a xlink:title="provide event-driven interface to the rendering window (defines trackball mode)">
+<polygon fill="#bfbfbf" stroke="black" points="359,-342 359,-361 453,-361 453,-342 359,-342"/>
+<text text-anchor="middle" x="406" y="-349" font-family="Helvetica" font-size="10.00">vtkInteractorStyle</text>
+</a>
+</g>
+</g>
+<!-- Node5 -->
+<g id="node5" class="node">
+<title>Node5</title>
+<g id="a_node5"><a xlink:href="classvtkContextInteractorStyle.html" target="_top" xlink:title="An interactor for chart views.">
+<polygon fill="white" stroke="black" points="501,-623 501,-642 629,-642 629,-623 501,-623"/>
+<text text-anchor="middle" x="565" y="-630" font-family="Helvetica" font-size="10.00">vtkContextInteractorStyle</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node5 -->
+<g id="edge4" class="edge">
+<title>Node1-&gt;Node5</title>
+<path fill="none" stroke="midnightblue" d="M407.03,-371.17C408.23,-419.81 418.33,-546.63 489,-613.5 493.1,-617.38 497.87,-620.49 502.98,-623"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="410.53,-371 406.89,-361.05 403.53,-371.1 410.53,-371"/>
+</g>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="classvtkInteractorStyle3D.html" target="_top" xlink:title="extends interaction to support 3D input">
+<polygon fill="white" stroke="black" points="511.5,-585 511.5,-604 618.5,-604 618.5,-585 511.5,-585"/>
+<text text-anchor="middle" x="565" y="-592" font-family="Helvetica" font-size="10.00">vtkInteractorStyle3D</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node1-&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M408.27,-371.53C412.17,-415.35 427.75,-520.24 489,-575.5 495.38,-581.26 503.26,-585.33 511.49,-588.19"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="411.74,-371.02 407.48,-361.32 404.77,-371.56 411.74,-371.02"/>
+</g>
+<!-- Node11 -->
+<g id="node11" class="node">
+<title>Node11</title>
+<g id="a_node11"><a xlink:href="classvtkInteractorStyleDrawPolygon.html" target="_top" xlink:title="draw polygon during mouse move">
+<polygon fill="white" stroke="black" points="489,-547 489,-566 641,-566 641,-547 489,-547"/>
+<text text-anchor="middle" x="565" y="-554" font-family="Helvetica" font-size="10.00">vtkInteractorStyleDrawPolygon</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node11 -->
+<g id="edge10" class="edge">
+<title>Node1-&gt;Node11</title>
+<path fill="none" stroke="midnightblue" d="M409.91,-371.25C416.61,-409.39 436.75,-493.33 489,-537.5 493.51,-541.32 498.69,-544.38 504.17,-546.84"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="413.37,-370.68 408.3,-361.37 406.46,-371.81 413.37,-370.68"/>
+</g>
+<!-- Node12 -->
+<g id="node12" class="node">
+<title>Node12</title>
+<g id="a_node12"><a xlink:href="classvtkInteractorStyleFlight.html" target="_top" xlink:title="provides flight motion routines">
+<polygon fill="white" stroke="black" points="506,-509 506,-528 624,-528 624,-509 506,-509"/>
+<text text-anchor="middle" x="565" y="-516" font-family="Helvetica" font-size="10.00">vtkInteractorStyleFlight</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node12 -->
+<g id="edge11" class="edge">
+<title>Node1-&gt;Node12</title>
+<path fill="none" stroke="midnightblue" d="M412.41,-370.94C422.24,-402.6 446.09,-465.11 489,-498.5 494.64,-502.89 501.15,-506.31 507.95,-508.99"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="415.7,-369.73 409.51,-361.13 408.99,-371.71 415.7,-369.73"/>
+</g>
+<!-- Node13 -->
+<g id="node13" class="node">
+<title>Node13</title>
+<g id="a_node13"><a xlink:href="classvtkInteractorStyleJoystickActor.html" target="_top" xlink:title="manipulate objects in the scene independently of one another">
+<polygon fill="white" stroke="black" points="500,-459.5 500,-489.5 630,-489.5 630,-459.5 500,-459.5"/>
+<text text-anchor="start" x="508" y="-477.5" font-family="Helvetica" font-size="10.00">vtkInteractorStyleJoystick</text>
+<text text-anchor="middle" x="565" y="-466.5" font-family="Helvetica" font-size="10.00">Actor</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node13 -->
+<g id="edge12" class="edge">
+<title>Node1-&gt;Node13</title>
+<path fill="none" stroke="midnightblue" d="M417.81,-369.78C431.67,-391.71 457.69,-428.18 489,-449.5 494.67,-453.36 500.99,-456.67 507.48,-459.49"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="420.69,-367.78 412.48,-361.09 414.73,-371.45 420.69,-367.78"/>
+</g>
+<!-- Node14 -->
+<g id="node14" class="node">
+<title>Node14</title>
+<g id="a_node14"><a xlink:href="classvtkInteractorStyleJoystickCamera.html" target="_top" xlink:title="interactive manipulation of the camera">
+<polygon fill="white" stroke="black" points="500,-410.5 500,-440.5 630,-440.5 630,-410.5 500,-410.5"/>
+<text text-anchor="start" x="508" y="-428.5" font-family="Helvetica" font-size="10.00">vtkInteractorStyleJoystick</text>
+<text text-anchor="middle" x="565" y="-417.5" font-family="Helvetica" font-size="10.00">Camera</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node14 -->
+<g id="edge13" class="edge">
+<title>Node1-&gt;Node14</title>
+<path fill="none" stroke="midnightblue" d="M429.68,-366.88C445.75,-377.31 468.08,-390.9 489,-400.5 496.86,-404.11 505.39,-407.45 513.79,-410.45"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="431.28,-363.74 421,-361.15 427.42,-369.58 431.28,-363.74"/>
+</g>
+<!-- Node15 -->
+<g id="node15" class="node">
+<title>Node15</title>
+<g id="a_node15"><a xlink:href="classvtkInteractorStyleRubberBand2D.html" target="_top" xlink:title="A rubber band interactor for a 2D view.">
+<polygon fill="white" stroke="black" points="502.5,-361.5 502.5,-391.5 627.5,-391.5 627.5,-361.5 502.5,-361.5"/>
+<text text-anchor="start" x="510.5" y="-379.5" font-family="Helvetica" font-size="10.00">vtkInteractorStyleRubber</text>
+<text text-anchor="middle" x="565" y="-368.5" font-family="Helvetica" font-size="10.00">Band2D</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node15 -->
+<g id="edge14" class="edge">
+<title>Node1-&gt;Node15</title>
+<path fill="none" stroke="midnightblue" d="M463.22,-360.45C475.92,-362.47 489.46,-364.63 502.36,-366.68"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="463.68,-356.98 453.26,-358.87 462.58,-363.89 463.68,-356.98"/>
+</g>
+<!-- Node17 -->
+<g id="node17" class="node">
+<title>Node17</title>
+<g id="a_node17"><a xlink:href="classvtkInteractorStyleRubberBandZoom.html" target="_top" xlink:title="zoom in by amount indicated by rubber band box">
+<polygon fill="white" stroke="black" points="502.5,-312.5 502.5,-342.5 627.5,-342.5 627.5,-312.5 502.5,-312.5"/>
+<text text-anchor="start" x="510.5" y="-330.5" font-family="Helvetica" font-size="10.00">vtkInteractorStyleRubber</text>
+<text text-anchor="middle" x="565" y="-319.5" font-family="Helvetica" font-size="10.00">BandZoom</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node17 -->
+<g id="edge16" class="edge">
+<title>Node1-&gt;Node17</title>
+<path fill="none" stroke="midnightblue" d="M463.22,-342.91C475.92,-340.96 489.46,-338.9 502.36,-336.92"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="462.61,-339.46 453.26,-344.43 463.67,-346.38 462.61,-339.46"/>
+</g>
+<!-- Node18 -->
+<g id="node18" class="node">
+<title>Node18</title>
+<g id="a_node18"><a xlink:href="classvtkInteractorStyleSwitchBase.html" target="_top" xlink:title="dummy interface class.">
+<polygon fill="white" stroke="black" points="492,-274 492,-293 638,-293 638,-274 492,-274"/>
+<text text-anchor="middle" x="565" y="-281" font-family="Helvetica" font-size="10.00">vtkInteractorStyleSwitchBase</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node18 -->
+<g id="edge17" class="edge">
+<title>Node1-&gt;Node18</title>
+<path fill="none" stroke="midnightblue" d="M428.89,-336.02C444.9,-325.31 467.49,-311.43 489,-302.5 497.93,-298.79 507.77,-295.67 517.3,-293.09"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="426.57,-333.37 420.28,-341.9 430.52,-339.15 426.57,-333.37"/>
+</g>
+<!-- Node21 -->
+<g id="node21" class="node">
+<title>Node21</title>
+<g id="a_node21"><a xlink:href="classvtkInteractorStyleTerrain.html" target="_top" xlink:title="manipulate camera in scene with natural view up (e.g., terrain)">
+<polygon fill="white" stroke="black" points="503.5,-236 503.5,-255 626.5,-255 626.5,-236 503.5,-236"/>
+<text text-anchor="middle" x="565" y="-243" font-family="Helvetica" font-size="10.00">vtkInteractorStyleTerrain</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node21 -->
+<g id="edge20" class="edge">
+<title>Node1-&gt;Node21</title>
+<path fill="none" stroke="midnightblue" d="M418.91,-333.77C433.22,-313.88 459.05,-282.11 489,-264.5 495.6,-260.62 502.98,-257.52 510.46,-255.06"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="416.04,-331.77 413.18,-341.98 421.78,-335.78 416.04,-331.77"/>
+</g>
+<!-- Node22 -->
+<g id="node22" class="node">
+<title>Node22</title>
+<g id="a_node22"><a xlink:href="classvtkInteractorStyleTrackballActor.html" target="_top" xlink:title="manipulate objects in the scene independent of each other">
+<polygon fill="white" stroke="black" points="498.5,-186.5 498.5,-216.5 631.5,-216.5 631.5,-186.5 498.5,-186.5"/>
+<text text-anchor="start" x="506.5" y="-204.5" font-family="Helvetica" font-size="10.00">vtkInteractorStyleTrackball</text>
+<text text-anchor="middle" x="565" y="-193.5" font-family="Helvetica" font-size="10.00">Actor</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node22 -->
+<g id="edge21" class="edge">
+<title>Node1-&gt;Node22</title>
+<path fill="none" stroke="midnightblue" d="M414.6,-332.53C426.48,-305.22 451.98,-255 489,-226.5 494,-222.65 499.63,-219.37 505.49,-216.59"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="411.36,-331.2 410.72,-341.78 417.82,-333.91 411.36,-331.2"/>
+</g>
+<!-- Node23 -->
+<g id="node23" class="node">
+<title>Node23</title>
+<g id="a_node23"><a xlink:href="classvtkInteractorStyleTrackballCamera.html" target="_top" xlink:title="interactive manipulation of the camera">
+<polygon fill="white" stroke="black" points="498.5,-137.5 498.5,-167.5 631.5,-167.5 631.5,-137.5 498.5,-137.5"/>
+<text text-anchor="start" x="506.5" y="-155.5" font-family="Helvetica" font-size="10.00">vtkInteractorStyleTrackball</text>
+<text text-anchor="middle" x="565" y="-144.5" font-family="Helvetica" font-size="10.00">Camera</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node23 -->
+<g id="edge22" class="edge">
+<title>Node1-&gt;Node23</title>
+<path fill="none" stroke="midnightblue" d="M410.83,-331.73C418.85,-295.64 440.8,-218.88 489,-176.5 492.9,-173.07 497.3,-170.13 501.96,-167.61"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="407.32,-331.43 408.7,-341.93 414.17,-332.86 407.32,-331.43"/>
+</g>
+<!-- Node31 -->
+<g id="node31" class="node">
+<title>Node31</title>
+<g id="a_node31"><a xlink:href="classvtkInteractorStyleUnicam.html" target="_top" xlink:title="provides Unicam navigation style">
+<polygon fill="white" stroke="black" points="501,-99 501,-118 629,-118 629,-99 501,-99"/>
+<text text-anchor="middle" x="565" y="-106" font-family="Helvetica" font-size="10.00">vtkInteractorStyleUnicam</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node31 -->
+<g id="edge30" class="edge">
+<title>Node1-&gt;Node31</title>
+<path fill="none" stroke="midnightblue" d="M408.27,-331.47C412.17,-287.65 427.75,-182.76 489,-127.5 493.29,-123.63 498.25,-120.53 503.54,-118.04"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="404.77,-331.44 407.48,-341.68 411.74,-331.98 404.77,-331.44"/>
+</g>
+<!-- Node32 -->
+<g id="node32" class="node">
+<title>Node32</title>
+<g id="a_node32"><a xlink:href="classvtkInteractorStyleUser.html" target="_top" xlink:title="provides customizable interaction routines">
+<polygon fill="white" stroke="black" points="507.5,-61 507.5,-80 622.5,-80 622.5,-61 507.5,-61"/>
+<text text-anchor="middle" x="565" y="-68" font-family="Helvetica" font-size="10.00">vtkInteractorStyleUser</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node32 -->
+<g id="edge31" class="edge">
+<title>Node1-&gt;Node32</title>
+<path fill="none" stroke="midnightblue" d="M407.03,-331.83C408.23,-283.19 418.33,-156.37 489,-89.5 494.27,-84.51 500.65,-80.79 507.44,-78.01"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="403.53,-331.9 406.89,-341.95 410.53,-332 403.53,-331.9"/>
+</g>
+<!-- Node2 -->
+<g id="node2" class="node">
+<title>Node2</title>
+<g id="a_node2"><a xlink:href="classvtkInteractorObserver.html" target="_top" xlink:title="an abstract superclass for classes observing events invoked by vtkRenderWindowInteractor">
+<polygon fill="white" stroke="black" points="212,-342 212,-361 323,-361 323,-342 212,-342"/>
+<text text-anchor="middle" x="267.5" y="-349" font-family="Helvetica" font-size="10.00">vtkInteractorObserver</text>
+</a>
+</g>
+</g>
+<!-- Node2&#45;&gt;Node1 -->
+<g id="edge1" class="edge">
+<title>Node2-&gt;Node1</title>
+<path fill="none" stroke="midnightblue" d="M333.5,-351.5C341.97,-351.5 350.51,-351.5 358.59,-351.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="333.23,-348 323.23,-351.5 333.23,-355 333.23,-348"/>
+</g>
+<!-- Node3 -->
+<g id="node3" class="node">
+<title>Node3</title>
+<g id="a_node3"><a xlink:href="classvtkObject.html" target="_top" xlink:title="abstract base class for most VTK objects">
+<polygon fill="white" stroke="black" points="117,-342 117,-361 176,-361 176,-342 117,-342"/>
+<text text-anchor="middle" x="146.5" y="-349" font-family="Helvetica" font-size="10.00">vtkObject</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node2 -->
+<g id="edge2" class="edge">
+<title>Node3-&gt;Node2</title>
+<path fill="none" stroke="midnightblue" d="M186.27,-351.5C194.38,-351.5 203.08,-351.5 211.65,-351.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="186,-348 176,-351.5 186,-355 186,-348"/>
+</g>
+<!-- Node4 -->
+<g id="node4" class="node">
+<title>Node4</title>
+<g id="a_node4"><a xlink:href="classvtkObjectBase.html" target="_top" xlink:title="abstract base class for most VTK objects">
+<polygon fill="white" stroke="black" points="0,-342 0,-361 81,-361 81,-342 0,-342"/>
+<text text-anchor="middle" x="40.5" y="-349" font-family="Helvetica" font-size="10.00">vtkObjectBase</text>
+</a>
+</g>
+</g>
+<!-- Node4&#45;&gt;Node3 -->
+<g id="edge3" class="edge">
+<title>Node4-&gt;Node3</title>
+<path fill="none" stroke="midnightblue" d="M91.35,-351.5C100.15,-351.5 109.03,-351.5 116.99,-351.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="91.11,-348 81.11,-351.5 91.11,-355 91.11,-348"/>
+</g>
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="classvtkVRInteractorStyle.html" target="_top" xlink:title="Extended from vtkInteractorStyle3D to override command methods.">
+<polygon fill="white" stroke="black" points="701.5,-604 701.5,-623 808.5,-623 808.5,-604 701.5,-604"/>
+<text text-anchor="middle" x="755" y="-611" font-family="Helvetica" font-size="10.00">vtkVRInteractorStyle</text>
+</a>
+</g>
+</g>
+<!-- Node6&#45;&gt;Node7 -->
+<g id="edge6" class="edge">
+<title>Node6-&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M628.85,-600.85C652.4,-603.23 678.88,-605.91 701.39,-608.18"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="628.92,-597.34 618.62,-599.82 628.22,-604.31 628.92,-597.34"/>
+</g>
+<!-- Node10 -->
+<g id="node10" class="node">
+<title>Node10</title>
+<g id="a_node10"><a xlink:href="classvtkZSpaceInteractorStyle.html" target="_top" xlink:title="vtkZSpaceInteractorStyle extends vtkInteractorStyle3D to override command methods.">
+<polygon fill="white" stroke="black" points="691,-566 691,-585 819,-585 819,-566 691,-566"/>
+<text text-anchor="middle" x="755" y="-573" font-family="Helvetica" font-size="10.00">vtkZSpaceInteractorStyle</text>
+</a>
+</g>
+</g>
+<!-- Node6&#45;&gt;Node10 -->
+<g id="edge9" class="edge">
+<title>Node6-&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M628.82,-588.15C648.74,-586.14 670.76,-583.91 690.71,-581.9"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="628.22,-584.69 618.62,-589.18 628.92,-591.66 628.22,-584.69"/>
+</g>
+<!-- Node8 -->
+<g id="node8" class="node">
+<title>Node8</title>
+<g id="a_node8"><a xlink:href="classvtkOpenVRInteractorStyle.html" target="_top" xlink:title="Implements OpenVR specific functions required by vtkVRInteractorStyle.">
+<polygon fill="white" stroke="black" points="870,-623 870,-642 1001,-642 1001,-623 870,-623"/>
+<text text-anchor="middle" x="935.5" y="-630" font-family="Helvetica" font-size="10.00">vtkOpenVRInteractorStyle</text>
+</a>
+</g>
+</g>
+<!-- Node7&#45;&gt;Node8 -->
+<g id="edge7" class="edge">
+<title>Node7-&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M818.73,-620.18C835.32,-621.94 853.26,-623.85 869.95,-625.63"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="818.9,-616.68 808.59,-619.1 818.16,-623.64 818.9,-616.68"/>
+</g>
+<!-- Node9 -->
+<g id="node9" class="node">
+<title>Node9</title>
+<g id="a_node9"><a xlink:href="classvtkOpenXRInteractorStyle.html" target="_top" xlink:title="extended from vtkInteractorStyle3D to override command methods">
+<polygon fill="white" stroke="black" points="870,-585 870,-604 1001,-604 1001,-585 870,-585"/>
+<text text-anchor="middle" x="935.5" y="-592" font-family="Helvetica" font-size="10.00">vtkOpenXRInteractorStyle</text>
+</a>
+</g>
+</g>
+<!-- Node7&#45;&gt;Node9 -->
+<g id="edge8" class="edge">
+<title>Node7-&gt;Node9</title>
+<path fill="none" stroke="midnightblue" d="M818.73,-606.82C835.32,-605.06 853.26,-603.15 869.95,-601.37"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="818.16,-603.36 808.59,-607.9 818.9,-610.32 818.16,-603.36"/>
+</g>
+<!-- Node16 -->
+<g id="node16" class="node">
+<title>Node16</title>
+<g id="a_node16"><a xlink:href="classvtkInteractorStyleAreaSelectHover.html" target="_top" xlink:title="An interactor style for an area tree view.">
+<polygon fill="white" stroke="black" points="684,-361.5 684,-391.5 826,-391.5 826,-361.5 684,-361.5"/>
+<text text-anchor="start" x="692" y="-379.5" font-family="Helvetica" font-size="10.00">vtkInteractorStyleAreaSelect</text>
+<text text-anchor="middle" x="755" y="-368.5" font-family="Helvetica" font-size="10.00">Hover</text>
+</a>
+</g>
+</g>
+<!-- Node15&#45;&gt;Node16 -->
+<g id="edge15" class="edge">
+<title>Node15-&gt;Node16</title>
+<path fill="none" stroke="midnightblue" d="M637.85,-376.5C652.93,-376.5 668.81,-376.5 683.83,-376.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="637.56,-373 627.56,-376.5 637.56,-380 637.56,-373"/>
+</g>
+<!-- Node19 -->
+<g id="node19" class="node">
+<title>Node19</title>
+<g id="a_node19"><a xlink:href="classvtkInteractorStyleSwitch.html" target="_top" xlink:title="class to swap between interactory styles">
+<polygon fill="white" stroke="black" points="693,-276 693,-295 817,-295 817,-276 693,-276"/>
+<text text-anchor="middle" x="755" y="-283" font-family="Helvetica" font-size="10.00">vtkInteractorStyleSwitch</text>
+</a>
+</g>
+</g>
+<!-- Node18&#45;&gt;Node19 -->
+<g id="edge18" class="edge">
+<title>Node18-&gt;Node19</title>
+<path fill="none" stroke="midnightblue" d="M648.38,-284.38C663.29,-284.53 678.59,-284.7 692.75,-284.85"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="648.18,-280.87 638.15,-284.27 648.11,-287.87 648.18,-280.87"/>
+</g>
+<!-- Node20 -->
+<g id="node20" class="node">
+<title>Node20</title>
+<g id="a_node20"><a xlink:href="classvtkInteractorStyleTrackball.html" target="_top" xlink:title="provides trackball motion control">
+<polygon fill="white" stroke="black" points="869,-277 869,-296 1002,-296 1002,-277 869,-277"/>
+<text text-anchor="middle" x="935.5" y="-284" font-family="Helvetica" font-size="10.00">vtkInteractorStyleTrackball</text>
+</a>
+</g>
+</g>
+<!-- Node19&#45;&gt;Node20 -->
+<g id="edge19" class="edge">
+<title>Node19-&gt;Node20</title>
+<path fill="none" stroke="midnightblue" d="M827.72,-285.9C841.36,-285.98 855.57,-286.06 869,-286.13"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="827.45,-282.4 817.43,-285.84 827.41,-289.4 827.45,-282.4"/>
+</g>
+<!-- Node24 -->
+<g id="node24" class="node">
+<title>Node24</title>
+<g id="a_node24"><a xlink:href="classvtkInteractorStyleImage.html" target="_top" xlink:title="interactive manipulation of the camera specialized for images">
+<polygon fill="white" stroke="black" points="694.5,-236 694.5,-255 815.5,-255 815.5,-236 694.5,-236"/>
+<text text-anchor="middle" x="755" y="-243" font-family="Helvetica" font-size="10.00">vtkInteractorStyleImage</text>
+</a>
+</g>
+</g>
+<!-- Node23&#45;&gt;Node24 -->
+<g id="edge23" class="edge">
+<title>Node23-&gt;Node24</title>
+<path fill="none" stroke="midnightblue" d="M634.47,-172.26C636.73,-173.59 638.91,-175 641,-176.5 662.94,-192.28 654.63,-210.34 677,-225.5 683.4,-229.84 690.69,-233.24 698.17,-235.9"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="635.94,-169.08 625.45,-167.57 632.7,-175.29 635.94,-169.08"/>
+</g>
+<!-- Node26 -->
+<g id="node26" class="node">
+<title>Node26</title>
+<g id="a_node26"><a xlink:href="classvtkInteractorStyleMultiTouchCamera.html" target="_top" xlink:title="multitouch manipulation of the camera">
+<polygon fill="white" stroke="black" points="684.5,-186.5 684.5,-216.5 825.5,-216.5 825.5,-186.5 684.5,-186.5"/>
+<text text-anchor="start" x="692.5" y="-204.5" font-family="Helvetica" font-size="10.00">vtkInteractorStyleMultiTouch</text>
+<text text-anchor="middle" x="755" y="-193.5" font-family="Helvetica" font-size="10.00">Camera</text>
+</a>
+</g>
+</g>
+<!-- Node23&#45;&gt;Node26 -->
+<g id="edge25" class="edge">
+<title>Node23-&gt;Node26</title>
+<path fill="none" stroke="midnightblue" d="M633.61,-170.12C654.18,-175.48 676.58,-181.32 696.43,-186.49"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="634.24,-166.67 623.68,-167.53 632.48,-173.44 634.24,-166.67"/>
+</g>
+<!-- Node27 -->
+<g id="node27" class="node">
+<title>Node27</title>
+<g id="a_node27"><a xlink:href="classvtkInteractorStyleRubberBand3D.html" target="_top" xlink:title="A rubber band interactor for a 3D view.">
+<polygon fill="white" stroke="black" points="692.5,-137.5 692.5,-167.5 817.5,-167.5 817.5,-137.5 692.5,-137.5"/>
+<text text-anchor="start" x="700.5" y="-155.5" font-family="Helvetica" font-size="10.00">vtkInteractorStyleRubber</text>
+<text text-anchor="middle" x="755" y="-144.5" font-family="Helvetica" font-size="10.00">Band3D</text>
+</a>
+</g>
+</g>
+<!-- Node23&#45;&gt;Node27 -->
+<g id="edge26" class="edge">
+<title>Node23-&gt;Node27</title>
+<path fill="none" stroke="midnightblue" d="M642.05,-152.5C658.78,-152.5 676.3,-152.5 692.38,-152.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="641.75,-149 631.75,-152.5 641.75,-156 641.75,-149"/>
+</g>
+<!-- Node28 -->
+<g id="node28" class="node">
+<title>Node28</title>
+<g id="a_node28"><a xlink:href="classvtkInteractorStyleRubberBandPick.html" target="_top" xlink:title="Like TrackBallCamera, but this can pick props underneath a rubber band selection rectangle.">
+<polygon fill="white" stroke="black" points="692.5,-88.5 692.5,-118.5 817.5,-118.5 817.5,-88.5 692.5,-88.5"/>
+<text text-anchor="start" x="700.5" y="-106.5" font-family="Helvetica" font-size="10.00">vtkInteractorStyleRubber</text>
+<text text-anchor="middle" x="755" y="-95.5" font-family="Helvetica" font-size="10.00">BandPick</text>
+</a>
+</g>
+</g>
+<!-- Node23&#45;&gt;Node28 -->
+<g id="edge27" class="edge">
+<title>Node23-&gt;Node28</title>
+<path fill="none" stroke="midnightblue" d="M633.61,-134.88C654.18,-129.52 676.58,-123.68 696.43,-118.51"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="632.48,-131.56 623.68,-137.47 634.24,-138.33 632.48,-131.56"/>
+</g>
+<!-- Node29 -->
+<g id="node29" class="node">
+<title>Node29</title>
+<g id="a_node29"><a xlink:href="classvtkOSPRayTestInteractor.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="691,-50 691,-69 819,-69 819,-50 691,-50"/>
+<text text-anchor="middle" x="755" y="-57" font-family="Helvetica" font-size="10.00">vtkOSPRayTestInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node23&#45;&gt;Node29 -->
+<g id="edge28" class="edge">
+<title>Node23-&gt;Node29</title>
+<path fill="none" stroke="midnightblue" d="M632.59,-132.9C635.51,-131.23 638.34,-129.44 641,-127.5 662.84,-111.59 654.54,-93.52 677,-78.5 682.84,-74.6 689.4,-71.49 696.18,-69.03"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="630.87,-129.84 623.53,-137.49 634.03,-136.09 630.87,-129.84"/>
+</g>
+<!-- Node30 -->
+<g id="node30" class="node">
+<title>Node30</title>
+<g id="a_node30"><a xlink:href="classvtkParallelCoordinatesInteractorStyle.html" target="_top" xlink:title="interactive manipulation of the camera specialized for parallel coordinates">
+<polygon fill="white" stroke="black" points="677,-0.5 677,-30.5 833,-30.5 833,-0.5 677,-0.5"/>
+<text text-anchor="start" x="685" y="-18.5" font-family="Helvetica" font-size="10.00">vtkParallelCoordinatesInteractor</text>
+<text text-anchor="middle" x="755" y="-7.5" font-family="Helvetica" font-size="10.00">Style</text>
+</a>
+</g>
+</g>
+<!-- Node23&#45;&gt;Node30 -->
+<g id="edge29" class="edge">
+<title>Node23-&gt;Node30</title>
+<path fill="none" stroke="midnightblue" d="M635.7,-131.89C637.56,-130.52 639.33,-129.06 641,-127.5 671.62,-98.97 646.27,-68.91 677,-40.5 681.23,-36.59 686.08,-33.29 691.25,-30.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="633.7,-129.02 627.13,-137.34 637.45,-134.93 633.7,-129.02"/>
+</g>
+<!-- Node25 -->
+<g id="node25" class="node">
+<title>Node25</title>
+<g id="a_node25"><a xlink:href="classvtkInteractorStyleTreeMapHover.html" target="_top" xlink:title="An interactor style for a tree map view.">
+<polygon fill="white" stroke="black" points="870,-227.5 870,-257.5 1001,-257.5 1001,-227.5 870,-227.5"/>
+<text text-anchor="start" x="878" y="-245.5" font-family="Helvetica" font-size="10.00">vtkInteractorStyleTreeMap</text>
+<text text-anchor="middle" x="935.5" y="-234.5" font-family="Helvetica" font-size="10.00">Hover</text>
+</a>
+</g>
+</g>
+<!-- Node24&#45;&gt;Node25 -->
+<g id="edge24" class="edge">
+<title>Node24-&gt;Node25</title>
+<path fill="none" stroke="midnightblue" d="M826.25,-244.32C840.61,-244.08 855.67,-243.82 869.82,-243.59"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="825.87,-240.83 815.93,-244.49 825.99,-247.82 825.87,-240.83"/>
+</g>
+</g>
+</svg>

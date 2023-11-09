@@ -1,4 +1,14 @@
+<img src="images/vtkInteractorStyleSwitch.svg" />  
+
+
+
+
+
 <img src="images/InteractorStyleSwitch.svg" />
+
+
+
+
 
 In the header:
 
