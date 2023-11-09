@@ -134,11 +134,12 @@ int main(int, char *[]) {
   const double gridSizeInMeters = 1.0;
   double gridSizeInCurrentUnit;
 
-  // gridSizeInCurrentUnit = gridSizeInMeters; // Default to meters
+  // Default to meters
+  gridSizeInCurrentUnit = gridSizeInMeters;
   // If you want to set the grid size to feet or inches, uncomment the desired
   // conversion
   // gridSizeInCurrentUnit = gridSizeInMeters * 3.28084; // For feet
-  gridSizeInCurrentUnit = gridSizeInMeters * 39.3701; // For inches
+  // gridSizeInCurrentUnit = gridSizeInMeters * 39.3701; // For inches
 
   planeSource->SetXResolution(10 * gridSizeInCurrentUnit);
   planeSource->SetYResolution(10 * gridSizeInCurrentUnit);
@@ -161,6 +162,10 @@ int main(int, char *[]) {
   renderer->AddActor(axesPoint2);
 
   renderer->AddActor(cubeActor);
+
+  renderer->UseFXAAOn();
+
+  renderWindow->SetMultiSamples(4); // add this to your code.
 
   // Start the rendering loop
   renderWindow->Render();
