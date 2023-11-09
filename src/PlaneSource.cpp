@@ -15,6 +15,8 @@
 #include <vtkVectorText.h>
 int main(int, char *[]) {
 
+  // Create a plane source with grid lines
+  vtkNew<vtkPlaneSource> planeSource;
   vtkNew<vtkCubeSource> cubeSource;
 
   cubeSource->SetXLength(2.0);
@@ -41,17 +43,6 @@ int main(int, char *[]) {
 
   for (const auto &bound : bounds)
     std::cout << bound << std::endl;
-
-  int planeSourceXResolution = 10;
-
-  // Create a plane source with grid lines
-  vtkNew<vtkPlaneSource> planeSource;
-  planeSource->SetXResolution(
-      planeSourceXResolution); // Set the number of grid lines in the X
-                               // direction
-  planeSource->SetYResolution(
-      planeSourceXResolution); // Set the number of grid lines in the Y
-                               // direction
 
   vtkNew<vtkTransform> transformOrigin;
   vtkNew<vtkTransform> transformPoint1;
@@ -108,6 +99,15 @@ int main(int, char *[]) {
 
   int squareSize = 1;
 
+  int planeSourceXResolution = 10;
+
+  planeSource->SetXResolution(
+      planeSourceXResolution); // Set the number of grid lines in the X
+                               // direction
+  planeSource->SetYResolution(
+      planeSourceXResolution); // Set the number of grid lines in the Y
+                               // direction
+
   double gridHalfSize = squareSize * planeSourceXResolution / 2;
 
   planeSource->SetOrigin(centerX - gridHalfSize, 0, centerZ - gridHalfSize);
@@ -129,6 +129,19 @@ int main(int, char *[]) {
   planeActor->GetProperty()->SetAmbient(1.0);
   planeActor->GetProperty()->SetDiffuse(0.0);
   planeActor->PickableOff();
+
+  // Set the grid size based on the unit of measurement
+  const double gridSizeInMeters = 1.0;
+  double gridSizeInCurrentUnit;
+
+  // gridSizeInCurrentUnit = gridSizeInMeters; // Default to meters
+  // If you want to set the grid size to feet or inches, uncomment the desired
+  // conversion
+  // gridSizeInCurrentUnit = gridSizeInMeters * 3.28084; // For feet
+  gridSizeInCurrentUnit = gridSizeInMeters * 39.3701; // For inches
+
+  planeSource->SetXResolution(10 * gridSizeInCurrentUnit);
+  planeSource->SetYResolution(10 * gridSizeInCurrentUnit);
 
   // Create a renderer and a render window
   vtkNew<vtkRenderer> renderer;
