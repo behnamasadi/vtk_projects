@@ -1,0 +1,450 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1899pt" height="601pt" viewBox="0.00 0.00 1899.00 600.84"><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"/><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"/><style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"/>
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 596.84)">
+<title>QVTKInteractor</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-596.84 1895,-596.84 1895,4 -4,4"/>
+<!-- Node1 -->
+<g id="node1" class="node">
+<title>Node1</title>
+<g id="a_node1"><a xlink:title="an interactor for QVTKOpenGLNativeWidget (and QVTKWiget).">
+<polygon fill="#bfbfbf" stroke="black" points="1104.5,-221.34 1104.5,-240.34 1189.5,-240.34 1189.5,-221.34 1104.5,-221.34"/>
+<text text-anchor="middle" x="1147" y="-228.34" font-family="Helvetica" font-size="10.00">QVTKInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node2 -->
+<g id="node2" class="node">
+<title>Node2</title>
+<g id="a_node2"><a xlink:href="classvtkRenderWindowInteractor.html" target="_top" xlink:title="platform-independent render window interaction including picking and frame rate control.">
+<polygon fill="white" stroke="black" points="843,-231.34 843,-250.34 980,-250.34 980,-231.34 843,-231.34"/>
+<text text-anchor="middle" x="911.5" y="-238.34" font-family="Helvetica" font-size="10.00">vtkRenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node2&#45;&gt;Node1 -->
+<g id="edge1" class="edge">
+<title>Node2-&gt;Node1</title>
+<path fill="none" stroke="midnightblue" d="M990.09,-237.52C1028.22,-235.89 1072.64,-233.98 1104.29,-232.63"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="989.88,-234.03 980.04,-237.95 990.18,-241.02 989.88,-234.03"/>
+</g>
+<!-- Node7 -->
+<g id="node6" class="node">
+<title>Node7</title>
+<g id="a_node6"><a xlink:href="classvtkPickingManager.html" target="_top" xlink:title="Class defines API to manage the picking process.">
+<polygon fill="white" stroke="black" points="1097,-183.34 1097,-202.34 1197,-202.34 1197,-183.34 1097,-183.34"/>
+<text text-anchor="middle" x="1147" y="-190.34" font-family="Helvetica" font-size="10.00">vtkPickingManager</text>
+</a>
+</g>
+</g>
+<!-- Node2&#45;&gt;Node7 -->
+<g id="edge7" class="edge">
+<title>Node2-&gt;Node7</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M958.85,-228.81C973.85,-225.09 990.59,-221.11 1006,-217.84 1036.07,-211.47 1070,-205.38 1096.93,-200.81"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="957.63,-225.51 948.79,-231.34 959.34,-232.3 957.63,-225.51"/>
+<text text-anchor="middle" x="1042.5" y="-220.84" font-family="Helvetica" font-size="10.00"> Interactor</text>
+</g>
+<!-- Node8 -->
+<g id="node7" class="node">
+<title>Node8</title>
+<g id="a_node7"><a xlink:href="classvtkRenderWindow.html" target="_top" xlink:title="create a window for renderers to draw into">
+<polygon fill="white" stroke="black" points="1099,-381.34 1099,-400.34 1195,-400.34 1195,-381.34 1099,-381.34"/>
+<text text-anchor="middle" x="1147" y="-388.34" font-family="Helvetica" font-size="10.00">vtkRenderWindow</text>
+</a>
+</g>
+</g>
+<!-- Node2&#45;&gt;Node8 -->
+<g id="edge18" class="edge">
+<title>Node2-&gt;Node8</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M930.83,-257.55C948.83,-273.2 977.62,-296.29 1006,-310.84 1036.27,-326.37 1050.83,-314.77 1079,-333.84 1089.46,-340.93 1087.78,-347.21 1097,-355.84 1107.22,-365.42 1120.17,-374.56 1130.19,-381.1"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="932.72,-254.55 922.92,-250.54 928.08,-259.79 932.72,-254.55"/>
+<text text-anchor="middle" x="1042.5" y="-336.84" font-family="Helvetica" font-size="10.00"> Interactor</text>
+</g>
+<!-- Node18 -->
+<g id="node14" class="node">
+<title>Node18</title>
+<g id="a_node14"><a xlink:href="classvtkObserverMediator.html" target="_top" xlink:title="manage contention for cursors and other resources">
+<polygon fill="white" stroke="black" points="1784,-145.34 1784,-164.34 1891,-164.34 1891,-145.34 1784,-145.34"/>
+<text text-anchor="middle" x="1837.5" y="-152.34" font-family="Helvetica" font-size="10.00">vtkObserverMediator</text>
+</a>
+</g>
+</g>
+<!-- Node2&#45;&gt;Node18 -->
+<g id="edge30" class="edge">
+<title>Node2-&gt;Node18</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M926.99,-223.79C943.92,-205.09 973.75,-175.78 1006,-160.84 1117.72,-109.11 1156.38,-116.84 1279.5,-116.84 1279.5,-116.84 1279.5,-116.84 1612.5,-116.84 1680.34,-116.84 1758.14,-134 1801.89,-145.25"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="924.35,-221.49 920.36,-231.31 929.6,-226.12 924.35,-221.49"/>
+<text text-anchor="middle" x="1404.5" y="-119.84" font-family="Helvetica" font-size="10.00"> Interactor</text>
+</g>
+<!-- Node19 -->
+<g id="node15" class="node">
+<title>Node19</title>
+<g id="a_node15"><a xlink:href="classvtkInteractorObserver.html" target="_top" xlink:title="an abstract superclass for classes observing events invoked by vtkRenderWindowInteractor">
+<polygon fill="white" stroke="red" points="1556,-179.34 1556,-198.34 1667,-198.34 1667,-179.34 1556,-179.34"/>
+<text text-anchor="middle" x="1611.5" y="-186.34" font-family="Helvetica" font-size="10.00">vtkInteractorObserver</text>
+</a>
+</g>
+</g>
+<!-- Node2&#45;&gt;Node19 -->
+<g id="edge25" class="edge">
+<title>Node2-&gt;Node19</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M928.64,-223.76C945.92,-206.84 975.04,-182.03 1006,-171.84 1057.33,-154.95 1417.05,-176.22 1555.95,-185.2"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="925.7,-221.76 921.16,-231.33 930.68,-226.68 925.7,-221.76"/>
+<text text-anchor="middle" x="1280.5" y="-175.84" font-family="Helvetica" font-size="10.00"> Interactor</text>
+</g>
+<!-- Node3 -->
+<g id="node3" class="node">
+<title>Node3</title>
+<g id="a_node3"><a xlink:href="classvtkObject.html" target="_top" xlink:title="abstract base class for most VTK objects">
+<polygon fill="white" stroke="black" points="176.5,-351.34 176.5,-370.34 235.5,-370.34 235.5,-351.34 176.5,-351.34"/>
+<text text-anchor="middle" x="206" y="-358.34" font-family="Helvetica" font-size="10.00">vtkObject</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node2 -->
+<g id="edge2" class="edge">
+<title>Node3-&gt;Node2</title>
+<path fill="none" stroke="midnightblue" d="M231.6,-345.86C249.43,-335.65 274.45,-322.61 298,-314.84 485.01,-253.14 540.73,-270.84 737,-254.84 771.94,-251.99 810.84,-248.85 842.93,-246.27"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="229.35,-343.13 222.49,-351.2 232.88,-349.17 229.35,-343.13"/>
+</g>
+<!-- Node3&#45;&gt;Node7 -->
+<g id="edge6" class="edge">
+<title>Node3-&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M208.58,-340.89C214.61,-279.55 241.88,-97.84 353,-97.84 353,-97.84 353,-97.84 912.5,-97.84 1002.44,-97.84 1098.45,-159.06 1132.83,-183.21"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="205.06,-340.9 207.66,-351.17 212.03,-341.52 205.06,-340.9"/>
+</g>
+<!-- Node9 -->
+<g id="node8" class="node">
+<title>Node9</title>
+<g id="a_node8"><a xlink:href="classvtkWindow.html" target="_top" xlink:title="window superclass for vtkRenderWindow">
+<polygon fill="white" stroke="black" points="321.5,-324.34 321.5,-343.34 386.5,-343.34 386.5,-324.34 321.5,-324.34"/>
+<text text-anchor="middle" x="354" y="-331.34" font-family="Helvetica" font-size="10.00">vtkWindow</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node9 -->
+<g id="edge10" class="edge">
+<title>Node3-&gt;Node9</title>
+<path fill="none" stroke="midnightblue" d="M245.88,-353.65C269.5,-349.28 299.27,-343.78 321.43,-339.68"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="245.04,-350.25 235.84,-355.51 246.31,-357.13 245.04,-350.25"/>
+</g>
+<!-- Node3&#45;&gt;Node18 -->
+<g id="edge21" class="edge">
+<title>Node3-&gt;Node18</title>
+<path fill="none" stroke="midnightblue" d="M245.68,-370.58C261.79,-374.43 280.73,-378.67 298,-381.84 344.57,-390.39 677.09,-425.81 719,-447.84 729.3,-453.26 727.63,-459.95 737,-466.84 776.08,-495.57 788.57,-500.82 835,-514.84 968.47,-555.15 1006.58,-555.84 1146,-555.84 1146,-555.84 1146,-555.84 1612.5,-555.84 1797.9,-555.84 1831.3,-225.09 1835.87,-164.36"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="246.09,-367.08 235.55,-368.13 244.45,-373.89 246.09,-367.08"/>
+</g>
+<!-- Node3&#45;&gt;Node19 -->
+<g id="edge23" class="edge">
+<title>Node3-&gt;Node19</title>
+<path fill="none" stroke="midnightblue" d="M206.76,-340.84C207.05,-269.94 218.18,-34.84 353,-34.84 353,-34.84 353,-34.84 1043.5,-34.84 1192.33,-34.84 1220.2,-93.5 1364,-131.84 1433.82,-150.46 1515.69,-168.69 1565.3,-179.34"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="203.26,-341.1 206.79,-351.09 210.26,-341.08 203.26,-341.1"/>
+</g>
+<!-- Node80 -->
+<g id="node19" class="node">
+<title>Node80</title>
+<g id="a_node19"><a xlink:href="classvtkAbstractPicker.html" target="_top" xlink:title="define API for picking subclasses">
+<polygon fill="white" stroke="black" points="1564.5,-344.34 1564.5,-363.34 1658.5,-363.34 1658.5,-344.34 1564.5,-344.34"/>
+<text text-anchor="middle" x="1611.5" y="-351.34" font-family="Helvetica" font-size="10.00">vtkAbstractPicker</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node80 -->
+<g id="edge34" class="edge">
+<title>Node3-&gt;Node80</title>
+<path fill="none" stroke="midnightblue" d="M245.6,-362.42C349.27,-367.04 631.78,-382.25 719,-413.84 777.41,-435 776.22,-471.72 835,-491.84 922.03,-521.64 949.51,-505.84 1041.5,-505.84 1041.5,-505.84 1041.5,-505.84 1405.5,-505.84 1501.64,-505.84 1582.09,-396.63 1604.37,-363.35"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="245.71,-358.92 235.57,-361.98 245.41,-365.92 245.71,-358.92"/>
+</g>
+<!-- Node4 -->
+<g id="node4" class="node">
+<title>Node4</title>
+<g id="a_node4"><a xlink:href="classvtkObjectBase.html" target="_top" xlink:title="abstract base class for most VTK objects">
+<polygon fill="white" stroke="red" points="0,-388.34 0,-407.34 81,-407.34 81,-388.34 0,-388.34"/>
+<text text-anchor="middle" x="40.5" y="-395.34" font-family="Helvetica" font-size="10.00">vtkObjectBase</text>
+</a>
+</g>
+</g>
+<!-- Node4&#45;&gt;Node3 -->
+<g id="edge3" class="edge">
+<title>Node4-&gt;Node3</title>
+<path fill="none" stroke="midnightblue" d="M77.1,-385.15C84.3,-382.85 91.85,-380.62 99,-378.84 124.9,-372.4 154.94,-367.54 176.42,-364.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="75.99,-381.84 67.59,-388.3 78.18,-388.48 75.99,-381.84"/>
+</g>
+<!-- Node11 -->
+<g id="node10" class="node">
+<title>Node11</title>
+<g id="a_node10"><a xlink:href="classvtkSmartPointerBase.html" target="_top" xlink:title="Non-templated superclass for vtkSmartPointer.">
+<polygon fill="white" stroke="black" points="151,-472.34 151,-491.34 261,-491.34 261,-472.34 151,-472.34"/>
+<text text-anchor="middle" x="206" y="-479.34" font-family="Helvetica" font-size="10.00">vtkSmartPointerBase</text>
+</a>
+</g>
+</g>
+<!-- Node4&#45;&gt;Node11 -->
+<g id="edge13" class="edge">
+<title>Node4-&gt;Node11</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M69.48,-412.22C102.91,-429.39 157.89,-457.64 186.46,-472.32"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="70.75,-408.94 60.26,-407.48 67.55,-415.16 70.75,-408.94"/>
+<text text-anchor="middle" x="116" y="-444.84" font-family="Helvetica" font-size="10.00"> Object</text>
+</g>
+<!-- Node6 -->
+<g id="node5" class="node">
+<title>Node6</title>
+<g id="a_node5"><a xlink:href="classvtkTimeStamp.html" target="_top" xlink:title="record modification and/or execution time">
+<polygon fill="white" stroke="black" points="0.5,-483.34 0.5,-502.34 80.5,-502.34 80.5,-483.34 0.5,-483.34"/>
+<text text-anchor="middle" x="40.5" y="-490.34" font-family="Helvetica" font-size="10.00">vtkTimeStamp</text>
+</a>
+</g>
+</g>
+<!-- Node6&#45;&gt;Node3 -->
+<g id="edge4" class="edge">
+<title>Node6-&gt;Node3</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M51.05,-474.26C61.02,-456.36 78.09,-429.49 99,-411.84 121.94,-392.48 153.49,-378.54 176.19,-370.18"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="47.92,-472.69 46.27,-483.16 54.09,-476.01 47.92,-472.69"/>
+<text text-anchor="middle" x="116" y="-414.84" font-family="Helvetica" font-size="10.00"> MTime</text>
+</g>
+<!-- Node22 -->
+<g id="node16" class="node">
+<title>Node22</title>
+<g id="a_node16"><a xlink:href="classvtkRenderer.html" target="_top" xlink:title="abstract specification for renderers">
+<polygon fill="white" stroke="red" points="1370,-381.34 1370,-400.34 1439,-400.34 1439,-381.34 1370,-381.34"/>
+<text text-anchor="middle" x="1404.5" y="-388.34" font-family="Helvetica" font-size="10.00">vtkRenderer</text>
+</a>
+</g>
+</g>
+<!-- Node6&#45;&gt;Node22 -->
+<g id="edge28" class="edge">
+<title>Node6-&gt;Node22</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M58.15,-509.3C86.02,-535.03 144.99,-581.84 205,-581.84 205,-581.84 205,-581.84 778,-581.84 1028.93,-581.84 1312.77,-439.5 1385.69,-400.58"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="60.5,-506.71 50.84,-502.37 55.69,-511.79 60.5,-506.71"/>
+<text text-anchor="middle" x="643" y="-584.84" font-family="Helvetica" font-size="10.00"> RenderTime</text>
+</g>
+<!-- Node7&#45;&gt;Node2 -->
+<g id="edge5" class="edge">
+<title>Node7-&gt;Node2</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1101.2,-181.34C1073.31,-176.12 1036.98,-172.89 1006,-181.84 972.44,-191.55 939.34,-217.27 923.01,-231.34"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1100.58,-184.78 1111.07,-183.33 1101.96,-177.92 1100.58,-184.78"/>
+<text text-anchor="middle" x="1042.5" y="-184.84" font-family="Helvetica" font-size="10.00"> PickingManager</text>
+</g>
+<!-- Node8&#45;&gt;Node2 -->
+<g id="edge8" class="edge">
+<title>Node8-&gt;Node2</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1118.3,-375.64C1110.52,-370.25 1102.64,-363.57 1097,-355.84 1081.58,-334.73 1097.54,-318.28 1079,-299.84 1054.88,-275.86 1038.11,-288.07 1006,-276.84 982.03,-268.46 954.99,-257.93 936.18,-250.43"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1116.63,-378.72 1126.94,-381.16 1120.4,-372.82 1116.63,-378.72"/>
+<text text-anchor="middle" x="1042.5" y="-302.84" font-family="Helvetica" font-size="10.00"> RenderWindow</text>
+</g>
+<!-- Node8&#45;&gt;Node8 -->
+<g id="edge17" class="edge">
+<title>Node8-&gt;Node8</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1127.74,-410.24C1129.03,-415.16 1135.45,-418.84 1147,-418.84 1165.48,-418.84 1170.83,-409.41 1163.03,-400.6"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1131.11,-411.19 1130.97,-400.6 1124.48,-408.97 1131.11,-411.19"/>
+<text text-anchor="middle" x="1147" y="-421.84" font-family="Helvetica" font-size="10.00"> SharedRenderWindow</text>
+</g>
+<!-- Node8&#45;&gt;Node22 -->
+<g id="edge27" class="edge">
+<title>Node8-&gt;Node22</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1205.29,-390.84C1255.83,-390.84 1327.79,-390.84 1369.67,-390.84"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1205.16,-387.34 1195.16,-390.84 1205.16,-394.34 1205.16,-387.34"/>
+<text text-anchor="middle" x="1280.5" y="-393.84" font-family="Helvetica" font-size="10.00"> RenderWindow</text>
+</g>
+<!-- Node9&#45;&gt;Node8 -->
+<g id="edge9" class="edge">
+<title>Node9-&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M396.98,-332.13C498.84,-328.63 766.98,-323.27 988,-352.84 1032.6,-358.81 1082.96,-372.09 1114.59,-381.26"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="396.67,-328.64 386.8,-332.5 396.92,-335.64 396.67,-328.64"/>
+</g>
+<!-- Node79 -->
+<g id="node18" class="node">
+<title>Node79</title>
+<g id="a_node18"><a xlink:href="classvtkHardwareWindow.html" target="_top" xlink:title="create a window for renderers to draw into">
+<polygon fill="white" stroke="black" points="589.5,-278.34 589.5,-297.34 696.5,-297.34 696.5,-278.34 589.5,-278.34"/>
+<text text-anchor="middle" x="643" y="-285.34" font-family="Helvetica" font-size="10.00">vtkHardwareWindow</text>
+</a>
+</g>
+</g>
+<!-- Node9&#45;&gt;Node79 -->
+<g id="edge32" class="edge">
+<title>Node9-&gt;Node79</title>
+<path fill="none" stroke="midnightblue" d="M396.54,-325.57C406.81,-323.61 417.79,-321.58 428,-319.84 482.81,-310.49 545.77,-301.26 589.14,-295.13"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="395.72,-322.16 386.57,-327.5 397.05,-329.04 395.72,-322.16"/>
+</g>
+<!-- Node10 -->
+<g id="node9" class="node">
+<title>Node10</title>
+<g id="a_node9"><a xlink:href="classvtkSmartPointer.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="567,-505.84 567,-535.84 719,-535.84 719,-505.84 567,-505.84"/>
+<text text-anchor="start" x="575" y="-523.84" font-family="Helvetica" font-size="10.00">vtkSmartPointer&lt; vtkUnsigned</text>
+<text text-anchor="middle" x="643" y="-512.84" font-family="Helvetica" font-size="10.00">CharArray &gt;</text>
+</a>
+</g>
+</g>
+<!-- Node10&#45;&gt;Node8 -->
+<g id="edge11" class="edge">
+<title>Node10-&gt;Node8</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M729.01,-505.82C817.61,-489.07 959.88,-459.09 1079,-419.84 1095.37,-414.45 1113.26,-406.6 1126.43,-400.43"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="728.2,-502.41 719.01,-507.69 729.49,-509.29 728.2,-502.41"/>
+<text text-anchor="middle" x="911.5" y="-496.84" font-family="Helvetica" font-size="10.00"> ResultFrame</text>
+<text text-anchor="middle" x="911.5" y="-485.84" font-family="Helvetica" font-size="10.00">StereoBuffer</text>
+</g>
+<!-- Node11&#45;&gt;Node10 -->
+<g id="edge12" class="edge">
+<title>Node11-&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M232.55,-496.44C250.3,-505.8 274.84,-517.21 298,-522.84 388.53,-544.86 496.47,-539.3 566.98,-531.6"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="233.9,-493.19 223.44,-491.5 230.56,-499.34 233.9,-493.19"/>
+</g>
+<!-- Node12 -->
+<g id="node11" class="node">
+<title>Node12</title>
+<g id="a_node11"><a xlink:href="classvtkSmartPointer.html" target="_top" xlink:title="Hold a reference to a vtkObjectBase instance.">
+<polygon fill="white" stroke="black" points="298,-494.34 298,-513.34 410,-513.34 410,-494.34 298,-494.34"/>
+<text text-anchor="middle" x="354" y="-501.34" font-family="Helvetica" font-size="10.00">vtkSmartPointer&lt; T &gt;</text>
+</a>
+</g>
+</g>
+<!-- Node11&#45;&gt;Node12 -->
+<g id="edge15" class="edge">
+<title>Node11-&gt;Node12</title>
+<path fill="none" stroke="midnightblue" d="M271.49,-491.56C280.2,-492.87 289.08,-494.21 297.62,-495.5"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="271.77,-488.06 261.37,-490.04 270.73,-494.99 271.77,-488.06"/>
+</g>
+<!-- Node81 -->
+<g id="node20" class="node">
+<title>Node81</title>
+<g id="a_node20"><a xlink:href="classvtkSmartPointer.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="black" points="567,-456.84 567,-486.84 719,-486.84 719,-456.84 567,-456.84"/>
+<text text-anchor="start" x="575" y="-474.84" font-family="Helvetica" font-size="10.00">vtkSmartPointer&lt; vtkInteractor</text>
+<text text-anchor="middle" x="643" y="-463.84" font-family="Helvetica" font-size="10.00">Observer &gt;</text>
+</a>
+</g>
+</g>
+<!-- Node11&#45;&gt;Node81 -->
+<g id="edge38" class="edge">
+<title>Node11-&gt;Node81</title>
+<path fill="none" stroke="midnightblue" d="M271.05,-479.96C315.16,-478.7 375.14,-477.05 428,-475.84 474.07,-474.79 525.71,-473.82 566.73,-473.09"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="270.93,-476.46 261.04,-480.25 271.13,-483.46 270.93,-476.46"/>
+</g>
+<!-- Node12&#45;&gt;Node10 -->
+<g id="edge14" class="edge">
+<title>Node12-&gt;Node10</title>
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M420.53,-507.72C464.07,-510.3 521.36,-513.7 566.76,-516.39"/>
+<polygon fill="orange" stroke="orange" points="420.53,-504.22 410.34,-507.12 420.11,-511.21 420.53,-504.22"/>
+<text text-anchor="middle" x="488.5" y="-517.84" font-family="Helvetica" font-size="10.00"> &lt; vtkUnsignedCharArray &gt;</text>
+</g>
+<!-- Node12&#45;&gt;Node81 -->
+<g id="edge39" class="edge">
+<title>Node12-&gt;Node81</title>
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M420.37,-493.82C422.95,-493.48 425.5,-493.15 428,-492.84 473.94,-487.13 525.58,-482.03 566.63,-478.28"/>
+<polygon fill="orange" stroke="orange" points="419.79,-490.37 410.36,-495.19 420.74,-497.31 419.79,-490.37"/>
+<text text-anchor="middle" x="488.5" y="-495.84" font-family="Helvetica" font-size="10.00"> &lt; vtkInteractorObserver &gt;</text>
+</g>
+<!-- Node13 -->
+<g id="node12" class="node">
+<title>Node13</title>
+<g id="a_node12"><a xlink:href="classvtkRendererCollection.html" target="_top" xlink:title="an ordered list of renderers">
+<polygon fill="white" stroke="red" points="855,-362.34 855,-381.34 968,-381.34 968,-362.34 855,-362.34"/>
+<text text-anchor="middle" x="911.5" y="-369.34" font-family="Helvetica" font-size="10.00">vtkRendererCollection</text>
+</a>
+</g>
+</g>
+<!-- Node13&#45;&gt;Node8 -->
+<g id="edge16" class="edge">
+<title>Node13-&gt;Node8</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M978.18,-377.19C1016.52,-380.31 1064.01,-384.17 1098.68,-386.99"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="978.38,-373.69 968.13,-376.37 977.82,-380.67 978.38,-373.69"/>
+<text text-anchor="middle" x="1042.5" y="-387.84" font-family="Helvetica" font-size="10.00"> Renderers</text>
+</g>
+<!-- Node16 -->
+<g id="node13" class="node">
+<title>Node16</title>
+<g id="a_node13"><a xlink:href="classvtkNew.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="red" points="835,-400.34 835,-419.34 988,-419.34 988,-400.34 835,-400.34"/>
+<text text-anchor="middle" x="911.5" y="-407.34" font-family="Helvetica" font-size="10.00">vtkNew&lt; vtkRenderTimerLog &gt;</text>
+</a>
+</g>
+</g>
+<!-- Node16&#45;&gt;Node8 -->
+<g id="edge19" class="edge">
+<title>Node16-&gt;Node8</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M998.21,-405.9C1024.2,-404.39 1052.79,-402.39 1079,-399.84 1085.42,-399.22 1092.18,-398.45 1098.83,-397.62"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="997.8,-402.42 988.02,-406.48 998.2,-409.41 997.8,-402.42"/>
+<text text-anchor="middle" x="1042.5" y="-407.84" font-family="Helvetica" font-size="10.00"> RenderTimer</text>
+</g>
+<!-- Node18&#45;&gt;Node2 -->
+<g id="edge20" class="edge">
+<title>Node18-&gt;Node2</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1819.68,-138C1806.35,-125.84 1786.61,-110.3 1766,-102.84 1448.38,12.13 1300.45,56.68 1006,-108.84 955.33,-137.33 925.47,-206.05 915.9,-231.32"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1817.43,-140.69 1827.09,-145.03 1822.24,-135.61 1817.43,-140.69"/>
+<text text-anchor="middle" x="1404.5" y="-10.84" font-family="Helvetica" font-size="10.00"> ObserverMediator</text>
+</g>
+<!-- Node18&#45;&gt;Node19 -->
+<g id="edge24" class="edge">
+<title>Node18-&gt;Node19</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1773.68,-148C1746.15,-146.65 1713.65,-147.29 1685,-153.84 1663.75,-158.71 1641.47,-170.64 1627.32,-179.22"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1773.78,-151.52 1783.97,-148.61 1774.19,-144.53 1773.78,-151.52"/>
+<text text-anchor="middle" x="1725.5" y="-156.84" font-family="Helvetica" font-size="10.00"> ObserverMediator</text>
+</g>
+<!-- Node19&#45;&gt;Node18 -->
+<g id="edge22" class="edge">
+<title>Node19-&gt;Node18</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1677.49,-179.91C1704.84,-176.06 1736.99,-171.39 1766,-166.84 1771.76,-165.94 1777.79,-164.96 1783.78,-163.97"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1676.67,-176.49 1667.25,-181.35 1677.64,-183.43 1676.67,-176.49"/>
+<text text-anchor="middle" x="1725.5" y="-180.84" font-family="Helvetica" font-size="10.00"> CurrentObserver</text>
+</g>
+<!-- Node22&#45;&gt;Node19 -->
+<g id="edge26" class="edge">
+<title>Node22-&gt;Node19</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1422.55,-374.04C1463.85,-333.34 1568.25,-230.48 1600.71,-198.49"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1420.05,-371.59 1415.39,-381.1 1424.97,-376.57 1420.05,-371.59"/>
+<text text-anchor="middle" x="1500.5" y="-344.84" font-family="Helvetica" font-size="10.00"> CurrentRenderer</text>
+<text text-anchor="middle" x="1500.5" y="-333.84" font-family="Helvetica" font-size="10.00">DefaultRenderer</text>
+</g>
+<!-- Node22&#45;&gt;Node80 -->
+<g id="edge35" class="edge">
+<title>Node22-&gt;Node80</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1449.36,-385.13C1475.24,-381.53 1508.58,-376.5 1538,-370.84 1549.17,-368.69 1561.23,-366.01 1572.24,-363.42"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1448.55,-381.7 1439.12,-386.53 1449.5,-388.64 1448.55,-381.7"/>
+<text text-anchor="middle" x="1500.5" y="-384.84" font-family="Helvetica" font-size="10.00"> Renderer</text>
+</g>
+<!-- Node25 -->
+<g id="node17" class="node">
+<title>Node25</title>
+<g id="a_node17"><a xlink:href="classvtkPropCollection.html" target="_top" xlink:title="an ordered list of Props">
+<polygon fill="white" stroke="red" points="1100,-327.34 1100,-346.34 1194,-346.34 1194,-327.34 1100,-327.34"/>
+<text text-anchor="middle" x="1147" y="-334.34" font-family="Helvetica" font-size="10.00">vtkPropCollection</text>
+</a>
+</g>
+</g>
+<!-- Node25&#45;&gt;Node22 -->
+<g id="edge29" class="edge">
+<title>Node25-&gt;Node22</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1204.21,-346.97C1243.95,-354.37 1298.4,-364.96 1346,-375.84 1353.74,-377.61 1362.03,-379.68 1369.83,-381.7"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1204.65,-343.5 1194.18,-345.12 1203.37,-350.38 1204.65,-343.5"/>
+<text text-anchor="middle" x="1280.5" y="-378.84" font-family="Helvetica" font-size="10.00"> GL2PSSpecialPropCollection</text>
+</g>
+<!-- Node25&#45;&gt;Node80 -->
+<g id="edge36" class="edge">
+<title>Node25-&gt;Node80</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1204.36,-329.18C1280.62,-320.28 1420.62,-309.17 1538,-328.84 1555.6,-331.79 1574.63,-338.5 1588.79,-344.23"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1203.54,-325.75 1194.03,-330.41 1204.38,-332.7 1203.54,-325.75"/>
+<text text-anchor="middle" x="1404.5" y="-321.84" font-family="Helvetica" font-size="10.00"> PickList</text>
+</g>
+<!-- Node79&#45;&gt;Node2 -->
+<g id="edge31" class="edge">
+<title>Node79-&gt;Node2</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M706.7,-276.78C752.24,-268.75 813.23,-258 856.59,-250.35"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="705.89,-273.37 696.65,-278.56 707.11,-280.27 705.89,-273.37"/>
+<text text-anchor="middle" x="777" y="-273.84" font-family="Helvetica" font-size="10.00"> HardwareWindow</text>
+</g>
+<!-- Node80&#45;&gt;Node2 -->
+<g id="edge33" class="edge">
+<title>Node80-&gt;Node2</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M1587.4,-338.96C1573.6,-330.79 1555.42,-321.25 1538,-315.84 1485.58,-299.57 1130.73,-262.7 980,-247.54"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="1585.83,-342.1 1596.19,-344.33 1589.48,-336.13 1585.83,-342.1"/>
+<text text-anchor="middle" x="1280.5" y="-288.84" font-family="Helvetica" font-size="10.00"> Picker</text>
+</g>
+<!-- Node81&#45;&gt;Node2 -->
+<g id="edge37" class="edge">
+<title>Node81-&gt;Node2</title>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M669.21,-449.99C725.51,-401.19 859.66,-284.91 899.29,-250.56"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="666.75,-447.49 661.49,-456.69 671.33,-452.78 666.75,-447.49"/>
+<text text-anchor="middle" x="777" y="-392.84" font-family="Helvetica" font-size="10.00"> InteractorStyle</text>
+</g>
+</g>
+</svg>

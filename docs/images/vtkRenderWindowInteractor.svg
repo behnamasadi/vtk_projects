@@ -1,0 +1,256 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="981pt" height="382pt" viewBox="0.00 0.00 981.00 382.00"><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"/><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"/><style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"/>
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 378)">
+<title>vtkRenderWindowInteractor</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-378 977,-378 977,4 -4,4"/>
+<!-- Node1 -->
+<g id="node1" class="node">
+<title>Node1</title>
+<g id="a_node1"><a xlink:title="platform-independent render window interaction including picking and frame rate control.">
+<polygon fill="#bfbfbf" stroke="black" points="212,-183.5 212,-202.5 349,-202.5 349,-183.5 212,-183.5"/>
+<text text-anchor="middle" x="280.5" y="-190.5" font-family="Helvetica" font-size="10.00">vtkRenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node4 -->
+<g id="node4" class="node">
+<title>Node4</title>
+<g id="a_node4"><a xlink:href="classQVTKInteractor.html" target="_top" xlink:title="an interactor for QVTKOpenGLNativeWidget (and QVTKWiget).">
+<polygon fill="white" stroke="black" points="428,-354.5 428,-373.5 513,-373.5 513,-354.5 428,-354.5"/>
+<text text-anchor="middle" x="470.5" y="-361.5" font-family="Helvetica" font-size="10.00">QVTKInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node4 -->
+<g id="edge3" class="edge">
+<title>Node1-&gt;Node4</title>
+<path fill="none" stroke="midnightblue" d="M288.89,-212.03C302.61,-244.68 335.21,-311.15 385,-345 397.56,-353.54 413.36,-358.3 427.89,-360.93"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="292.11,-210.64 285.11,-202.7 285.62,-213.28 292.11,-210.64"/>
+</g>
+<!-- Node5 -->
+<g id="node5" class="node">
+<title>Node5</title>
+<g id="a_node5"><a xlink:href="classvtkAndroidRenderWindowInteractor.html" target="_top" xlink:title="implements Win32 specific functions required by vtkRenderWindowInteractor.">
+<polygon fill="white" stroke="black" points="385.5,-316.5 385.5,-335.5 555.5,-335.5 555.5,-316.5 385.5,-316.5"/>
+<text text-anchor="middle" x="470.5" y="-323.5" font-family="Helvetica" font-size="10.00">vtkAndroidRenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node5 -->
+<g id="edge4" class="edge">
+<title>Node1-&gt;Node5</title>
+<path fill="none" stroke="midnightblue" d="M292.95,-211.53C309.82,-237.17 343.83,-283.02 385,-307 391.63,-310.86 398.97,-313.94 406.47,-316.39"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="295.69,-209.31 287.35,-202.78 289.79,-213.09 295.69,-209.31"/>
+</g>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="classvtkCocoaRenderWindowInteractor.html" target="_top" xlink:title="implements Cocoa specific functions required by vtkRenderWindowInteractor.">
+<polygon fill="white" stroke="black" points="387.5,-278.5 387.5,-297.5 553.5,-297.5 553.5,-278.5 387.5,-278.5"/>
+<text text-anchor="middle" x="470.5" y="-285.5" font-family="Helvetica" font-size="10.00">vtkCocoaRenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node1-&gt;Node6</title>
+<path fill="none" stroke="midnightblue" d="M298.92,-209.36C318.41,-226.76 351.63,-253.8 385,-269 393.48,-272.86 402.82,-275.97 412.09,-278.46"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="301.21,-206.71 291.45,-202.56 296.49,-211.88 301.21,-206.71"/>
+</g>
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="classvtkGenericRenderWindowInteractor.html" target="_top" xlink:title="platform-independent programmable render window interactor.">
+<polygon fill="white" stroke="black" points="385,-240.5 385,-259.5 556,-259.5 556,-240.5 385,-240.5"/>
+<text text-anchor="middle" x="470.5" y="-247.5" font-family="Helvetica" font-size="10.00">vtkGenericRenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node7 -->
+<g id="edge6" class="edge">
+<title>Node1-&gt;Node7</title>
+<path fill="none" stroke="midnightblue" d="M314.4,-206.33C334.56,-214.18 361.02,-223.93 385,-231 396.83,-234.48 409.75,-237.69 421.85,-240.43"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="315.63,-203.06 305.05,-202.65 313.07,-209.57 315.63,-203.06"/>
+</g>
+<!-- Node8 -->
+<g id="node8" class="node">
+<title>Node8</title>
+<g id="a_node8"><a xlink:href="classvtkIOSRenderWindowInteractor.html" target="_top" xlink:title="implements IOS specific functions required by vtkRenderWindowInteractor.">
+<polygon fill="white" stroke="black" points="393,-202.5 393,-221.5 548,-221.5 548,-202.5 393,-202.5"/>
+<text text-anchor="middle" x="470.5" y="-209.5" font-family="Helvetica" font-size="10.00">vtkIOSRenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node8 -->
+<g id="edge7" class="edge">
+<title>Node1-&gt;Node8</title>
+<path fill="none" stroke="midnightblue" d="M359.22,-200.86C370.36,-201.98 381.81,-203.14 392.92,-204.26"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="359.41,-197.36 349.11,-199.83 358.7,-204.32 359.41,-197.36"/>
+</g>
+<!-- Node9 -->
+<g id="node9" class="node">
+<title>Node9</title>
+<g id="a_node9"><a xlink:href="classvtkRenderWindowInteractor3D.html" target="_top" xlink:title="adds support for 3D events to vtkRenderWindowInteractor.">
+<polygon fill="white" stroke="black" points="395.5,-164.5 395.5,-183.5 545.5,-183.5 545.5,-164.5 395.5,-164.5"/>
+<text text-anchor="middle" x="470.5" y="-171.5" font-family="Helvetica" font-size="10.00">vtkRenderWindowInteractor3D</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node9 -->
+<g id="edge8" class="edge">
+<title>Node1-&gt;Node9</title>
+<path fill="none" stroke="midnightblue" d="M359.11,-185.16C371.14,-183.94 383.54,-182.69 395.49,-181.48"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="358.7,-181.68 349.11,-186.17 359.41,-188.64 358.7,-181.68"/>
+</g>
+<!-- Node14 -->
+<g id="node14" class="node">
+<title>Node14</title>
+<g id="a_node14"><a xlink:href="classvtkSDL2RenderWindowInteractor.html" target="_top" xlink:title="implements SDL2 specific functions required by vtkRenderWindowInteractor.">
+<polygon fill="white" stroke="black" points="389.5,-126.5 389.5,-145.5 551.5,-145.5 551.5,-126.5 389.5,-126.5"/>
+<text text-anchor="middle" x="470.5" y="-133.5" font-family="Helvetica" font-size="10.00">vtkSDL2RenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node14 -->
+<g id="edge13" class="edge">
+<title>Node1-&gt;Node14</title>
+<path fill="none" stroke="midnightblue" d="M314.4,-179.67C334.56,-171.82 361.02,-162.07 385,-155 396.83,-151.52 409.75,-148.31 421.85,-145.57"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="313.07,-176.43 305.05,-183.35 315.63,-182.94 313.07,-176.43"/>
+</g>
+<!-- Node15 -->
+<g id="node15" class="node">
+<title>Node15</title>
+<g id="a_node15"><a xlink:href="classvtkWebAssemblyRenderWindowInteractor.html" target="_top" xlink:title="Handles user interaction in web browsers.">
+<polygon fill="white" stroke="black" points="391,-77 391,-107 550,-107 550,-77 391,-77"/>
+<text text-anchor="start" x="399" y="-95" font-family="Helvetica" font-size="10.00">vtkWebAssemblyRenderWindow</text>
+<text text-anchor="middle" x="470.5" y="-84" font-family="Helvetica" font-size="10.00">Interactor</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node15 -->
+<g id="edge14" class="edge">
+<title>Node1-&gt;Node15</title>
+<path fill="none" stroke="midnightblue" d="M299.44,-176.79C319.14,-159.75 352.32,-133.21 385,-117 392.54,-113.26 400.74,-109.97 408.97,-107.12"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="297.06,-174.22 291.86,-183.45 301.68,-179.47 297.06,-174.22"/>
+</g>
+<!-- Node16 -->
+<g id="node16" class="node">
+<title>Node16</title>
+<g id="a_node16"><a xlink:href="classvtkWin32RenderWindowInteractor.html" target="_top" xlink:title="implements Win32 specific functions required by vtkRenderWindowInteractor.">
+<polygon fill="white" stroke="black" points="388,-38.5 388,-57.5 553,-57.5 553,-38.5 388,-38.5"/>
+<text text-anchor="middle" x="470.5" y="-45.5" font-family="Helvetica" font-size="10.00">vtkWin32RenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node16 -->
+<g id="edge15" class="edge">
+<title>Node1-&gt;Node16</title>
+<path fill="none" stroke="midnightblue" d="M291.32,-174.5C307.15,-146.59 341.02,-94.1 385,-67 391.27,-63.14 398.24,-60.05 405.41,-57.6"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="288.25,-172.82 286.49,-183.27 294.38,-176.2 288.25,-172.82"/>
+</g>
+<!-- Node17 -->
+<g id="node17" class="node">
+<title>Node17</title>
+<g id="a_node17"><a xlink:href="classvtkXRenderWindowInteractor.html" target="_top" xlink:title="an X event driven interface for a RenderWindow">
+<polygon fill="white" stroke="black" points="398.5,-0.5 398.5,-19.5 542.5,-19.5 542.5,-0.5 398.5,-0.5"/>
+<text text-anchor="middle" x="470.5" y="-7.5" font-family="Helvetica" font-size="10.00">vtkXRenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node17 -->
+<g id="edge16" class="edge">
+<title>Node1-&gt;Node17</title>
+<path fill="none" stroke="midnightblue" d="M287.92,-173.94C300.63,-139.29 332.4,-66.12 385,-29 390.41,-25.19 396.45,-22.12 402.75,-19.66"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="284.62,-172.78 284.59,-183.38 291.22,-175.11 284.62,-172.78"/>
+</g>
+<!-- Node2 -->
+<g id="node2" class="node">
+<title>Node2</title>
+<g id="a_node2"><a xlink:href="classvtkObject.html" target="_top" xlink:title="abstract base class for most VTK objects">
+<polygon fill="white" stroke="black" points="117,-183.5 117,-202.5 176,-202.5 176,-183.5 117,-183.5"/>
+<text text-anchor="middle" x="146.5" y="-190.5" font-family="Helvetica" font-size="10.00">vtkObject</text>
+</a>
+</g>
+</g>
+<!-- Node2&#45;&gt;Node1 -->
+<g id="edge1" class="edge">
+<title>Node2-&gt;Node1</title>
+<path fill="none" stroke="midnightblue" d="M186.33,-193C194.41,-193 203.14,-193 211.91,-193"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="186.14,-189.5 176.14,-193 186.14,-196.5 186.14,-189.5"/>
+</g>
+<!-- Node3 -->
+<g id="node3" class="node">
+<title>Node3</title>
+<g id="a_node3"><a xlink:href="classvtkObjectBase.html" target="_top" xlink:title="abstract base class for most VTK objects">
+<polygon fill="white" stroke="black" points="0,-183.5 0,-202.5 81,-202.5 81,-183.5 0,-183.5"/>
+<text text-anchor="middle" x="40.5" y="-190.5" font-family="Helvetica" font-size="10.00">vtkObjectBase</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node2 -->
+<g id="edge2" class="edge">
+<title>Node3-&gt;Node2</title>
+<path fill="none" stroke="midnightblue" d="M91.35,-193C100.15,-193 109.03,-193 116.99,-193"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="91.11,-189.5 81.11,-193 91.11,-196.5 91.11,-189.5"/>
+</g>
+<!-- Node10 -->
+<g id="node10" class="node">
+<title>Node10</title>
+<g id="a_node10"><a xlink:href="classvtkVRRenderWindowInteractor.html" target="_top" xlink:title="Implements VR specific functions required by vtkRenderWindowInteractor.">
+<polygon fill="white" stroke="black" points="602,-183.5 602,-202.5 753,-202.5 753,-183.5 602,-183.5"/>
+<text text-anchor="middle" x="677.5" y="-190.5" font-family="Helvetica" font-size="10.00">vtkVRRenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node9&#45;&gt;Node10 -->
+<g id="edge9" class="edge">
+<title>Node9-&gt;Node10</title>
+<path fill="none" stroke="midnightblue" d="M555.51,-181.79C570.89,-183.21 586.84,-184.69 601.91,-186.09"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="555.79,-178.3 545.51,-180.86 555.14,-185.27 555.79,-178.3"/>
+</g>
+<!-- Node13 -->
+<g id="node13" class="node">
+<title>Node13</title>
+<g id="a_node13"><a xlink:href="classvtkZSpaceRenderWindowInteractor.html" target="_top" xlink:title="Handle zSpace specific interactions.">
+<polygon fill="white" stroke="black" points="592,-145.5 592,-164.5 763,-164.5 763,-145.5 592,-145.5"/>
+<text text-anchor="middle" x="677.5" y="-152.5" font-family="Helvetica" font-size="10.00">vtkZSpaceRenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node9&#45;&gt;Node13 -->
+<g id="edge12" class="edge">
+<title>Node9-&gt;Node13</title>
+<path fill="none" stroke="midnightblue" d="M555.48,-166.22C567.47,-165.11 579.8,-163.96 591.81,-162.85"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="555.14,-162.73 545.51,-167.14 555.79,-169.7 555.14,-162.73"/>
+</g>
+<!-- Node11 -->
+<g id="node11" class="node">
+<title>Node11</title>
+<g id="a_node11"><a xlink:href="classvtkOpenVRRenderWindowInteractor.html" target="_top" xlink:title="Implements OpenVR specific functions required by vtkVRRenderWindowInteractor.">
+<polygon fill="white" stroke="black" points="799,-202.5 799,-221.5 973,-221.5 973,-202.5 799,-202.5"/>
+<text text-anchor="middle" x="886" y="-209.5" font-family="Helvetica" font-size="10.00">vtkOpenVRRenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node10&#45;&gt;Node11 -->
+<g id="edge10" class="edge">
+<title>Node10-&gt;Node11</title>
+<path fill="none" stroke="midnightblue" d="M763.3,-200.8C775.07,-201.89 787.18,-203 798.98,-204.09"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="763.33,-197.29 753.05,-199.86 762.69,-204.26 763.33,-197.29"/>
+</g>
+<!-- Node12 -->
+<g id="node12" class="node">
+<title>Node12</title>
+<g id="a_node12"><a xlink:href="classvtkOpenXRRenderWindowInteractor.html" target="_top" xlink:title="implements OpenXR specific functions required by vtkRenderWindowInteractor.">
+<polygon fill="white" stroke="black" points="799,-164.5 799,-183.5 973,-183.5 973,-164.5 799,-164.5"/>
+<text text-anchor="middle" x="886" y="-171.5" font-family="Helvetica" font-size="10.00">vtkOpenXRRenderWindowInteractor</text>
+</a>
+</g>
+</g>
+<!-- Node10&#45;&gt;Node12 -->
+<g id="edge11" class="edge">
+<title>Node10-&gt;Node12</title>
+<path fill="none" stroke="midnightblue" d="M763.3,-185.2C775.07,-184.11 787.18,-183 798.98,-181.91"/>
+<polygon fill="midnightblue" stroke="midnightblue" points="762.69,-181.74 753.05,-186.14 763.33,-188.71 762.69,-181.74"/>
+</g>
+</g>
+</svg>

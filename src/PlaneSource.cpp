@@ -15,11 +15,18 @@
 #include <vtkVectorText.h>
 int main(int, char *[]) {
 
+  // Create a plane source with grid lines
+  vtkNew<vtkPlaneSource> planeSource;
   vtkNew<vtkCubeSource> cubeSource;
 
   cubeSource->SetXLength(2.0);
   cubeSource->SetYLength(1.5);
   cubeSource->SetZLength(4.0);
+
+  double k = 3.0;
+  cubeSource->SetXLength(k * 2.0);
+  cubeSource->SetYLength(k * 1.5);
+  cubeSource->SetZLength(k * 4.0);
 
   cubeSource->Update();
 
@@ -31,7 +38,8 @@ int main(int, char *[]) {
   cubeActor->SetMapper(cubeMapper);
 
   vtkNew<vtkTransform> transformCube;
-  transformCube->Translate(2.0, 0.0, 0.0);
+  // transformCube->Translate(2.0, 0.0, 0.0);
+  transformCube->Translate(3.0, 0.0, 0.0);
   cubeActor->SetUserTransform(transformCube);
 
   double bounds[6];
@@ -42,17 +50,6 @@ int main(int, char *[]) {
   for (const auto &bound : bounds)
     std::cout << bound << std::endl;
 
-  int planeSourceXResolution = 10;
-
-  // Create a plane source with grid lines
-  vtkNew<vtkPlaneSource> planeSource;
-  planeSource->SetXResolution(
-      planeSourceXResolution); // Set the number of grid lines in the X
-                               // direction
-  planeSource->SetYResolution(
-      planeSourceXResolution); // Set the number of grid lines in the Y
-                               // direction
-
   vtkNew<vtkTransform> transformOrigin;
   vtkNew<vtkTransform> transformPoint1;
   vtkNew<vtkTransform> transformPoint2;
@@ -61,24 +58,15 @@ int main(int, char *[]) {
   vtkNew<vtkAxesActor> axesPoint1;
   vtkNew<vtkAxesActor> axesPoint2;
 
-  planeSource->SetOrigin(0, 0, 0);
-  transformOrigin->Translate(0.0, 0.0, 0.0);
-  axesOrigin->SetUserTransform(transformOrigin);
   // axesOrigin->SetAxisLabels(false);
   axesOrigin->SetXAxisLabelText("O");
   axesOrigin->SetYAxisLabelText("");
   axesOrigin->SetZAxisLabelText("");
 
-  planeSource->SetPoint1(10, 0, 0);
-  transformPoint1->Translate(10.0, 0.0, 0.0);
-  axesPoint1->SetUserTransform(transformPoint1);
   axesPoint1->SetXAxisLabelText("1");
   axesPoint1->SetYAxisLabelText("");
   axesPoint1->SetZAxisLabelText("");
 
-  planeSource->SetPoint2(0, 0, 10);
-  transformPoint2->Translate(0.0, 0.0, 10.0);
-  axesPoint2->SetUserTransform(transformPoint2);
   axesPoint2->SetXAxisLabelText("2");
   axesPoint2->SetYAxisLabelText("");
   axesPoint2->SetZAxisLabelText("");
@@ -108,7 +96,40 @@ int main(int, char *[]) {
 
   int squareSize = 1;
 
-  double gridHalfSize = squareSize * planeSourceXResolution / 2;
+  // int planeSourceXResolution = 10;
+
+  // planeSource->SetXResolution(
+  //     planeSourceXResolution); // Set the number of grid lines in the X
+  //                              // direction
+  // planeSource->SetYResolution(
+  //     planeSourceXResolution); // Set the number of grid lines in the Y
+  //                              // direction
+
+  // double gridHalfSize = maxDimension * squareSize * planeSourceXResolution /
+  // 2;
+
+  double gridHalfSize = maxDimension * squareSize;
+
+  // transformOrigin->Translate(0.0, 0.0, 0.0);
+  // transformPoint1->Translate(10.0, 0.0, 0.0);
+  // transformPoint2->Translate(0.0, 0.0, 10.0);
+
+  transformOrigin->Translate(centerX - gridHalfSize, 0, centerZ - gridHalfSize);
+  transformPoint1->Translate(centerX + gridHalfSize, 0, centerZ - gridHalfSize);
+  transformPoint2->Translate(centerX - gridHalfSize, 0, centerZ + gridHalfSize);
+
+  axesOrigin->SetUserTransform(transformOrigin);
+  axesPoint1->SetUserTransform(transformPoint1);
+  axesPoint2->SetUserTransform(transformPoint2);
+
+  std::cout << "Origin: " << centerX - gridHalfSize << "," << 0 << ","
+            << centerZ - gridHalfSize << std::endl;
+
+  std::cout << "Point1: " << centerX + gridHalfSize << "," << 0 << ","
+            << centerZ - gridHalfSize << std::endl;
+
+  std::cout << "Point2: " << centerX - gridHalfSize << "," << 0 << ","
+            << centerZ + gridHalfSize << std::endl;
 
   planeSource->SetOrigin(centerX - gridHalfSize, 0, centerZ - gridHalfSize);
   planeSource->SetPoint1(centerX + gridHalfSize, 0, centerZ - gridHalfSize);
@@ -130,6 +151,30 @@ int main(int, char *[]) {
   planeActor->GetProperty()->SetDiffuse(0.0);
   planeActor->PickableOff();
 
+  // Set the grid size based on the unit of measurement
+  const double gridSizeInMeters = 1.0;
+  double gridSizeInCurrentUnit;
+
+  // Default to meters
+  // gridSizeInCurrentUnit = gridSizeInMeters;
+  // If you want to set the grid size to feet or inches, uncomment the desired
+  // conversion
+  gridSizeInCurrentUnit = gridSizeInMeters * 3.28084; // For feet
+  // gridSizeInCurrentUnit = gridSizeInMeters * 39.3701; // For inches
+
+  int XResolution = centerX + gridHalfSize - (centerX - gridHalfSize);
+  int YResolution = centerZ + gridHalfSize - (centerZ - gridHalfSize);
+  // planeSource->SetOrigin(centerX - gridHalfSize, 0, centerZ - gridHalfSize);
+  // planeSource->SetPoint1(centerX + gridHalfSize, 0, centerZ - gridHalfSize);
+  // planeSource->SetPoint2(centerX - gridHalfSize, 0, centerZ + gridHalfSize);
+
+  std::cout << "XResolution: " << XResolution << std::endl;
+
+  std::cout << "YResolution: " << YResolution << std::endl;
+
+  planeSource->SetXResolution(XResolution * gridSizeInCurrentUnit);
+  planeSource->SetYResolution(YResolution * gridSizeInCurrentUnit);
+
   // Create a renderer and a render window
   vtkNew<vtkRenderer> renderer;
   vtkNew<vtkRenderWindow> renderWindow;
@@ -148,6 +193,10 @@ int main(int, char *[]) {
   renderer->AddActor(axesPoint2);
 
   renderer->AddActor(cubeActor);
+
+  renderer->UseFXAAOn();
+
+  renderWindow->SetMultiSamples(4); // add this to your code.
 
   // Start the rendering loop
   renderWindow->Render();
