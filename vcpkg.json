@@ -1,0 +1,20 @@
+{
+  "name": "vtk-projects",
+  "version-string": "1.1.0",
+  "dependencies": [
+    "qhull",
+    {
+        "name": "flann",
+        "features": 
+        [
+            "hdf5"
+        ]
+    },
+    "vtk",
+    "pcl",
+    "boost-filesystem",
+    "boost-iostreams",
+    "boost-system"
+    
+  ]
+}

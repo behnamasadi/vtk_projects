@@ -61,6 +61,7 @@ int main(int, char *[]) {
   // Create the legend scale actor.
   vtkSmartPointer<vtkLegendScaleActor> legendScaleActor =
       vtkSmartPointer<vtkLegendScaleActor>::New();
+
   renderer->AddActor(legendScaleActor); // Add scale actor to the renderer.
 
   // Render and interact.

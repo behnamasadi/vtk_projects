@@ -24,7 +24,8 @@
 #include <QTimer>
 #include <QUrl>
 
-#include <pcl/io/vtk_lib_io.h>
+#include <pcl/io/vtk_io.h>
+//#include <pcl/io/vtk_lib_io.h>
 #include <pcl/surface/vtk_smoothing/vtk_utils.h>
 #include <pcl/visualization/common/shapes.h>
 

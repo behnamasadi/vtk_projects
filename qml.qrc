@@ -11,5 +11,6 @@
 	<file>qml/dynamic_split_view_main.qml</file>		
 	<file>qml/sanbox.qml</file>
 	<file>qml/main.qml</file>
+	<file>qml/toolbox.qml</file>	
 </qresource>
 </RCC>
