@@ -486,6 +486,17 @@ vtk_module_autoinit(TARGETS TexturedButtonWidget MODULES ${VTK_LIBRARIES})
 add_executable(toolbox_qml src/toolbox_qml.cpp qml.qrc)
 target_link_libraries(toolbox_qml PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 
+add_executable(image_overlay src/image_overlay.cpp)
+target_link_libraries(image_overlay PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS image_overlay MODULES ${VTK_LIBRARIES})
+
+
+add_executable(vtkLogoWidget src/vtkLogoWidget.cpp)
+target_link_libraries(vtkLogoWidget PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS vtkLogoWidget MODULES ${VTK_LIBRARIES})
+
+
+
 
 # add_executable(DisplayTrackball src/DisplayTrackball.cpp)
 # target_link_libraries(DisplayTrackball PRIVATE  ${VTK_LIBRARIES})
