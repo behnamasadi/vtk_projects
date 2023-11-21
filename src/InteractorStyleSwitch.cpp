@@ -76,74 +76,75 @@ void InteractorStyleSwitch::SetCurrentStyleToTrackballCamera() {
   SetCurrentStyle();
 }
 
-// void placeAnglePoint(vtkObject *caller, unsigned long eid, void *clientData,
-//                      void *calldata) {
-//   double p1[3], p2[3], center[3];
+void placeAnglePoint(vtkObject *caller, unsigned long eid, void *clientData,
+                     void *calldata) {
+  double p1[3], p2[3], center[3];
 
-//   auto angleWidget = reinterpret_cast<vtkAngleWidget *>(caller);
+  auto angleWidget = reinterpret_cast<vtkAngleWidget *>(caller);
 
-//   vtkSmartPointer<InteractorStyleSwitch> interactorStyle =
-//       static_cast<InteractorStyleSwitch *>(clientData);
+  vtkSmartPointer<InteractorStyleSwitch> interactorStyle =
+      static_cast<InteractorStyleSwitch *>(clientData);
 
-//   interactorStyle->SetAbstractWidget(angleWidget);
+  interactorStyle->SetAbstractWidget(angleWidget);
 
-//   vtkSmartPointer<vtkAngleRepresentation3D> rep;
+  vtkSmartPointer<vtkAngleRepresentation3D> rep;
 
-//   static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-//       ->GetPoint1DisplayPosition(p1);
+  static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+      ->GetPoint1DisplayPosition(p1);
 
-//   static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-//       ->GetPoint2DisplayPosition(p2);
+  static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+      ->GetPoint2DisplayPosition(p2);
 
-//   static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-//       ->GetCenterDisplayPosition(center);
+  static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+      ->GetCenterDisplayPosition(center);
 
-//   qCDebug(INTERACTOR_STYLE_SWITCH) << "p1: " << p1[0] << ", " << p1[1] << ",
-//   " << p1[2] ; qCDebug(INTERACTOR_STYLE_SWITCH) << "p2: " << p2[0] << ", " <<
-//   p2[1] << ", " << p2[2] ;
-// qCDebug(INTERACTOR_STYLE_SWITCH) << "center: " << center[0] << ", " <<
-// center[1] << ", " << center[2];
+  qCDebug(INTERACTOR_STYLE_SWITCH)
+      << "p1: " << p1[0] << ", " << p1[1] << ", " << p1[2];
+  qCDebug(INTERACTOR_STYLE_SWITCH)
+      << " p2    : " << p2[0] << ", " << p2[1] << ", " << p2[2];
+  qCDebug(INTERACTOR_STYLE_SWITCH)
+      << "center: " << center[0] << ", " << center[1] << ", " << center[2];
 
-//   vtkNew<vtkPointPicker> pointPicker;
-//   angleWidget->GetInteractor()->SetPicker(pointPicker);
+  vtkNew<vtkPointPicker> pointPicker;
+  angleWidget->GetInteractor()->SetPicker(pointPicker);
 
-//   if (pointPicker->Pick(p1, angleWidget->GetCurrentRenderer())) {
-//     double data[3];
-//     pointPicker->GetPickPosition(data);
-//     qCDebug(INTERACTOR_STYLE_SWITCH) << "point: " << data[0] << ", " <<
-//     data[1] << ", " << data[2];
+  if (pointPicker->Pick(p1, angleWidget->GetCurrentRenderer())) {
+    double data[3];
+    pointPicker->GetPickPosition(data);
+    qCDebug(INTERACTOR_STYLE_SWITCH)
+        << "point: " << data[0] << ", " << data[1] << ", " << data[2];
 
-//     static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-//         ->GetPoint1Representation()
-//         ->SetWorldPosition(data);
-//   }
+    static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+        ->GetPoint1Representation()
+        ->SetWorldPosition(data);
+  }
 
-//   if (pointPicker->Pick(p2, angleWidget->GetCurrentRenderer())) {
-//     double data[3];
-//     pointPicker->GetPickPosition(data);
-//     qCDebug(INTERACTOR_STYLE_SWITCH) << "point: " << data[0] << ", " <<
-//     data[1] << ", " << data[2]     << ;
+  if (pointPicker->Pick(p2, angleWidget->GetCurrentRenderer())) {
+    double data[3];
+    pointPicker->GetPickPosition(data);
+    qCDebug(INTERACTOR_STYLE_SWITCH)
+        << "point: " << data[0] << ", " << data[1] << ", " << data[2];
 
-//     static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-//         ->GetPoint2Representation()
-//         ->SetWorldPosition(data);
-//   }
+    static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+        ->GetPoint2Representation()
+        ->SetWorldPosition(data);
+  }
 
-//   if (pointPicker->Pick(center, angleWidget->GetCurrentRenderer())) {
-//     double data[3];
-//     pointPicker->GetPickPosition(data);
-//     qCDebug(INTERACTOR_STYLE_SWITCH) << "point: " << data[0] << ", " <<
-//     data[1] << ", " << data[2]               ;
+  if (pointPicker->Pick(center, angleWidget->GetCurrentRenderer())) {
+    double data[3];
+    pointPicker->GetPickPosition(data);
+    qCDebug(INTERACTOR_STYLE_SWITCH)
+        << "point: " << data[0] << ", " << data[1] << ", " << data[2];
 
-//     static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
-//         ->GetCenterRepresentation()
-//         ->SetWorldPosition(data);
-//   }
+    static_cast<vtkAngleRepresentation3D *>(angleWidget->GetRepresentation())
+        ->GetCenterRepresentation()
+        ->SetWorldPosition(data);
+  }
 
-//   interactorStyle->m_interactionMode = INTERACTION_MODE::CAMERA;
-//   interactorStyle->m_txtModeIndicator->SetInput("Camera Mode");
-//   interactorStyle->SetCurrentStyle();
-// }
+  interactorStyle->m_interactionMode = INTERACTION_MODE::CAMERA;
+  interactorStyle->m_txtModeIndicator->SetInput("Camera Mode");
+  interactorStyle->SetCurrentStyle();
+}
 
 void placePoint(vtkObject *caller, unsigned long eid, void *clientData,
                 void *calldata) {
@@ -264,34 +265,34 @@ void InteractorStyleSwitch::OnChar() {
     m_txtModeIndicator->SetInput("Camera Mode");
 
     break;
-    // case 'a':
-    // case 'A': {
-    //   m_txtModeIndicator->SetInput("Angle Measurement Mode");
+  case 'a':
+  case 'A': {
+    m_txtModeIndicator->SetInput("Angle Measurement Mode");
 
-    //   vtkAngleWidget *angleWidget;
-    //   angleWidget = vtkAngleWidget::New();
-    //   angleWidget->SetInteractor(m_iren);
-    //   angleWidget->CreateDefaultRepresentation();
+    vtkAngleWidget *angleWidget;
+    angleWidget = vtkAngleWidget::New();
+    angleWidget->SetInteractor(m_iren);
+    angleWidget->CreateDefaultRepresentation();
 
-    //   vtkSmartPointer<vtkCallbackCommand> placeAnglePointCallback =
-    //       vtkSmartPointer<vtkCallbackCommand>::New();
-    //   placeAnglePointCallback->SetCallback(placeAnglePoint);
-    //   angleWidget->AddObserver(vtkCommand::EndInteractionEvent,
-    //                            placeAnglePointCallback);
+    vtkSmartPointer<vtkCallbackCommand> placeAnglePointCallback =
+        vtkSmartPointer<vtkCallbackCommand>::New();
+    placeAnglePointCallback->SetCallback(placeAnglePoint);
+    angleWidget->AddObserver(vtkCommand::EndInteractionEvent,
+                             placeAnglePointCallback);
 
-    //   placeAnglePointCallback->SetClientData((void *)this);
+    placeAnglePointCallback->SetClientData((void *)this);
 
-    //   vtkSmartPointer<vtkPointHandleRepresentation3D> handle =
-    //       vtkSmartPointer<vtkPointHandleRepresentation3D>::New();
+    vtkSmartPointer<vtkPointHandleRepresentation3D> handle =
+        vtkSmartPointer<vtkPointHandleRepresentation3D>::New();
 
-    //   vtkSmartPointer<vtkAngleRepresentation3D> rep;
-    //   rep = vtkSmartPointer<vtkAngleRepresentation3D>::New();
-    //   rep->SetHandleRepresentation(handle);
-    //   angleWidget->SetRepresentation(rep);
-    //   angleWidget->On();
-    // }
+    vtkSmartPointer<vtkAngleRepresentation3D> rep;
+    rep = vtkSmartPointer<vtkAngleRepresentation3D>::New();
+    rep->SetHandleRepresentation(handle);
+    angleWidget->SetRepresentation(rep);
+    angleWidget->On();
+  }
 
-    break;
+  break;
 
   case 'm':
   case 'M': {
