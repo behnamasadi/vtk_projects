@@ -5,6 +5,7 @@
 #include <vtkCommand.h>
 #include <vtkCoordinate.h>
 #include <vtkEllipticalButtonSource.h>
+#include <vtkImageActor.h>
 #include <vtkImageData.h>
 #include <vtkImageReader2.h>
 #include <vtkImageReader2Factory.h>
@@ -23,10 +24,37 @@
 #include <vtkTexture.h>
 #include <vtkTexturedButtonRepresentation2D.h>
 
-namespace {
-void CreateImage(vtkImageData *image, std::string const &color1,
-                 std::string const &color2);
-}
+std::string img1 = "/home/behnam/workspace/vtk_projects/images/Icons_Explore/"
+                   "Basicmode-grey.png";
+std::string img2 = "/home/behnam/workspace/vtk_projects/images/Icons_Explore/"
+                   "Basicmode-white.png";
+
+/*
+
+// Callback for the interaction
+class vtkButtonCallback : public vtkCommand {
+public:
+  static vtkButtonCallback *New() { return new vtkButtonCallback; }
+  virtual void Execute(vtkObject *caller, unsigned long, void *) override {
+    vtkButtonWidget *buttonWidget = reinterpret_cast<vtkButtonWidget *>(caller);
+    vtkTexturedButtonRepresentation2D *rep =
+        dynamic_cast<vtkTexturedButtonRepresentation2D *>(
+            buttonWidget->GetRepresentation());
+    int state = rep->GetState();
+    if (state == 0) {
+      imageActor->SetInputData(image1);
+    } else {
+      imageActor->SetInputData(image2);
+    }
+    renderWindow->Render();
+  }
+  vtkButtonCallback()
+      : imageActor(nullptr), image1(nullptr), image2(nullptr),
+        renderWindow(nullptr) {}
+  vtkImageActor *imageActor;
+  vtkImageData *image1, *image2;
+  vtkRenderWindow *renderWindow;
+};
 
 class vtkButtonCallback2d : public vtkCommand {
 public:
@@ -50,58 +78,25 @@ public:
   }
 };
 
-vtkSmartPointer<vtkActor> CreateButtonActor(const char *textureFile) {
-  vtkNew<vtkImageReader2Factory> readerFactory;
-  vtkSmartPointer<vtkImageReader2> imageReader;
-  imageReader.TakeReference(readerFactory->CreateImageReader2(textureFile));
-  imageReader->SetFileName(textureFile);
-  imageReader->Update();
-
-  // Aspect ratio of image
-  int dims[3];
-  imageReader->GetOutput()->GetDimensions(dims);
-  double aspect = static_cast<double>(dims[0]) / static_cast<double>(dims[1]);
-
-  vtkNew<vtkTexture> texture;
-  texture->SetInputConnection(imageReader->GetOutputPort());
-
-  vtkNew<vtkEllipticalButtonSource> ellipticalButtonSource;
-  ellipticalButtonSource->SetCircumferentialResolution(50);
-  ellipticalButtonSource->SetShoulderResolution(10);
-  ellipticalButtonSource->SetTextureResolution(10);
-  ellipticalButtonSource->SetRadialRatio(1.05);
-  ellipticalButtonSource->SetShoulderTextureCoordinate(0.0, 0.0);
-  ellipticalButtonSource->SetTextureDimensions(dims[0], dims[1]);
-  ellipticalButtonSource->SetTextureStyleToProportional();
-  ellipticalButtonSource->TwoSidedOn();
-  ellipticalButtonSource->SetWidth(aspect);
-  ellipticalButtonSource->SetHeight(1.0);
-  ellipticalButtonSource->SetDepth(.15);
-  ellipticalButtonSource->SetCenter(2, 2, 0);
-
-  ellipticalButtonSource->SetOutputPointsPrecision(
-      vtkAlgorithm::SINGLE_PRECISION);
-
-  vtkNew<vtkPolyDataMapper> buttonMapper;
-  buttonMapper->SetInputConnection(ellipticalButtonSource->GetOutputPort());
-
-  vtkNew<vtkActor> buttonActor;
-  buttonActor->SetMapper(buttonMapper);
-  buttonActor->SetTexture(texture);
-
-  return buttonActor;
-}
-
 int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
-  // Create two images for texture
-  vtkNew<vtkImageData> image1;
-  vtkNew<vtkImageData> image2;
-  unsigned char banana[3] = {227, 207, 87};
-  unsigned char tomato[3] = {255, 99, 71};
-  CreateImage(image1, "Banana", "Tomato");
-  CreateImage(image2, "Tomato", "Banana");
+  // Load images
+  vtkNew<vtkImageReader2Factory> readerFactory;
+
+  vtkSmartPointer<vtkImageReader2> reader1 = readerFactory->CreateImageReader2(
+      "/home/behnam/workspace/vtk_projects/images/Icons_Explore/"
+      "Basicmode-grey.png");
+  reader1->SetFileName("/home/behnam/workspace/vtk_projects/images/"
+                       "Icons_Explore/Basicmode-grey.png");
+  reader1->Update();
+
+  vtkSmartPointer<vtkImageReader2> reader2 = readerFactory->CreateImageReader2(
+      "/home/behnam/workspace/vtk_projects/images/Icons_Explore/"
+      "Basicmode-white.png");
+  reader2->SetFileName("/home/behnam/workspace/vtk_projects/images/"
+                       "Icons_Explore/Basicmode-white.png");
+  reader2->Update();
 
   // Create some geometry
   vtkNew<vtkSphereSource> sphereSource;
@@ -120,6 +115,11 @@ int main(int, char *[]) {
   renderWindow->AddRenderer(renderer);
   renderWindow->SetWindowName("TexturedButtonWidget");
 
+  // Create image actor
+  // vtkNew<vtkImageActor> imageActor;
+  // imageActor->SetInputData(reader1->GetOutput());
+  // renderer->AddActor(imageActor);
+
   // An interactor
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
@@ -133,11 +133,31 @@ int main(int, char *[]) {
   renderer->AddActor(actor);
   renderer->SetBackground(colors->GetColor3d("MidnightBLue").GetData());
 
-  // Create the button
-  vtkSmartPointer<vtkTexturedButtonRepresentation2D> buttonRepresentation2d =
-      vtkSmartPointer<vtkTexturedButtonRepresentation2D>::New();
-  buttonRepresentation2d->SetNumberOfStates(1);
-  buttonRepresentation2d->SetPlaceFactor(1);
+  // // Create the button
+  // vtkSmartPointer<vtkTexturedButtonRepresentation2D> buttonRepresentation2d =
+  //     vtkSmartPointer<vtkTexturedButtonRepresentation2D>::New();
+  // buttonRepresentation2d->SetNumberOfStates(1);
+  // buttonRepresentation2d->SetPlaceFactor(1);
+
+  // Create a button widget
+  vtkNew<vtkTexturedButtonRepresentation2D> buttonRepresentation;
+  buttonRepresentation->SetNumberOfStates(2);
+  buttonRepresentation->SetButtonTexture(0, reader1->GetOutput()); // State 0
+  buttonRepresentation->SetButtonTexture(1, reader2->GetOutput()); // State 1
+
+  vtkNew<vtkButtonWidget> buttonWidget;
+  buttonWidget->SetInteractor(renderWindowInteractor);
+  buttonWidget->SetRepresentation(buttonRepresentation);
+
+  // Setup callback
+  vtkSmartPointer<vtkButtonCallback> callback =
+      vtkSmartPointer<vtkButtonCallback>::New();
+  callback->imageActor = imageActor;
+  callback->image1 = reader1->GetOutput();
+  callback->image2 = reader2->GetOutput();
+  callback->renderWindow = renderWindow;
+
+  buttonWidget->AddObserver(vtkCommand::StateChangedEvent, callback);
 
   vtkNew<vtkCoordinate> upperRight;
   upperRight->SetCoordinateSystemToNormalizedDisplay();
@@ -154,128 +174,135 @@ int main(int, char *[]) {
   for (const auto &b : bds)
     std::cout << "............" << b << std::endl;
 
-  // Scale to 1, default is .5
-  buttonRepresentation2d->SetPlaceFactor(1);
-  buttonRepresentation2d->PlaceWidget(bds);
-
-  vtkSmartPointer<vtkButtonWidget> buttonWidget =
-      vtkSmartPointer<vtkButtonWidget>::New();
-
-  // Create two images for texture
-  //   vtkNew<vtkImageData> image1;
-  //   vtkNew<vtkImageData> image2;
-  //   unsigned char banana[3] = {227, 207, 87};
-  //   unsigned char tomato[3] = {255, 99, 71};
-  //   CreateImage(image1, "Banana", "Tomato");
-  //   CreateImage(image2, "Tomato", "Banana");
-
-  buttonRepresentation2d->SetNumberOfStates(2);
-  buttonRepresentation2d->SetButtonTexture(0, image1);
-  buttonRepresentation2d->SetButtonTexture(1, image2);
-
-  buttonWidget->SetRepresentation(buttonRepresentation2d);
-
-  //   buttonWidget->CreateDefaultRepresentation();
-  buttonWidget->SetCurrentRenderer(renderer);
-  buttonWidget->SetDefaultRenderer(renderer);
-  buttonWidget->SetInteractor(renderWindowInteractor);
-
-  vtkNew<vtkButtonCallback2d> callback;
-  buttonWidget->AddObserver(vtkCommand::StateChangedEvent, callback);
+  // Initialize and start the interaction
+  renderWindow->Render();
+  renderWindowInteractor->Initialize();
   buttonWidget->On();
-
-  // Begin mouse interaction
   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
 }
-
-namespace {
-void CreateImage(vtkImageData *image, std::string const &color1,
-                 std::string const &color2) {
-  vtkNew<vtkNamedColors> colors;
-
-  std::array<unsigned char, 3> dc1{0, 0, 0};
-  std::array<unsigned char, 3> dc2{0, 0, 0};
-  auto c1 = colors->GetColor3ub(color1).GetData();
-  auto c2 = colors->GetColor3ub(color2).GetData();
-  for (auto i = 0; i < 3; ++i) {
-    dc1[i] = c1[i];
-    dc2[i] = c2[i];
-  }
-
-  // Specify the size of the image data
-  image->SetDimensions(10, 10, 1);
-  image->AllocateScalars(VTK_UNSIGNED_CHAR, 3);
-
-  int *dims = image->GetDimensions();
-
-  // Fill the image with
-  for (int y = 0; y < dims[1]; y++) {
-    for (int x = 0; x < dims[0]; x++) {
-      unsigned char *pixel =
-          static_cast<unsigned char *>(image->GetScalarPointer(x, y, 0));
-      for (int i = 0; i < 3; ++i) {
-        if (x < 5) {
-          pixel[i] = dc1[i];
-        } else {
-          pixel[i] = dc2[i];
-        }
-      }
-    }
-  }
-}
-} // namespace
-
-/*
-// Create the button
-            vtkSmartPointer<vtkTexturedButtonRepresentation2D>
-buttonRepresentation =
-                vtkSmartPointer<vtkTexturedButtonRepresentation2D>::New();
-            buttonRepresentation->SetNumberOfStates(1);
-            buttonRepresentation->SetPlaceFactor(1);
-
-            //            double bds[6] = {0.1, 0.1, 0.3, 0.3, 0.0, 0.0};
-            //    buttonRepresentation->PlaceWidget(bounds);
-
-            vtkNew<vtkCoordinate> upperRight;
-            upperRight->SetCoordinateSystemToNormalizedDisplay();
-            upperRight->SetValue(1.0, 1.0);
-
-            double bds[6];
-            double sz = 200.0;
-            bds[0] = upperRight->GetComputedDisplayValue(CurrentRenderer)[0] -
-sz; bds[1] = bds[0] + sz; bds[2] =
-upperRight->GetComputedDisplayValue(CurrentRenderer)[1] - sz; bds[3] = bds[2] +
-sz; bds[4] = bds[5] = 0.0;
-
-            for (const auto &b : bds)
-                std::cout << "............" << b << std::endl;
-
-            // Scale to 1, default is .5
-            buttonRepresentation->SetPlaceFactor(1);
-            buttonRepresentation->PlaceWidget(bds);
-
-            vtkSmartPointer<vtkButtonWidget> buttonWidget =
-vtkSmartPointer<vtkButtonWidget>::New();
-
-            // Create two images for texture
-            vtkNew<vtkImageData> image1;
-            vtkNew<vtkImageData> image2;
-            unsigned char banana[3] = {227, 207, 87};
-            unsigned char tomato[3] = {255, 99, 71};
-            CreateImage(image1, "Banana", "Tomato");
-            CreateImage(image2, "Tomato", "Banana");
-
-            buttonRepresentation->SetNumberOfStates(2);
-            buttonRepresentation->SetButtonTexture(0, image1);
-            buttonRepresentation->SetButtonTexture(1, image2);
-
-            buttonWidget->SetRepresentation(buttonRepresentation);
-            buttonWidget->SetCurrentRenderer(CurrentRenderer);
-            //                buttonWidget->CreateDefaultRepresentation();
-            buttonWidget->SetDefaultRenderer(CurrentRenderer);
-            buttonWidget->SetInteractor(m_iren);
-            buttonWidget->On();
-
 */
+
+#include <vtkActor.h>
+#include <vtkButtonWidget.h>
+#include <vtkCommand.h>
+#include <vtkImageData.h>
+#include <vtkImageReader2.h>
+#include <vtkImageReader2Factory.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
+#include <vtkTexture.h>
+#include <vtkTexturedButtonRepresentation2D.h>
+
+// Callback for the interaction
+class vtkButtonCallback : public vtkCommand {
+public:
+  static vtkButtonCallback *New() { return new vtkButtonCallback; }
+  virtual void Execute(vtkObject *caller, unsigned long, void *) override {
+    vtkButtonWidget *buttonWidget = reinterpret_cast<vtkButtonWidget *>(caller);
+    vtkTexturedButtonRepresentation2D *rep =
+        dynamic_cast<vtkTexturedButtonRepresentation2D *>(
+            buttonWidget->GetRepresentation());
+    int state = rep->GetState();
+    if (state == 0) {
+      sphereActor->SetTexture(texture1);
+    } else {
+      sphereActor->SetTexture(texture2);
+    }
+    renderWindow->Render();
+  }
+  vtkButtonCallback()
+      : sphereActor(nullptr), texture1(nullptr), texture2(nullptr),
+        renderWindow(nullptr) {}
+  vtkActor *sphereActor;
+  vtkTexture *texture1, *texture2;
+  vtkRenderWindow *renderWindow;
+};
+
+int main() {
+  // Create a render window and renderer
+  vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+  vtkSmartPointer<vtkRenderWindow> renderWindow =
+      vtkSmartPointer<vtkRenderWindow>::New();
+  renderWindow->AddRenderer(renderer);
+
+  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
+      vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  renderWindowInteractor->SetRenderWindow(renderWindow);
+
+  // Load textures
+  vtkSmartPointer<vtkImageReader2Factory> readerFactory =
+      vtkSmartPointer<vtkImageReader2Factory>::New();
+  vtkSmartPointer<vtkImageReader2> reader1 =
+      readerFactory->CreateImageReader2(img1.c_str());
+  reader1->SetFileName(img1.c_str());
+  reader1->Update();
+
+  vtkSmartPointer<vtkImageReader2> reader2 =
+      readerFactory->CreateImageReader2(img2.c_str());
+  reader2->SetFileName(img2.c_str());
+  reader2->Update();
+
+  vtkSmartPointer<vtkTexture> texture1 = vtkSmartPointer<vtkTexture>::New();
+  texture1->SetInputData(reader1->GetOutput());
+
+  vtkSmartPointer<vtkTexture> texture2 = vtkSmartPointer<vtkTexture>::New();
+  texture2->SetInputData(reader2->GetOutput());
+
+  // Create sphere actor
+  vtkSmartPointer<vtkSphereSource> sphereSource =
+      vtkSmartPointer<vtkSphereSource>::New();
+  vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
+      vtkSmartPointer<vtkPolyDataMapper>::New();
+  sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
+
+  vtkSmartPointer<vtkActor> sphereActor = vtkSmartPointer<vtkActor>::New();
+  sphereActor->SetMapper(sphereMapper);
+  sphereActor->SetTexture(texture1); // Initial texture
+  renderer->AddActor(sphereActor);
+
+  // Create a button widget
+  vtkSmartPointer<vtkTexturedButtonRepresentation2D> buttonRepresentation =
+      vtkSmartPointer<vtkTexturedButtonRepresentation2D>::New();
+  buttonRepresentation->SetNumberOfStates(2);
+
+  vtkSmartPointer<vtkButtonWidget> buttonWidget =
+      vtkSmartPointer<vtkButtonWidget>::New();
+  buttonWidget->SetInteractor(renderWindowInteractor);
+  buttonWidget->SetRepresentation(buttonRepresentation);
+
+  vtkNew<vtkCoordinate> upperRight;
+  upperRight->SetCoordinateSystemToNormalizedDisplay();
+  upperRight->SetValue(0.2, 0.5);
+
+  double bds[6];
+  double sz = 200.0;
+  bds[0] = upperRight->GetComputedDisplayValue(renderer)[0] - sz;
+  bds[1] = bds[0] + sz;
+  bds[2] = upperRight->GetComputedDisplayValue(renderer)[1] - sz;
+  bds[3] = bds[2] + sz;
+  bds[4] = bds[5] = 0.0;
+
+  // Setup callback
+  vtkSmartPointer<vtkButtonCallback> callback =
+      vtkSmartPointer<vtkButtonCallback>::New();
+  callback->sphereActor = sphereActor;
+  callback->texture1 = texture1;
+  callback->texture2 = texture2;
+  callback->renderWindow = renderWindow;
+
+  buttonWidget->AddObserver(vtkCommand::StateChangedEvent, callback);
+
+  // Initialize and start the interaction
+  renderWindow->Render();
+  renderWindowInteractor->Initialize();
+  buttonWidget->On();
+  renderWindowInteractor->Start();
+
+  return 0;
+}
