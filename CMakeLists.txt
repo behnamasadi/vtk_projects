@@ -364,11 +364,9 @@ add_executable(ActorProperties src/ActorProperties.cpp)
 target_link_libraries(ActorProperties PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS ActorProperties MODULES ${VTK_LIBRARIES})
 
-
 add_executable(PlaneSource src/PlaneSource.cpp)
 target_link_libraries(PlaneSource PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS PlaneSource MODULES ${VTK_LIBRARIES})
-
 
 add_executable(QtQuickCone src/QtQuickCone.cpp src/MyVtkItem.hpp qml.qrc src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
 target_link_libraries(QtQuickCone PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
@@ -380,8 +378,6 @@ vtk_module_autoinit(TARGETS QtQuickCone MODULES ${VTK_LIBRARIES})
 add_executable(dynamic_split_view qml.qrc src/dynamic_split_view.cpp)
 target_link_libraries(dynamic_split_view PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS dynamic_split_view MODULES ${VTK_LIBRARIES})
-
-
 
 add_executable(CommandObserverClass src/CommandObserverClass.cpp)
 target_link_libraries(CommandObserverClass PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
@@ -495,6 +491,22 @@ add_executable(vtkLogoWidget src/vtkLogoWidget.cpp)
 target_link_libraries(vtkLogoWidget PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS vtkLogoWidget MODULES ${VTK_LIBRARIES})
 
+
+
+
+add_executable(IncrementalOctree src/IncrementalOctree.cpp)
+target_link_libraries(IncrementalOctree PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS IncrementalOctree MODULES ${VTK_LIBRARIES})
+
+add_executable(OctreeVisualization src/OctreeVisualization.cpp)
+target_link_libraries(OctreeVisualization PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS OctreeVisualization MODULES ${VTK_LIBRARIES})
+
+
+
+
+add_executable(vtkQuickExample src/vtkQuickExample.cpp src/MyVtkItem.hpp qml.qrc src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
+target_link_libraries(vtkQuickExample PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 
 
 
