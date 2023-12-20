@@ -503,10 +503,11 @@ target_link_libraries(OctreeVisualization PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS OctreeVisualization MODULES ${VTK_LIBRARIES})
 
 
+add_executable(QuadricDecimation src/QuadricDecimation.cpp)
+target_link_libraries(QuadricDecimation PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS QuadricDecimation MODULES ${VTK_LIBRARIES})
 
 
-add_executable(vtkQuickExample src/vtkQuickExample.cpp src/MyVtkItem.hpp qml.qrc src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
-target_link_libraries(vtkQuickExample PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 
 
 
