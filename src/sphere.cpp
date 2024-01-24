@@ -11,7 +11,7 @@
 #include "vtkPolyDataMapper.h"
 #include "vtkProperty.h"
 #include "vtkRenderer.h"
-#include "vtkSmartVolumeMapper.h"
+// #include "vtkSmartVolumeMapper.h"
 #include "vtkSphereSource.h"
 #include "vtkTestUtilities.h"
 #include "vtkTesting.h"

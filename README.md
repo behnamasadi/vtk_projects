@@ -1,3 +1,35 @@
+# Building VTK
+
+```
+git checkout v9.2.6
+```
+
+configure it:
+```
+cmake -G "Ninja Multi-Config"  -S . -B build   -DCMAKE_INSTALL_PREFIX=~/usr -DVTK_REPORT_OPENGL_ERRORS=OFF -DVTK_MODULE_ENABLE_VTK_GUISupportQt=YES     -DVTK_MODULE_ENABLE_VTK_GUISupportQtQuick=YES -DVTK_WRAP_JAVA=OFF -DVTK_WRAP_PYTHON=OFF  -DVTK_ENABLE_WRAPPING=OFF  -DVTK_BUILD_TESTING=OFF -DVTK_GROUP_ENABLE_Rendering=DONT_WANT -DVTK_MODULE_ENABLE_VTK_RenderingQt=YES -DVTK_MODULE_ENABLE_VTK_hdf5=YES -DVTK_MODULE_ENABLE_VTK_IOHDF=YES -DVTK_MODULE_ENABLE_VTK_InteractionImage=YES    -DVTK_MODULE_ENABLE_VTK_RenderingLOD=YES -DVTK_MODULE_ENABLE_VTK_ViewsCore=YES -DVTK_MODULE_ENABLE_VTK_ViewsContext2D=YES -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES
+```
+
+build and install:
+
+```
+cmake --build  build  --config Debug 
+```
+or 
+```
+cmake --build  build  --config Release
+```
+
+```
+cd build
+ninja install
+```
+
+to check if you have installed debug or release:
+
+```
+objdump -h libvtkImagingStencil-9.3.so.9.3 | grep 'debug_info'
+```
+
 # How to build
 
 configure it:

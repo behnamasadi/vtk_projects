@@ -30,7 +30,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Qml Quick Widgets Gui Qui
 message(STATUS "QT version: " ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
 message(STATUS "QT dir" ${Qt${QT_VERSION_MAJOR}_DIR})
 
-set(PCL_DIR "$ENV{HOME}/usr/share/pcl-1.13/")
+set(PCL_DIR "$ENV{HOME}/usr/share/pcl-1.14/")
 message("PCL_DIR:" ${PCL_DIR})
 
 if(EXISTS "${PCL_DIR}")
@@ -245,9 +245,9 @@ add_executable(CameraActor src/CameraActor.cxx)
 target_link_libraries(CameraActor PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS CameraActor MODULES ${VTK_LIBRARIES})
 
-add_executable(LinearCellDemo src/LinearCellDemo.cxx)
-target_link_libraries(LinearCellDemo PRIVATE ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS LinearCellDemo MODULES ${VTK_LIBRARIES})
+# add_executable(LinearCellDemo src/LinearCellDemo.cxx)
+# target_link_libraries(LinearCellDemo PRIVATE ${VTK_LIBRARIES})
+# vtk_module_autoinit(TARGETS LinearCellDemo MODULES ${VTK_LIBRARIES})
 
 add_executable(vtk_sandbox src/vtk_sandbox.cxx)
 target_link_libraries(vtk_sandbox PRIVATE ${VTK_LIBRARIES})
@@ -520,3 +520,11 @@ vtk_module_autoinit(TARGETS QuadricDecimation MODULES ${VTK_LIBRARIES})
 # add_executable(vtk_basic src/vtk_basic.cpp src/vtk_basic.hpp src/vtk_basic_main.cpp)
 # target_link_libraries(vtk_basic PRIVATE ${VTK_LIBRARIES})
 # vtk_module_autoinit(TARGETS vtk_basic MODULES ${VTK_LIBRARIES})
+
+find_package(PDAL 1.0.0 REQUIRED CONFIG)
+include_directories(${PDAL_INCLUDE_DIRS})
+link_directories(${PDAL_LIBRARY_DIRS})
+add_definitions(${PDAL_DEFINITIONS})
+set(CMAKE_CXX_FLAGS "-std=c++11")
+# add_executable(tutorial tutorial.cpp)
+# target_link_libraries(tutorial PRIVATE ${PDAL_LIBRARIES})

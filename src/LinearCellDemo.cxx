@@ -36,7 +36,7 @@
 #include <vtkVoxel.h>
 #include <vtkWedge.h>
 
-#include <vtk_cli11.h>
+// #include <vtk_cli11.h>
 
 #include <cstdlib>
 #include <string>
