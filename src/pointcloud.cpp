@@ -6,7 +6,7 @@
 
 #include <QApplication>
 #include <QQmlApplicationEngine>
-#include <QQuickVTKItem.h>
+// #include <QQuickVTKItem.h>
 #include <QQuickVTKRenderItem.h>
 #include <QQuickVTKRenderWindow.h>
 #include <QQuickWindow>

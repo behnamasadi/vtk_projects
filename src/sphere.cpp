@@ -13,8 +13,6 @@
 #include "vtkRenderer.h"
 // #include "vtkSmartVolumeMapper.h"
 #include "vtkSphereSource.h"
-#include "vtkTestUtilities.h"
-#include "vtkTesting.h"
 #include "vtkVolume.h"
 #include "vtkVolumeProperty.h"
 #include "vtkWindowToImageFilter.h"

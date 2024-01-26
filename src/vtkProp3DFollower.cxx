@@ -15,14 +15,12 @@
 #include "vtkPolyDataMapper.h"
 #include "vtkPropPicker.h"
 #include "vtkProperty.h"
-#include "vtkRegressionTestImage.h"
 #include "vtkRenderWindow.h"
 #include "vtkRenderWindowInteractor.h"
 #include "vtkRenderer.h"
 #include "vtkSmartPointer.h"
 #include "vtkSphereSource.h"
 #include "vtkStructuredPointsReader.h"
-#include "vtkTestUtilities.h"
 #include <vtkActor.h>
 #include <vtkBoxWidget.h>
 #include <vtkCamera.h>

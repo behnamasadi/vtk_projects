@@ -10,7 +10,7 @@
 #include <vtkRenderer.h>
 #include <vtkTextProperty.h>
 
-VTK_ABI_NAMESPACE_BEGIN
+// VTK_ABI_NAMESPACE_BEGIN
 vtkStandardNewMacro(InteractorStyleSwitch);
 
 Q_LOGGING_CATEGORY(INTERACTOR_STYLE_SWITCH, "INTERACTOR_STYLE_SWITCH",
@@ -491,4 +491,4 @@ vtkSmartPointer<vtkAbstractWidget> InteractorStyleSwitch::GetAbstractWidget() {
   return m_abstractWidget;
 }
 
-VTK_ABI_NAMESPACE_END
+// VTK_ABI_NAMESPACE_END
