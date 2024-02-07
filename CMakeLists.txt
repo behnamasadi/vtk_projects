@@ -13,12 +13,43 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
 
 find_package(Boost COMPONENTS filesystem system REQUIRED)
 
-set(VTK_DIR "$ENV{HOME}/usr/lib/cmake/vtk-9.2/")
-message("VTK_DIR:" ${VTK_DIR})
+message("###################### VTK #####################")
+# Check if VTK_DIR is passed in command line and not empty
+if(NOT VTK_DIR OR VTK_DIR STREQUAL "")
+  # Set default VTK_DIR if not provided
+  set(VTK_DIR "$ENV{HOME}/usr/lib/cmake/vtk-9.3/")
+endif()
 
+message(STATUS "Using VTK_DIR: ${VTK_DIR}")
+
+# Now, use the VTK_DIR variable
 find_package(VTK REQUIRED)
-message("VTK_VERSION:" ${VTK_VERSION})
-message("VTK_LIBRARIES:" ${VTK_LIBRARIES})
+
+# If VTK was found, include its settings
+if(VTK_FOUND)
+
+  message("VTK_VERSION:" ${VTK_VERSION})
+  message("VTK_LIBRARIES:" ${VTK_LIBRARIES})
+else()
+  message(FATAL_ERROR "Could not find VTK in specified VTK_DIR")
+endif()
+
+
+message("###################### PCL #####################")
+
+
+# Check if PCL_DIR is passed in command line and not empty
+if(NOT PCL_DIR OR PCL_DIR STREQUAL "")
+  # Set default PCL_DIR if not provided
+  set(PCL_DIR "$ENV{HOME}/usr/share/pcl-1.14/")
+endif()
+
+message(STATUS "Using PCL_DIR: ${PCL_DIR}")
+message("PCL_DIR:" ${PCL_DIR})
+
+
+
+message("###################### QT #####################")
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -30,11 +61,9 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Qml Quick Widgets Gui Qui
 message(STATUS "QT version: " ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
 message(STATUS "QT dir" ${Qt${QT_VERSION_MAJOR}_DIR})
 
-set(PCL_DIR "$ENV{HOME}/usr/share/pcl-1.14/")
-message("PCL_DIR:" ${PCL_DIR})
 
 if(EXISTS "${PCL_DIR}")
-	find_package(PCL 1.13 REQUIRED COMPONENTS
+	find_package(PCL 1.14 REQUIRED COMPONENTS
 		common
 		octree
 		io
@@ -63,14 +92,14 @@ if(${PCL_FOUND})
 	link_directories(${PCL_LIBRARY_DIRS})
 	add_definitions(${PCL_DEFINITIONS})
 
-	#add_executable(qml_pcl src/qml_pcl.cpp qml.qrc)
-	#target_link_libraries(qml_pcl PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
+	add_executable(qml_pcl src/qml_pcl.cpp qml.qrc)
+	target_link_libraries(qml_pcl PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 
 	add_executable(DownsamplePointCloud src/DownsamplePointCloud.cpp)
 	target_link_libraries(DownsamplePointCloud PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 
-	# add_executable(pointcloud src/pointcloud.cpp qml.qrc)
-	# target_link_libraries(pointcloud PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
+	add_executable(pointcloud src/pointcloud.cpp qml.qrc)
+	target_link_libraries(pointcloud PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 
 	add_executable(polygon_mesh src/polygon_mesh.cpp qml.qrc)
 	target_link_libraries(polygon_mesh PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
@@ -265,9 +294,9 @@ add_executable(MultipleViewports src/MultipleViewports.cxx)
 target_link_libraries(MultipleViewports PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS MultipleViewports MODULES ${VTK_LIBRARIES})
 
-# add_executable(SmartVolumeMapper src/SmartVolumeMapper.cxx)
-# target_link_libraries(SmartVolumeMapper PRIVATE ${VTK_LIBRARIES})
-# vtk_module_autoinit(TARGETS SmartVolumeMapper MODULES ${VTK_LIBRARIES})
+add_executable(SmartVolumeMapper src/SmartVolumeMapper.cxx)
+target_link_libraries(SmartVolumeMapper PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS SmartVolumeMapper MODULES ${VTK_LIBRARIES})
 
 # ./ProjectedTexture fran_cut.vtk fran_cut.png
 add_executable(ProjectedTexture src/ProjectedTexture.cxx)
@@ -464,7 +493,6 @@ target_link_libraries(TexturedButtonWidget PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS TexturedButtonWidget MODULES ${VTK_LIBRARIES})
 
 
-
 add_executable(toolbox_qml src/toolbox_qml.cpp qml.qrc)
 target_link_libraries(toolbox_qml PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 
@@ -528,31 +556,50 @@ vtk_module_autoinit(TARGETS pdal_las_vtk MODULES ${VTK_LIBRARIES})
 add_executable(las_time_based_filter src/las_time_based_filter.cpp)
 target_link_libraries(las_time_based_filter PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS las_time_based_filter MODULES ${VTK_LIBRARIES})
-
-
-
-
-
 endif()
 
 
-# add_executable(main src/main.cpp src/VTKBackend.hpp src/VTKBackend.cpp qml.qrc)
-# target_link_libraries(main PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
-# vtk_module_autoinit(TARGETS QtQuickCone MODULES ${VTK_LIBRARIES})
+add_executable(main src/main.cpp src/VTKBackend.hpp src/VTKBackend.cpp qml.qrc)
+target_link_libraries(main PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS main MODULES ${VTK_LIBRARIES})
 
 
-# add_executable(multi_interactor src/multi_interactor.cpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
-# target_link_libraries(multi_interactor PRIVATE ${VTK_LIBRARIES})
-# vtk_module_autoinit(TARGETS multi_interactor MODULES ${VTK_LIBRARIES})
+add_executable(multi_interactor src/multi_interactor.cpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
+target_link_libraries(multi_interactor PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS multi_interactor MODULES ${VTK_LIBRARIES})
 
 # add_executable(QtQuickCone src/QtQuickCone.cpp src/MyVtkItem.hpp qml.qrc src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
 # target_link_libraries(QtQuickCone PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+# vtk_module_autoinit(TARGETS QtQuickCone MODULES ${VTK_LIBRARIES})
 
 
 
-# add_executable(dynamic_split_view qml.qrc src/dynamic_split_view.cpp)
-# target_link_libraries(dynamic_split_view PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
-# vtk_module_autoinit(TARGETS dynamic_split_view MODULES ${VTK_LIBRARIES})
+add_executable(dynamic_split_view qml.qrc src/dynamic_split_view.cpp)
+target_link_libraries(dynamic_split_view PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS dynamic_split_view MODULES ${VTK_LIBRARIES})
 
 # add_executable(QQuickVTKRender src/QQuickVTKRender.cpp qml.qrc src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
 # target_link_libraries(QQuickVTKRender PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+
+
+add_executable(cameraRings src/cameraRings.cpp)
+target_link_libraries(cameraRings PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS cameraRings MODULES ${VTK_LIBRARIES})
+
+
+add_executable(cropping_implicitplanewidget src/cropping_implicitplanewidget.cpp)
+target_link_libraries(cropping_implicitplanewidget PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS cropping_implicitplanewidget MODULES ${VTK_LIBRARIES})
+
+
+
+add_executable(vtk_las_reader src/vtk_las_reader.cpp)
+target_link_libraries(vtk_las_reader PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS vtk_las_reader MODULES ${VTK_LIBRARIES})
+
+
+add_executable(vtk_pdal_reader src/vtk_pdal_reader.cpp)
+target_link_libraries(vtk_pdal_reader PRIVATE  ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS vtk_pdal_reader MODULES ${VTK_LIBRARIES})
+
+

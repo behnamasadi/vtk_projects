@@ -6,6 +6,7 @@
 #include <vtkImplicitPlaneWidget2.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
+#include <vtkPLYReader.h> // For loading PLY file
 #include <vtkPlane.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
@@ -24,6 +25,10 @@ public:
   static vtkIPWCallback *New() { return new vtkIPWCallback; }
 
   virtual void Execute(vtkObject *caller, unsigned long, void *) {
+    double xyz[3];
+    this->plane->GetNormal(xyz);
+    std::cout << xyz[0] << ", " << xyz[1] << ", " << xyz[2] << std::endl;
+
     vtkImplicitPlaneWidget2 *planeWidget =
         reinterpret_cast<vtkImplicitPlaneWidget2 *>(caller);
     vtkImplicitPlaneRepresentation *rep =
@@ -45,7 +50,8 @@ int main(int argc, char *argv[]) {
   vtkNew<vtkSphereSource> sphereSource;
   sphereSource->SetRadius(10.0);
 
-  vtkNew<vtkXMLPolyDataReader> reader;
+  // vtkNew<vtkXMLPolyDataReader> reader;
+  vtkNew<vtkPLYReader> reader; // Use vtkPLYReader for PLY files
 
   // Setup a visualization pipeline.
   vtkNew<vtkPlane> plane;
