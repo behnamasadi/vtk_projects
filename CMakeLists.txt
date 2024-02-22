@@ -603,3 +603,6 @@ target_link_libraries(vtk_pdal_reader PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS vtk_pdal_reader MODULES ${VTK_LIBRARIES})
 
 
+add_executable(pdal_intensity src/pdal_intensity.cpp)
+target_link_libraries(pdal_intensity PRIVATE  ${VTK_LIBRARIES} ${PDAL_LIBRARIES})
+vtk_module_autoinit(TARGETS pdal_intensity MODULES ${VTK_LIBRARIES})
