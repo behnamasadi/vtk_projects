@@ -12,5 +12,6 @@
 	<file>qml/sanbox.qml</file>
 	<file>qml/main.qml</file>
 	<file>qml/toolbox.qml</file>	
+	<file>qml/decimate_bag.qml</file>	
 </qresource>
 </RCC>

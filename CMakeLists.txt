@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 project(vtk_projects)
 
-if(NOT "${CMAKE_GENERATOR}" STREQUAL "Ninja Multi-Config")
-	# message(WARNING "It's recommended to use -G \"Ninja Multi-Config\" for this project.")
-	# OR, if you want to force-stop the configuration:
-	message(FATAL_ERROR "Please use cmake -S . -G \"Ninja Multi-Config\" -B build for this project.")
-endif()
+#if(NOT "${CMAKE_GENERATOR}" STREQUAL "Ninja Multi-Config")
+#	# message(WARNING "It's recommended to use -G \"Ninja Multi-Config\" for this project.")
+#	# OR, if you want to force-stop the configuration:
+#	message(FATAL_ERROR "Please use cmake -S . -G \"Ninja Multi-Config\" -B build for this project.")
+#endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -94,6 +94,9 @@ if(${PCL_FOUND})
 
 	add_executable(qml_pcl src/qml_pcl.cpp qml.qrc)
 	target_link_libraries(qml_pcl PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
+	vtk_module_autoinit(TARGETS qml_pcl MODULES ${VTK_LIBRARIES})
+
+
 
 	add_executable(DownsamplePointCloud src/DownsamplePointCloud.cpp)
 	target_link_libraries(DownsamplePointCloud PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
@@ -568,9 +571,9 @@ add_executable(multi_interactor src/multi_interactor.cpp src/InteractorStyleSwit
 target_link_libraries(multi_interactor PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS multi_interactor MODULES ${VTK_LIBRARIES})
 
-# add_executable(QtQuickCone src/QtQuickCone.cpp src/MyVtkItem.hpp qml.qrc src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
-# target_link_libraries(QtQuickCone PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
-# vtk_module_autoinit(TARGETS QtQuickCone MODULES ${VTK_LIBRARIES})
+add_executable(QtQuickCone src/QtQuickCone.cpp src/MyVtkItem.hpp qml.qrc src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
+target_link_libraries(QtQuickCone PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS QtQuickCone MODULES ${VTK_LIBRARIES})
 
 
 
@@ -606,3 +609,8 @@ vtk_module_autoinit(TARGETS vtk_pdal_reader MODULES ${VTK_LIBRARIES})
 add_executable(pdal_intensity src/pdal_intensity.cpp)
 target_link_libraries(pdal_intensity PRIVATE  ${VTK_LIBRARIES} ${PDAL_LIBRARIES})
 vtk_module_autoinit(TARGETS pdal_intensity MODULES ${VTK_LIBRARIES})
+
+
+add_executable(decimate_bag src/decimate_bag.cpp src/decimate_bagVtkItem.hpp  src/decimate_bagVtkItem.cpp   qml.qrc)
+target_link_libraries(decimate_bag PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS decimate_bag MODULES ${VTK_LIBRARIES})

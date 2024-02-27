@@ -139,12 +139,23 @@ public:
     // Adding a cube
     vtkNew<vtkPolyData> polydata;
 
-    pcl::PointCloud<pcl::PointXYZ> cloud;
+    // pcl::PointCloud<pcl::PointXYZ> cloud;
 
-    std::vector<pcl::PointXYZ> points = {{0, 0, 0}, {0, 0, 1}, {0, 1, 0},
-                                         {1, 1, 0}, {1, 0, 0}, {1, 1, 1}};
-    for (auto const &point : points) {
-      cloud.push_back(point);
+    // std::vector<pcl::PointXYZ> points = {{0, 0, 0}, {0, 0, 1}, {0, 1, 0},
+    //                                      {1, 1, 0}, {1, 0, 0}, {1, 1, 1}};
+    // for (auto const &point : points) {
+    //   cloud.push_back(point);
+    // }
+
+    pcl::PointCloud<pcl::PointXYZ> cloud;
+    pcl::PointXYZ point;
+
+    for (int i = 0; i < 10000000; i++) {
+
+      point.x = rand() * 10 - 5;
+      point.y = rand() * 10 - 5;
+      point.z = rand() * 10 - 5;
+      cloud.points.push_back(point);
     }
 
     vtkNew<Data> vtk;

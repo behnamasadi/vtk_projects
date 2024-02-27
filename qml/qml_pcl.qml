@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 import QtQuick.Window 2.12
  
 // import the VTK module
-import VTK 9.2
+import VTK 9.3
  
 // window containing the application
 ApplicationWindow {
