@@ -56,7 +56,7 @@ void displayLASFileUsingPDAL() {
       double time =
           pointView->getFieldAs<double>(pdal::Dimension::Id::GpsTime, id);
       // Process time as needed, for example, store it in an array or print it
-      std::cout << time << std::endl;
+      // std::cout << time << std::endl;
     }
   }
 

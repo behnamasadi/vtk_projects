@@ -611,6 +611,15 @@ target_link_libraries(pdal_intensity PRIVATE  ${VTK_LIBRARIES} ${PDAL_LIBRARIES}
 vtk_module_autoinit(TARGETS pdal_intensity MODULES ${VTK_LIBRARIES})
 
 
-add_executable(decimate_bag src/decimate_bag.cpp src/decimate_bagVtkItem.hpp  src/decimate_bagVtkItem.cpp   qml.qrc)
-target_link_libraries(decimate_bag PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS decimate_bag MODULES ${VTK_LIBRARIES})
+# add_executable(decimate_bag src/decimate_bag.cpp src/decimate_bagVtkItem.hpp  src/decimate_bagVtkItem.cpp   qml.qrc)
+# target_link_libraries(decimate_bag PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+# vtk_module_autoinit(TARGETS decimate_bag MODULES ${VTK_LIBRARIES})
+
+
+
+add_executable(height_based_color_map src/height_based_color_map.cpp)
+target_link_libraries(height_based_color_map PRIVATE ${PDAL_LIBRARIES} Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS height_based_color_map MODULES ${VTK_LIBRARIES})
+
+
+

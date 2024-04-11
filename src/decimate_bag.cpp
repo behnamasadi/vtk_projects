@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 
   QGuiApplication app(argc, argv);
 
-  qmlRegisterType<MyVtkItem>("com.vtk.example", 1, 0, "MyVtkItem");
+  qmlRegisterType<MyVtkItem>("com.vtk.example", 1, 0, "decimate_bag");
 
   QQmlApplicationEngine engine;
 
