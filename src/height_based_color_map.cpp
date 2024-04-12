@@ -311,12 +311,30 @@ public:
 
   virtual void OnLeftButtonUp() {
     std::cout << "Released left mouse button." << std::endl;
-    vtkInteractorStyleTrackballActor::OnLeftButtonUp();
+    vtkNew<vtkMatrix4x4> m;
+    this->Actor->GetMatrix(m);
+    std::cout << "Matrix: " << endl << *m << std::endl;
 
     RecalculateColors();
+    vtkInteractorStyleTrackballActor::OnLeftButtonUp();
+  }
+
+  virtual void OnMiddleButtonUp() {
+    std::cout << "Released middle mouse button." << std::endl;
+
+    vtkNew<vtkMatrix4x4> m;
+    this->Actor->GetMatrix(m);
+    std::cout << "Matrix: " << endl << *m << std::endl;
+
+    vtkInteractorStyleTrackballActor::OnMiddleButtonUp();
   }
 
   void SetPoints(vtkSmartPointer<vtkPoints> points) { this->Points = points; }
+
+  void SetPointPolyData(vtkSmartPointer<vtkPolyData> pointPolyData) {
+    this->PointPolyData = pointPolyData;
+  }
+
   void SetLookupTable(vtkSmartPointer<vtkLookupTable> lut) {
     this->LookupTable = lut;
   }
@@ -326,41 +344,70 @@ private:
   vtkSmartPointer<vtkActor> Actor;
   vtkSmartPointer<vtkPoints> Points;
   vtkSmartPointer<vtkLookupTable> LookupTable;
+  vtkSmartPointer<vtkPolyData> PointPolyData;
 
   void RecalculateColors() {
     if (!this->Actor || !this->Points || !this->LookupTable)
       return;
 
+    vtkNew<vtkTransform> transform;
+    transform->SetMatrix(this->Actor->GetMatrix());
+
+    // Variables to hold the minimum and maximum z values
+    double minZ = std::numeric_limits<double>::max();
+    double maxZ = std::numeric_limits<double>::lowest();
+    // Iterate through all the points to find min and max z values
+
+    double yMin = std::numeric_limits<double>::max(),
+           yMax = std::numeric_limits<double>::lowest();
+
+    // Generate the colors for each point based on the Z value
     vtkSmartPointer<vtkUnsignedCharArray> colors =
         vtkSmartPointer<vtkUnsignedCharArray>::New();
-    colors->SetNumberOfComponents(3);
+    colors->SetNumberOfComponents(
+        3); // 3 components (R, G, B), we can use 4 for RGBA
     colors->SetName("Colors");
 
-    double p[3], dColor[3];
-    unsigned char color[3];
     for (vtkIdType i = 0; i < this->Points->GetNumberOfPoints(); i++) {
-      this->Points->GetPoint(i, p);
-      this->LookupTable->GetColor(p[2], dColor); // Use Z for color mapping
+      double p[3];                  // Array to hold the point coordinates
+      this->Points->GetPoint(i, p); // Get the i-th point's coordinates
 
+      transform->TransformPoint(
+          p, p); // Apply the actor's current transformation matrix
+
+      double z = p[2]; // Get the z-value
+
+      double dColor[3];
+      unsigned char color[3];
+
+      LookupTable->GetColor(z, dColor); // Get the color as double[3]
+
+      // Convert double color to unsigned char
       color[0] = static_cast<unsigned char>(255.0 * dColor[0]);
       color[1] = static_cast<unsigned char>(255.0 * dColor[1]);
       color[2] = static_cast<unsigned char>(255.0 * dColor[2]);
 
       colors->InsertNextTypedTuple(color);
+
+      // this->Points->SetPoint(i, p);
+
+      // Compare and update min and max z values
+      if (p[2] < minZ) {
+        minZ = p[2];
+      }
+      if (p[2] > maxZ) {
+        maxZ = p[2];
+      }
     }
 
-    vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
-    polyData->SetPoints(this->Points);
-    polyData->GetPointData()->SetScalars(colors);
+    // Attach the colors to the point poly data
+    PointPolyData->GetPointData()->SetScalars(colors);
 
-    vtkPolyDataMapper *polyDataMapper =
-        vtkPolyDataMapper::SafeDownCast(this->Actor->GetMapper());
-    if (polyDataMapper) {
-      polyDataMapper->SetInputData(polyData);
-      polyDataMapper->Update();
-    } else {
-      std::cerr << "Error: Mapper is not a vtkPolyDataMapper!" << std::endl;
-    }
+    // // Print the results
+    std::cout << "Minimum z-value: " << minZ << std::endl;
+    std::cout << "Maximum z-value: " << maxZ << std::endl;
+
+    std::cout << "maxZ-minZ: " << maxZ - minZ << std::endl;
   }
 };
 
@@ -390,6 +437,9 @@ int main(int, char *[]) {
   double zMin = std::numeric_limits<double>::max(),
          zMax = std::numeric_limits<double>::lowest();
 
+  double yMin = std::numeric_limits<double>::max(),
+         yMax = std::numeric_limits<double>::lowest();
+
   for (pdal::PointId id = 0; id < pointView->size(); ++id) {
     double x = pointView->getFieldAs<double>(pdal::Dimension::Id::X, id);
     double y = pointView->getFieldAs<double>(pdal::Dimension::Id::Y, id);
@@ -399,6 +449,11 @@ int main(int, char *[]) {
       zMin = z;
     if (z > zMax)
       zMax = z;
+
+    if (y < yMin)
+      yMin = y;
+    if (y > yMax)
+      yMax = y;
   }
 
   vtkSmartPointer<vtkPolyData> pointPolyData =
@@ -414,8 +469,11 @@ int main(int, char *[]) {
   vtkSmartPointer<vtkLookupTable> lookupTable =
       vtkSmartPointer<vtkLookupTable>::New();
 
+  // lookupTable->SetRange(
+  //     zMin, zMax); // Set the range based on the min and max z-values
+
   lookupTable->SetRange(
-      zMin, zMax); // Set the range based on the min and max z-values
+      yMin, yMax); // Set the range based on the min and max z-values
 
   lookupTable->SetHueRange(0.667,
                            0); // Set hue range from blue (0.667) to red (0)
@@ -433,9 +491,11 @@ int main(int, char *[]) {
   unsigned char color[3];
   for (vtkIdType i = 0; i < points->GetNumberOfPoints(); i++) {
     points->GetPoint(i, p);
-    double z = p[2]; // Get the z-value
+    // double z = p[2]; // Get the z-value
+    double y = p[1]; // Get the z-value
 
-    lookupTable->GetColor(z, dColor); // Get the color as double[3]
+    // lookupTable->GetColor(z, dColor); // Get the color as double[3]
+    lookupTable->GetColor(y, dColor); // Get the color as double[3]
 
     // Convert double color to unsigned char
     color[0] = static_cast<unsigned char>(255.0 * dColor[0]);
@@ -465,9 +525,9 @@ int main(int, char *[]) {
 
   vtkNew<MyInteractorStyle> style;
   style->SetActor(actor);
-  style->SetPoints(points); // Pass points to the interactor style
-  style->SetLookupTable(
-      lookupTable); // Pass the lookup table to the interactor style
+  style->SetPoints(points);
+  style->SetLookupTable(lookupTable);
+  style->SetPointPolyData(pointPolyData);
 
   renderWindowInteractor->SetInteractorStyle(style);
 
