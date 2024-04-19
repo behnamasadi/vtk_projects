@@ -24,10 +24,8 @@
 #include <vtkTexture.h>
 #include <vtkTexturedButtonRepresentation2D.h>
 
-std::string img1 = "/home/behnam/workspace/vtk_projects/images/Icons_Explore/"
-                   "Basicmode-grey.png";
-std::string img2 = "/home/behnam/workspace/vtk_projects/images/Icons_Explore/"
-                   "Basicmode-white.png";
+std::string img1 = "/home/behnam/workspace/vtk_projects/images/HQ.png";
+std::string img2 = "/home/behnam/workspace/vtk_projects/images/maps-marker.png";
 
 /*
 

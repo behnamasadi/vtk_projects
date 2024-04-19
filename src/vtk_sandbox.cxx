@@ -539,6 +539,7 @@ int main() {
 
   // adding axes
   vtkNew<vtkAxesActor> axesActor;
+
   vtkNew<vtkRenderer> renderer;
   renderer->AddActor(axesActor);
   renderer->AddActor(actor2);

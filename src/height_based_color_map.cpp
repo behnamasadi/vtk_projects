@@ -87,7 +87,7 @@ private:
   vtkSmartPointer<vtkLookupTable> LookupTable;
   vtkSmartPointer<vtkPolyData> PointPolyData;
 
-  void RecalculateColors() {
+  void FooRecalculateColors() {
     if (!this->Actor || !this->PointPolyData || !this->LookupTable)
       return;
 
@@ -186,13 +186,102 @@ private:
       double point[3];
       this->PointPolyData->GetPoints()->GetPoint(i, point);
 
-      transform->TransformPoint(point, point);
+      // transform->TransformPoint(point, point);
 
       double height = upDirection[0] * point[0] + upDirection[1] * point[1] +
                       upDirection[2] * point[2];
       double dColor[3];
 
       this->LookupTable->GetColor(height, dColor);
+
+      unsigned char color[3] = {static_cast<unsigned char>(255.0 * dColor[0]),
+                                static_cast<unsigned char>(255.0 * dColor[1]),
+                                static_cast<unsigned char>(255.0 * dColor[2])};
+
+      colors->InsertNextTypedTuple(color);
+    }
+
+    this->PointPolyData->GetPointData()->SetScalars(colors);
+  }
+
+  void RecalculateColors() {
+    if (!this->Actor || !this->PointPolyData || !this->LookupTable)
+      return;
+
+    vtkNew<vtkMatrix4x4> matrix;
+    vtkNew<vtkTransform> transform;
+
+    this->Actor->GetMatrix(matrix);
+    std::cout << "Matrix: " << std::endl << *matrix << std::endl;
+
+    transform->SetMatrix(matrix); // Use actor's current transformation matrix
+
+    double roll, pitch, yaw;
+    ExtractEulerAngles(matrix, roll, pitch, yaw);
+
+    std::cout << "Roll: " << roll << ", Pitch: " << pitch << ", Yaw: " << yaw
+              << std::endl;
+    vtkSmartPointer<vtkUnsignedCharArray> colors =
+        vtkSmartPointer<vtkUnsignedCharArray>::New();
+    colors->SetNumberOfComponents(3);
+    colors->SetName("Colors");
+
+    double yMin = std::numeric_limits<double>::max(),
+           yMax = std::numeric_limits<double>::lowest();
+
+    double xMin = std::numeric_limits<double>::max(),
+           xMax = std::numeric_limits<double>::lowest();
+
+    double zMin = std::numeric_limits<double>::max(),
+           zMax = std::numeric_limits<double>::lowest();
+
+    vtkSmartPointer<vtkPoints> transformedPoints =
+        vtkSmartPointer<vtkPoints>::New();
+
+    for (vtkIdType i = 0;
+         i < this->PointPolyData->GetPoints()->GetNumberOfPoints(); i++) {
+      double point[3], transformedPoint[3];
+      this->PointPolyData->GetPoints()->GetPoint(i, point);
+
+      double x, y, z;
+
+      transform->TransformPoint(point, transformedPoint);
+      transformedPoints->InsertNextPoint(transformedPoint);
+
+      x = transformedPoint[0];
+      y = transformedPoint[1];
+      z = transformedPoint[2];
+
+      if (y < yMin)
+        yMin = y;
+      if (y > yMax)
+        yMax = y;
+
+      if (z < zMin)
+        zMin = z;
+      if (z > zMax)
+        zMax = z;
+
+      if (x < xMin)
+        xMin = x;
+      if (x > xMax)
+        xMax = x;
+    }
+
+    std::cout << "yMin, yMax: " << std::fixed << yMin - yMin << ","
+              << yMax - yMin << std::endl;
+
+    this->LookupTable->SetRange(yMin - yMin, yMax - yMin);
+    this->LookupTable->SetHueRange(0.667, 0); // Blue to red hue range
+    this->LookupTable->Build();
+
+    for (vtkIdType i = 0; i < transformedPoints->GetNumberOfPoints(); i++) {
+      double point[3];
+      transformedPoints->GetPoint(i, point);
+
+      double dColor[3];
+
+      this->LookupTable->GetColor(point[1] - yMin, dColor);
 
       unsigned char color[3] = {static_cast<unsigned char>(255.0 * dColor[0]),
                                 static_cast<unsigned char>(255.0 * dColor[1]),

@@ -101,7 +101,8 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [LegendScale](src/LegendScaleActor.cpp)  
 [Anti-Aliasing](docs/anti-aliasing.md)  
 [Vertex Glyph Filter](docs/vertex_glyph_filter.md)  
-
+[Multiple Layers](docs/multiple_layers.md)  
+[CaptionActor2D](docs/captionActor2D.md)
 
 ## Viewport
 
@@ -151,7 +152,6 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [Renderer Camera Position Call back](docs/camera_position.md)  
 [Camera Frustum](docs/frustum.md)  
 [Definition of Pan, Tilt and Spin](docs/images/Definition-of-pan-tilt-and-spin.png)  
-
 [Culling](docs/culling.md)  
   
 

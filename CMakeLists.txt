@@ -622,4 +622,19 @@ target_link_libraries(height_based_color_map PRIVATE ${PDAL_LIBRARIES} Qt${QT_VE
 vtk_module_autoinit(TARGETS height_based_color_map MODULES ${VTK_LIBRARIES})
 
 
+add_executable(DepthSortPolyData src/DepthSortPolyData.cxx)
+target_link_libraries(DepthSortPolyData PRIVATE ${PDAL_LIBRARIES} Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS DepthSortPolyData MODULES ${VTK_LIBRARIES})
+
+
+
+add_executable(CaptionActor2D src/CaptionActor2D.cpp)
+target_link_libraries(CaptionActor2D PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS CaptionActor2D MODULES ${VTK_LIBRARIES})
+
+
+
+add_executable(multiple_layers src/multiple_layers.cpp)
+target_link_libraries(multiple_layers PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS multiple_layers MODULES ${VTK_LIBRARIES})
 

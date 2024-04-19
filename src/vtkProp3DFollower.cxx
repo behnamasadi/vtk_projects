@@ -21,19 +21,28 @@
 #include "vtkSmartPointer.h"
 #include "vtkSphereSource.h"
 #include "vtkStructuredPointsReader.h"
+#include <iostream>
 #include <vtkActor.h>
 #include <vtkBoxWidget.h>
 #include <vtkCamera.h>
+#include <vtkCellPicker.h>
 #include <vtkCommand.h>
 #include <vtkConeSource.h>
+#include <vtkCubeSource.h>
+#include <vtkImageActor.h>
+#include <vtkInformation.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
+#include <vtkPNGReader.h>
+#include <vtkPlaneSource.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkProp3DFollower.h>
 #include <vtkProperty.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 #include <vtkTransform.h>
 
 //------------------------------------------------------------------------------
@@ -70,8 +79,14 @@ int main(int argc, char **argv) {
   }
 
   vtkNew<vtkNamedColors> colors;
-  // Create some simple actors
-  // vtkNew<>
+  // Create a cube actor
+  vtkNew<vtkCubeSource> cube;
+  vtkNew<vtkPolyDataMapper> cubeMapper;
+  cubeMapper->SetInputConnection(cube->GetOutputPort());
+  vtkNew<vtkActor> cubeActor;
+  cubeActor->SetMapper(cubeMapper);
+  cubeActor->GetProperty()->SetColor(colors->GetColor3d("Banana").GetData());
+
   vtkNew<vtkPlaneSource> plane;
 
   vtkNew<vtkPolyDataMapper> mapper;
@@ -128,16 +143,23 @@ int main(int argc, char **argv) {
   follower->SetCamera(ren1->GetActiveCamera());
   p3dFollower->SetCamera(ren1->GetActiveCamera());
 
+  vtkSmartPointer<vtkInformation> keys = vtkSmartPointer<vtkInformation>::New();
+
+  // keys->Set(vtkProp3D:: ALWAYS_ON_TOP(), 1);
+  // follower->SetPropertyKeys(keys);
+
   vtkNew<vtkRenderWindow> renWin;
   renWin->AddRenderer(ren1);
   // Turn off antialiasing so all GPUs produce the same image
   renWin->SetMultiSamples(0);
 
   vtkNew<vtkRenderWindowInteractor> iren;
+
   iren->SetRenderWindow(renWin);
   iren->SetPicker(picker);
 
   ren1->AddActor(p3dFollower);
+  ren1->AddActor(cubeActor); // Add the cube actor
 
   ren1->SetBackground(0.1, 0.2, 0.4);
   renWin->SetSize(300, 300);
