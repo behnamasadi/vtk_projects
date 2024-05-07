@@ -638,3 +638,19 @@ add_executable(multiple_layers src/multiple_layers.cpp)
 target_link_libraries(multiple_layers PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS multiple_layers MODULES ${VTK_LIBRARIES})
 
+
+
+add_executable(colorTransferFunction src/colorTransferFunction.cpp)
+target_link_libraries(colorTransferFunction PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS colorTransferFunction MODULES ${VTK_LIBRARIES})
+
+
+# add_executable(vertexGlyphFilter src/vertexGlyphFilter.cpp)
+# target_link_libraries(vertexGlyphFilter PRIVATE ${VTK_LIBRARIES})
+# vtk_module_autoinit(TARGETS vertexGlyphFilter MODULES ${VTK_LIBRARIES})
+
+
+# add_executable(lookupTable src/lookupTable.cpp)
+# target_link_libraries(lookupTable PRIVATE ${VTK_LIBRARIES})
+# vtk_module_autoinit(TARGETS lookupTable MODULES ${VTK_LIBRARIES})
+

@@ -4,8 +4,11 @@
 #include <vtkCamera.h>
 #include <vtkCameraPass.h>
 #include <vtkCaptionActor2D.h>
+#include <vtkCell.h>
+#include <vtkColorTransferFunction.h>
 #include <vtkConeSource.h>
 #include <vtkCubeSource.h>
+#include <vtkFloatArray.h>
 #include <vtkFollower.h>
 #include <vtkImageActor.h>
 #include <vtkImageMapper3D.h>
@@ -20,6 +23,7 @@
 #include <vtkOverlayPass.h>
 #include <vtkPNGReader.h>
 #include <vtkPlaneSource.h>
+#include <vtkPointData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProp3DFollower.h>
 #include <vtkProperty.h>
@@ -34,67 +38,117 @@
 #include <vtkTextProperty.h>
 #include <vtkTexture.h>
 #include <vtkTransform.h>
+#include <vtkTriangle.h>
+#include <vtkVertexGlyphFilter.h>
 
 int main(int, char *[]) {
-  // Create a sphere source as a basic object to be rendered
-  vtkSmartPointer<vtkSphereSource> sphereSource =
-      vtkSmartPointer<vtkSphereSource>::New();
-  sphereSource->Update();
 
-  // Create a mapper for the sphere
-  vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
-      vtkSmartPointer<vtkPolyDataMapper>::New();
-  sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
+  //   vtkNew<vtkPoints> points;
+  //   points->InsertPoint(0, 0, 0, 0);
+  //   points->InsertPoint(1, 1, 0, 0);
+  //   points->InsertPoint(2, 1, 1, 0);
+  //   points->InsertPoint(3, 0, 1, 0);
+  //   points->InsertNextPoint(0, 0, 1);
 
-  // Create a main actor for the sphere
-  vtkSmartPointer<vtkActor> sphereActor = vtkSmartPointer<vtkActor>::New();
-  sphereActor->SetMapper(sphereMapper);
+  //   vtkNew<vtkPolyData> polyData;
+  //   polyData->SetPoints(points);
 
-  // Setup the main Renderer
-  vtkSmartPointer<vtkRenderer> mainRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
-  mainRenderer->AddActor(
-      sphereActor); // Add the main actor to the main renderer
-  mainRenderer->SetBackground(0.1, 0.2, 0.4); // Dark blue background
+  //   //polyData->SetPolys()
 
-  // Setup the Render Window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
-  renderWindow->AddRenderer(mainRenderer);
-  renderWindow->SetSize(800, 600);
+  //   vtkNew<vtkVertexGlyphFilter> glyphFilter;
+  //   glyphFilter->SetInputData(polyData);
+  //   glyphFilter->Update();
 
-  // Setup the Render Window Interactor
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-      vtkSmartPointer<vtkRenderWindowInteractor>::New();
-  renderWindowInteractor->SetRenderWindow(renderWindow);
+  //   vtkNew<vtkPolyDataMapper> mapper;
+  //   mapper->SetInputConnection(glyphFilter->GetOutputPort());
 
-  // Setup the overlay Renderer
-  vtkSmartPointer<vtkRenderer> overlayRenderer =
-      vtkSmartPointer<vtkRenderer>::New();
-  overlayRenderer->SetLayer(1);
-  renderWindow->AddRenderer(overlayRenderer);
-  renderWindow->SetNumberOfLayers(2);
+  //   vtkNew<vtkActor> actor;
+  //   actor->SetMapper(mapper);
 
-  // Create a follower that follows the sphere actor
-  vtkSmartPointer<vtkProp3DFollower> follower =
-      vtkSmartPointer<vtkProp3DFollower>::New();
-  follower->SetProp3D(sphereActor);
-  follower->SetCamera(
-      overlayRenderer
-          ->GetActiveCamera()); // Use the camera from the overlay renderer
-  overlayRenderer->AddViewProp(follower);
+  //   vtkNew<vtkRenderer> renderer;
+  //   renderer->AddActor(actor);
+  //   renderer->SetBackground(0.1, 0.2, 0.4); // Dark blue background
 
-  // Important: Set the background of the overlay renderer to transparent
-  overlayRenderer->SetBackground(1.0, 1.0, 1.0);
-  overlayRenderer->SetBackgroundAlpha(0.0);
+  //   vtkNew<vtkRenderWindow> renderWindow;
+  //   renderWindow->AddRenderer(renderer);
+  //   renderWindow->Render();
 
-  // Initialize the camera (common for both renderers)
-  mainRenderer->ResetCamera();
-  overlayRenderer->SetActiveCamera(mainRenderer->GetActiveCamera());
+  //   vtkNew<vtkRenderWindowInteractor> iren;
+  //   renderWindow->SetInteractor(iren);
+  //   iren->Initialize();
+  //   iren->Start();
 
-  // Start the interaction
-  renderWindow->Render();
-  renderWindowInteractor->Start();
+  //   /*
+  //     vtkNew<vtkPointData> pointData;
+  //     vtkNew<vtkCellArray> cellArray;
+  //     //   vtkNew<vtkCell> cell;
+  //     vtkNew<vtkPolyData> polyData;
+  //     vtkNew<vtkTriangle> triangle;
+  //     vtkNew<vtkFloatArray> scalars;
+  //   */
+
+  //   // Create points
+  //   vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+  //   points->InsertNextPoint(0.0, 0.0, 0.0);
+  //   points->InsertNextPoint(1.0, 0.0, 0.0);
+  //   points->InsertNextPoint(0.5, 1.0, 0.0);
+
+  //   // Create a polydata object
+  //   vtkSmartPointer<vtkPolyData> polyData =
+  //   vtkSmartPointer<vtkPolyData>::New(); polyData->SetPoints(points);
+
+  //   // Create scalars for each point
+  //   vtkSmartPointer<vtkFloatArray> scalars =
+  //       vtkSmartPointer<vtkFloatArray>::New();
+  //   scalars->SetNumberOfValues(3);
+  //   scalars->SetValue(0, 1.0); // Scalar value at point 0
+  //   scalars->SetValue(1, 2.0); // Scalar value at point 1
+  //   scalars->SetValue(2, 3.0); // Scalar value at point 2
+
+  //   // Set the scalars to the point data
+  //   polyData->GetPointData()->SetScalars(scalars);
+
+  //   // Create a lookup table to map scalar values to colors
+  //   vtkSmartPointer<vtkLookupTable> lut =
+  //   vtkSmartPointer<vtkLookupTable>::New(); lut->SetNumberOfTableValues(3);
+  //   lut->Build();
+  //   lut->SetTableValue(0, 1.0, 0.0, 0.0, 1.0); // Red
+  //   lut->SetTableValue(1, 0.0, 1.0, 0.0, 1.0); // Green
+  //   lut->SetTableValue(2, 0.0, 0.0, 1.0, 1.0); // Blue
+
+  //   // Mapper and actor
+  //   vtkSmartPointer<vtkPolyDataMapper> mapper =
+  //       vtkSmartPointer<vtkPolyDataMapper>::New();
+  //   mapper->SetInputData(polyData);
+  //   mapper->SetLookupTable(lut);
+  //   mapper->SetScalarRange(1, 3);
+
+  //   vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  //   actor->SetMapper(mapper);
+
+  //   // Renderer and render window
+  //   vtkSmartPointer<vtkRenderer> renderer =
+  //   vtkSmartPointer<vtkRenderer>::New(); vtkSmartPointer<vtkRenderWindow>
+  //   renderWindow =
+  //       vtkSmartPointer<vtkRenderWindow>::New();
+  //   renderWindow->AddRenderer(renderer);
+  //   vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
+  //       vtkSmartPointer<vtkRenderWindowInteractor>::New();
+  //   renderWindowInteractor->SetRenderWindow(renderWindow);
+
+  //   // Add the actor to the renderer
+  //   renderer->AddActor(actor);
+
+  //   // Scalar bar to show color map
+  //   vtkSmartPointer<vtkScalarBarActor> scalarBar =
+  //       vtkSmartPointer<vtkScalarBarActor>::New();
+  //   scalarBar->SetLookupTable(mapper->GetLookupTable());
+  //   renderer->AddActor2D(scalarBar);
+
+  //   // Background color and rendering
+  //   renderer->SetBackground(0.1, 0.2, 0.3); // Dark blue background
+  //   renderWindow->Render();
+  //   renderWindowInteractor->Start();
 
   return EXIT_SUCCESS;
 }

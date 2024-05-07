@@ -83,7 +83,10 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 ```
 
 ## Basics
-
+[Basic Data types: vtkPoints, vtkVertexGlyphFilter](docs/basic_data_types.md)  
+[Color Transfer Function](docs/colorTransferFunction.md)  
+[LookupTable](docs/lookupTable.md)  
+[Glyphs](docs/glyphs.md)  
 [The Basic Setup](docs/the_basic_setup.md)  
 [Command/Observer and CallBacks for Events](docs/command_observer_for_events_callback.md)  
 [Actor Properties](docs/actor_properties.md)  
