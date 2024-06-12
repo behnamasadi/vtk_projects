@@ -1,6 +1,5 @@
 #include <vtkActor.h>
 #include <vtkCommand.h>
-#include <vtkIncrementalOctreePointLocator.h>
 #include <vtkMinimalStandardRandomSequence.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
@@ -37,29 +36,9 @@ public:
 
     this->Octree->GenerateRepresentation(this->Level, this->PolyData);
     this->Renderer->Render();
-
-    std::cout << "Number Of Cells representation  "
-              << this->PolyData->GetNumberOfCells() << std::endl;
-
-    // vtkSmartPointer<vtkPoints> points = this->PolyData->GetPoints();
-    // if (points) {
-
-    //   std::cout << "Number Of Points in Octree representation  "
-    //             << points->GetNumberOfPoints() << std::endl;
-
-    //     for (vtkIdType i = 0; i < points->GetNumberOfPoints(); i++) {
-    //       double p[3];
-    //       points->GetPoint(i, p);
-    //       // Do something with the point coordinates p[0], p[1], p[2]
-    //       std::cout << "Point Id: " << i << ": Point: (" << p[0] << ", " <<
-    //       p[1]
-    //                 << ", " << p[2] << ")" << std::endl;
-    //     }
-    // }
   }
 
-  //   vtkOctreePointLocator *Octree;
-  vtkIncrementalOctreePointLocator *Octree;
+  vtkOctreePointLocator *Octree;
   int Level;
   vtkPolyData *PolyData;
   vtkRenderer *Renderer;
@@ -69,7 +48,15 @@ public:
 int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
-  // Create a point cloud
+  /*
+    // Create a point cloud
+    vtkNew<vtkSphereSource> pointSource;
+    pointSource->SetPhiResolution(50);
+    pointSource->SetThetaResolution(50);
+    vtkNew<vtkPolyDataMapper> pointsMapper;
+    pointsMapper->SetInputConnection(pointSource->GetOutputPort());
+    pointSource->Update();
+  */
 
   vtkNew<vtkPoints> points;
 
@@ -88,21 +75,10 @@ int main(int, char *[]) {
     points->InsertNextPoint(x, y, -z);
   }
 
-  std::cout << "There are " << points->GetNumberOfPoints() << " points."
-            << std::endl;
-
   vtkNew<vtkPolyData> inputPolydata;
   inputPolydata->SetPoints(points);
-
-  // vtkNew<vtkSphereSource> pointSource;
-  // pointSource->SetPhiResolution(50);
-  // pointSource->SetThetaResolution(50);
   vtkNew<vtkPolyDataMapper> pointsMapper;
-  // pointsMapper->SetInputConnection(polydata);
 
-  pointsMapper->SetInputData(inputPolydata);
-
-  // pointSource->Update();
   vtkNew<vtkActor> pointsActor;
   pointsActor->SetMapper(pointsMapper);
   pointsActor->GetProperty()->SetInterpolationToFlat();
@@ -110,39 +86,10 @@ int main(int, char *[]) {
   pointsActor->GetProperty()->SetColor(colors->GetColor4d("Yellow").GetData());
 
   // Create the tree
-  // vtkNew<vtkOctreePointLocator> octree;
-  vtkNew<vtkIncrementalOctreePointLocator> octree;
-  //   octree->SetMaximumPointsPerRegion(50);
-  // octree->SetDataSet(pointSource->GetOutput());
+  vtkNew<vtkOctreePointLocator> octree;
+  octree->SetMaximumPointsPerRegion(5);
   octree->SetDataSet(inputPolydata);
-  octree->BuildLocator();
 
-  // octree->InitPointInsertion();
-
-  cylanderRadius = 4.0;
-  for (int i = 0; i < 1000; i++) {
-    double x, y, z;
-    x = randomSequence->GetRangeValue(12.0, 18.0);
-    randomSequence->Next();
-    y = randomSequence->GetRangeValue(2.0, 4.0);
-    randomSequence->Next();
-    z = pow(cylanderRadius * cylanderRadius - y * y, 0.5);
-    double newPoint[3] = {2 * x + 5, 2 * y + 5, z};
-    // std::cout << newPoint[0] << "," << newPoint[1] << "," << newPoint[2]
-    //           << "\n";
-
-    std::cout << "point index: " << octree->InsertNextPoint(newPoint) << "\n";
-
-    // vtkIdType pntId = -1;
-    // octree->GetLeafContainer(octree->GetRoot(), newPoint);
-    // ->InsertPoint(this->LocatorPoints, x, this->MaxPointsPerLeaf, &pntId, 2,
-    // this->NumberOfNodes);
-
-    // vtkIdType pntId;
-    // int insert = 0;
-    // octree->InsertPointWithoutChecking(newPoint, pntId, insert);
-    // std::cout << i << "\n";
-  }
   octree->BuildLocator();
 
   vtkNew<vtkPolyData> polydata;
