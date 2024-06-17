@@ -645,12 +645,12 @@ target_link_libraries(colorTransferFunction PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS colorTransferFunction MODULES ${VTK_LIBRARIES})
 
 
-# add_executable(vertexGlyphFilter src/vertexGlyphFilter.cpp)
-# target_link_libraries(vertexGlyphFilter PRIVATE ${VTK_LIBRARIES})
-# vtk_module_autoinit(TARGETS vertexGlyphFilter MODULES ${VTK_LIBRARIES})
+add_executable(glyph3D src/glyph3D.cpp)
+target_link_libraries(glyph3D PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS glyph3D MODULES ${VTK_LIBRARIES})
 
 
-# add_executable(lookupTable src/lookupTable.cpp)
-# target_link_libraries(lookupTable PRIVATE ${VTK_LIBRARIES})
-# vtk_module_autoinit(TARGETS lookupTable MODULES ${VTK_LIBRARIES})
+add_executable(lookupTable src/lookupTable.cpp)
+target_link_libraries(lookupTable PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS lookupTable MODULES ${VTK_LIBRARIES})
 

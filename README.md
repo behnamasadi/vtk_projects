@@ -83,10 +83,12 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 ```
 
 ## Basics
-[Basic Data types: vtkPoints, vtkVertexGlyphFilter](docs/basic_data_types.md)  
-[Color Transfer Function](docs/colorTransferFunction.md)  
-[LookupTable](docs/lookupTable.md)  
-[Glyphs](docs/glyphs.md)  
+[vtkFloatArray, vtkPoints, vtkPointData, vtkPolyData,](docs/basic_data_types.md)  
+[Glyphs, vtkGlyph3D, vtkVertexGlyphFilter](docs/glyphs.md)  
+[vtkCell, vtkCellArray, vtkTriangle](docs/cell.md)  
+[colorTransferFunction](docs/colorTransferFunction.md)  
+[LookupTable](docs/lookupTable.md)
+[Height based color map](src/height_based_color_map.cpp)    
 [The Basic Setup](docs/the_basic_setup.md)  
 [Command/Observer and CallBacks for Events](docs/command_observer_for_events_callback.md)  
 [Actor Properties](docs/actor_properties.md)  
@@ -103,9 +105,9 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [ProjectedTexture](src/ProjectedTexture.cxx)  
 [LegendScale](src/LegendScaleActor.cpp)  
 [Anti-Aliasing](docs/anti-aliasing.md)  
-[Vertex Glyph Filter](docs/vertex_glyph_filter.md)  
 [Multiple Layers](docs/multiple_layers.md)  
 [CaptionActor2D](docs/captionActor2D.md)
+[Octree](docs/)
 
 ## Viewport
 

@@ -35,6 +35,11 @@ public:
                                      ->GetValue());
 
     this->Octree->GenerateRepresentation(this->Level, this->PolyData);
+
+    std::cout << "Level: " << this->Level << std::endl;
+
+    std::cout << "NumberOfPoints :" << this->PolyData->GetNumberOfPoints()
+              << std::endl;
     this->Renderer->Render();
   }
 
@@ -64,7 +69,7 @@ int main(int, char *[]) {
   randomSequence->SetSeed(8775070);
 
   double cylanderRadius = 2.0;
-  for (int i = 0; i < 1000000; i++) {
+  for (int i = 0; i < 10000000; i++) {
     double x, y, z, radius;
     x = randomSequence->GetRangeValue(4.0, 12.0);
     randomSequence->Next();
@@ -89,7 +94,6 @@ int main(int, char *[]) {
   vtkNew<vtkOctreePointLocator> octree;
   octree->SetMaximumPointsPerRegion(5);
   octree->SetDataSet(inputPolydata);
-
   octree->BuildLocator();
 
   vtkNew<vtkPolyData> polydata;
