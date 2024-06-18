@@ -67,9 +67,11 @@ object to represent cell connectivity
 ```
 
 
+### Cell Connectivity
+Cell Connectivity and Offsets (`triangles` is a `vtkCellArray` ):
 
 ```
- auto iter = vtk::TakeSmartPointer(triangles->NewIterator());
+ auto iter = vtk::TakeSmartPointer(cellArray->NewIterator());
   // auto iter = triangles->NewIterator();
 
   for (iter->GoToFirstCell(); !iter->IsDoneWithTraversal();
@@ -98,6 +100,58 @@ Offsets and Connectivity:
 Offsets:      {0, 3}
 Connectivity: {0, 1, 2, 0, 2, 3}
 ```
+
+
+### Iteration on cells
+
+First let have look at inheritance diagram: 
+```uml
+vtkDataSet
+    ▴
+    |
+    |
+vtkPointSet
+    ▴
+    |
+    |
+vtkPolyData
+```
+
+Now Iteration
+```cpp
+
+  vtkDataSet *ds;
+  vtkCellIterator *it = ds->NewCellIterator();
+
+  for (it->InitTraversal(); !it->IsDoneWithTraversal(); it->GoToNextCell()) {
+
+    // VTK_QUAD = 9, VTK_TRIANGLE=5, etc
+    std::cout << "Cell type is: " << it->GetCellType() << std::endl;
+
+    vtkIdList *pointIds = it->GetPointIds();
+    std::cout << "point ids are: ";
+    for (vtkIdType *pIds_iter = pointIds->begin(); pIds_iter != pointIds->end();
+         pIds_iter++) {
+      std::cout << *pIds_iter << " ";
+    }
+
+    // vtkPoints: represent and manipulate 3D points
+    vtkPoints *points = it->GetPoints();
+
+    for (auto i = 0; i < points->GetNumberOfPoints(); i++) {
+      double *point = points->GetPoint(i);
+      std::cout << "point at i=" << i << ": " << point[0] << " " << point[1] << " " << point[2] << "\n";
+    }
+
+    vtkNew<vtkGenericCell> cell;
+    it->GetCell(cell);
+  }
+
+```
+
+complete list of [CellType](https://vtk.org/doc/nightly/html/vtkCellType_8h_source.html) defined at `vtkCellType.h`
+    
+
 
 Refs: [1](https://vtk.org/doc/nightly/html/classvtkCellArrayIterator.html)
 
