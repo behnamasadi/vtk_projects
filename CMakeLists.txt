@@ -666,3 +666,37 @@ add_executable(low_resoloution_high_resoloution src/low_resoloution_high_resolou
 target_link_libraries(low_resoloution_high_resoloution PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS low_resoloution_high_resoloution MODULES ${VTK_LIBRARIES})
 
+
+add_executable(point_source_example src/point_source_example.cpp)
+target_link_libraries(point_source_example PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS point_source_example MODULES ${VTK_LIBRARIES})
+
+
+add_executable(mouse_event_vtkCommand src/mouse_event_vtkCommand.cpp)
+target_link_libraries(mouse_event_vtkCommand PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS mouse_event_vtkCommand MODULES ${VTK_LIBRARIES})
+
+
+
+add_executable(camera_call_back_events src/camera_call_back_events.cpp)
+target_link_libraries(camera_call_back_events PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS camera_call_back_events MODULES ${VTK_LIBRARIES})
+
+
+add_executable(select_visible_points src/select_visible_points.cpp)
+target_link_libraries(select_visible_points PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS select_visible_points MODULES ${VTK_LIBRARIES})
+
+
+
+add_executable(camera_frustum_planes src/camera_frustum_planes.cpp)
+target_link_libraries(camera_frustum_planes PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS camera_frustum_planes MODULES ${VTK_LIBRARIES})
+
+
+
+
+add_executable(poly_vertex src/poly_vertex.cpp)
+target_link_libraries(poly_vertex PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS poly_vertex MODULES ${VTK_LIBRARIES})
+

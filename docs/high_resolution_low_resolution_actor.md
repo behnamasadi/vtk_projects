@@ -1,20 +1,15 @@
-#include <vtkActor.h>
-#include <vtkCallbackCommand.h>
-#include <vtkCamera.h>
-#include <vtkPointSource.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkRenderWindow.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkRenderer.h>
-#include <vtkSelectVisiblePoints.h>
-#include <vtkSmartPointer.h>
 
+
+```cpp
 struct CallbackData {
   vtkActor *lowResActor;
   vtkActor *highResActor;
   vtkRenderer *renderer;
 };
+```
+call back to hide/ show high/ low resolution actor:
 
+```cpp
 void CameraModifiedCallback(vtkObject *caller, long unsigned int eventId,
                             void *clientData, void *callData) {
   vtkCamera *camera = static_cast<vtkCamera *>(caller);
@@ -41,9 +36,12 @@ void CameraModifiedCallback(vtkObject *caller, long unsigned int eventId,
 
   renderer->GetRenderWindow()->Render();
 }
+```
 
-int main(int, char *[]) {
-  // Create two point sources
+main
+
+```cpp
+ // Create two point sources
   vtkNew<vtkPointSource> lowResPointSource;
   lowResPointSource->SetNumberOfPoints(5000);
 
@@ -104,6 +102,6 @@ int main(int, char *[]) {
   // Render and start interaction
   renderWindow->Render();
   renderWindowInteractor->Start();
+```
 
-  return EXIT_SUCCESS;
-}
+  

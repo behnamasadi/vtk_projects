@@ -1,101 +1,31 @@
-#include <cmath>
-#include <iostream>
-#include <vtkActor.h>
 #include <vtkCamera.h>
-#include <vtkCellIterator.h>
-#include <vtkCommand.h>
-#include <vtkFrustumSource.h>
-#include <vtkGlyph3D.h>
 #include <vtkInteractorStyleTrackballCamera.h>
-#include <vtkMath.h>
 #include <vtkMinimalStandardRandomSequence.h>
-#include <vtkNamedColors.h>
-#include <vtkNew.h>
-#include <vtkOctreePointLocator.h>
-#include <vtkPlanes.h>
-#include <vtkPointSource.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
-#include <vtkProperty2D.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
-#include <vtkSelectEnclosedPoints.h>
-#include <vtkSliderRepresentation2D.h>
-#include <vtkSliderWidget.h>
-#include <vtkSmartPointer.h>
-#include <vtkSphereSource.h>
-#include <vtkTextProperty.h>
-#include <vtkTransform.h>
 #include <vtkVertexGlyphFilter.h>
 
 class MouseInteractorStyle : public vtkInteractorStyleTrackballCamera {
 public:
   static MouseInteractorStyle *New() { return new MouseInteractorStyle; }
 
-  //   void GetNumberOfPointsInView() {
-  //     vtkRenderer *renderer = this->GetDefaultRenderer();
-  //     if (!renderer) {
-  //       std::cerr << "No renderer found!" << std::endl;
-  //       return;
-  //     }
-
-  //     vtkCamera *camera = renderer->GetActiveCamera();
-  //     if (!camera) {
-  //       std::cerr << "No active camera found!" << std::endl;
-  //       return;
-  //     }
-
-  //     // Get the camera frustum
-  //     vtkNew<vtkFrustumSource> frustumSource;
-  //     vtkNew<vtkPlanes> planes;
-  //     camera->GetFrustumPlanes(renderer->GetTiledAspectRatio(), planes);
-  //     frustumSource->SetPlanes(planes);
-
-  //     vtkNew<vtkPolyData> frustum;
-  //     frustumSource->Update();
-  //     frustum->ShallowCopy(frustumSource->GetOutput());
-
-  //     // Generate some points (for demonstration purposes)
-  //     vtkNew<vtkPointSource> pointSource;
-  //     pointSource->SetNumberOfPoints(1000);
-  //     pointSource->SetCenter(0, 0, 0);
-  //     pointSource->SetRadius(5.0);
-  //     pointSource->Update();
-
-  //     vtkPolyData *points = pointSource->GetOutput();
-
-  //     // Select points inside the frustum
-  //     vtkNew<vtkSelectEnclosedPoints> selectEnclosedPoints;
-  //     selectEnclosedPoints->SetInputData(points);
-  //     selectEnclosedPoints->SetSurfaceData(frustum);
-  //     selectEnclosedPoints->Update();
-
-  //     int numPointsInView = 0;
-  //     for (vtkIdType i = 0; i < points->GetNumberOfPoints(); ++i) {
-  //       if (selectEnclosedPoints->IsInside(i)) {
-  //         ++numPointsInView;
-  //       }
-  //     }
-
-  //     std::cout << "Number of points in view: " << numPointsInView <<
-  //     std::endl;
-  //   }
-
   virtual void OnLeftButtonDown() override {
-    std::cout << "Mouse Left Button Pressed" << std::endl;
+    // std::cout << "Mouse Left Button Pressed" << std::endl;
     vtkInteractorStyleTrackballCamera::OnLeftButtonDown();
   }
 
   virtual void OnRightButtonDown() override {
-    std::cout << "Mouse Right Button Pressed" << std::endl;
+    // std::cout << "Mouse Right Button Pressed" << std::endl;
     vtkInteractorStyleTrackballCamera::OnRightButtonDown();
   }
 
   virtual void OnMouseMove() override {
-    std::cout << "Mouse Moved" << std::endl;
+    // std::cout << "Mouse Moved" << std::endl;
     vtkInteractorStyleTrackballCamera::OnMouseMove();
   }
 
@@ -123,35 +53,6 @@ public:
                 << renderer->GetActors()[i].GetClassName() << std::endl;
     }
 
-    //     int visiblePointsCount = 0;
-    // for (vtkIdType i = 0; i < transformedPoints->GetNumberOfPoints(); i++)
-    // {
-    //     double tp[3];
-    //     transformedPoints->GetPoint(i, tp);
-
-    //     // Frustum check: Assuming symmetric frustum
-    //     double aspectRatio = camera->GetAspect();
-    //     double viewAngle = camera->GetViewAngle();
-    //     double nearPlane = camera->GetClippingRange()[0];
-    //     double farPlane = camera->GetClippingRange()[1];
-
-    //     double angleRad = vtkMath::RadiansFromDegrees(viewAngle / 2.0);
-    //     double tanAngle = tan(angleRad);
-
-    //     // Check if the point is within the view frustum
-    //     if (tp[2] < nearPlane || tp[2] > farPlane)
-    //         continue;
-
-    //     double halfHeight = tanAngle * tp[2];
-    //     double halfWidth = aspectRatio * halfHeight;
-
-    //     if (tp[0] >= -halfWidth && tp[0] <= halfWidth && tp[1] >= -halfHeight
-    //     && tp[1] <= halfHeight)
-    //     {
-    //         visiblePointsCount++;
-    //     }
-    // }
-
     vtkInteractorStyleTrackballCamera::OnMouseWheelForward();
   }
 
@@ -170,14 +71,57 @@ public:
         std::cout << "Active Camera Position: " << camera->GetPosition()[0]
                   << ", " << camera->GetPosition()[1] << ", "
                   << camera->GetPosition()[2] << std::endl;
+
+        std::cout << "Distance from focal point: " << camera->GetDistance()
+                  << std::endl;
       }
     }
 
     vtkInteractorStyleTrackballCamera::OnMouseWheelBackward();
   }
+
+  virtual void OnChar() override {
+    // Get the keypress
+    vtkRenderWindowInteractor *rwi = Interactor;
+    std::string key = rwi->GetKeySym();
+
+    std::transform(key.begin(), key.end(), key.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+
+    // Output the key that was pressed
+    std::cout << "OnChar() " << key.c_str() << std::endl;
+
+    // Handle an arrow key
+    if (key == "up") {
+      std::cout << "The up arrow was pressed." << std::endl;
+    }
+
+    if (key == "delete") {
+      std::cout << "The delete key was pressed." << std::endl;
+    }
+
+    // Forward events
+    vtkInteractorStyleTrackballCamera::OnKeyPress();
+  }
+
+  virtual void Dolly() override {
+
+    //   right click down + <- ->
+    //   camera should rotate in its place, to do that we calculate the azimuth
+    //   that rotate teh camera around We should store the old camera position,
+    //   apply azimuth, then we calculate forward vector from camera to the
+    //   focal point, then from previously stored camera position we go forward
+    //   in the direction of forward vector and calculate the new camera focal
+    //   point
+    std::cout << "Dolly" << std::endl;
+
+    vtkInteractorStyleTrackballCamera::Dolly();
+  }
 };
 
 int main() {
+
+  std::cout << "Press r to start" << std::endl;
 
   vtkNew<vtkPoints> originalPoints;
 
@@ -227,42 +171,27 @@ int main() {
 
   std::cout << clippingRange[0] << "," << clippingRange[1] << std::endl;
 
-  // camera->SetPosition(0, 0, 100);
-  // camera->SetFocalPoint(0, 0, 0);
-  // camera->Azimuth(30);
-  // camera->Elevation(30);
-  // camera->SetViewUp(0, 0, 1);
-  // camera->SetClippingRange(5, 15);
-  // camera->SetViewAngle(30);
+  camera->SetPosition(150, 0, 150);
+  camera->SetFocalPoint(0, 0, 0);
+  camera->Azimuth(30);
+  camera->Elevation(30);
+  camera->SetViewUp(0, 0, 1);
+  camera->SetClippingRange(5, 15);
+  camera->SetViewAngle(30);
 
   renderer->SetBackground(0.1, 0.2, 0.4); // Background color
 
   // Render window
-  vtkSmartPointer<vtkRenderWindow> renderWindow =
-      vtkSmartPointer<vtkRenderWindow>::New();
+  vtkNew<vtkRenderWindow> renderWindow;
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(800, 600);
 
   // Render window interactor
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
   renderWindowInteractor->SetRenderWindow(renderWindow);
-  // auto style = renderWindowInteractor->GetInteractorStyle();
-
-  //   vtkNew<vtkInteractorStyleTrackballCamera> style;
-  //   renderWindowInteractor->SetInteractorStyle(style);
 
   vtkNew<MouseInteractorStyle> mouseInteractorStyle;
   renderWindowInteractor->SetInteractorStyle(mouseInteractorStyle);
-
-  //   style->AddObserver(vtkCommand::LeftButtonPressEvent,
-  //   mouseInteractorStyle);
-  //   style->AddObserver(vtkCommand::RightButtonPressEvent,
-  //   mouseInteractorStyle); style->AddObserver(vtkCommand::MouseMoveEvent,
-  //   mouseInteractorStyle);
-  //   style->AddObserver(vtkCommand::MouseWheelBackwardEvent,
-  //   mouseInteractorStyle);
-  //   style->AddObserver(vtkCommand::MouseWheelForwardEvent,
-  //   mouseInteractorStyle);
 
   // Start the interaction
   renderWindow->Render();

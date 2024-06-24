@@ -81,11 +81,29 @@ same as above for int.
   polyData->GetPointData()->SetScalars(scalars);
 ```
 
+### vtkPointSource
+`vtkPointSource` creates a user-specified number of points within a specified radius about a specified center point. It is also possible to generate random points only on the surface of the sphere; or a exponential distribution weighted towards the center point. The output `PolyData` has the specified number of points and a single cell - a `vtkPolyVertex` cell referencing all of the points.
+
+```cpp
+vtkNew<vtkPointSource> sphere;
+  sphere->SetCenter(1.0, 2.0, 1.0);
+  sphere->SetNumberOfPoints(100);
+  sphere->SetLambda(-1);
+
+  vtkNew<vtkPolyDataMapper> mapper;
+  mapper->SetInputConnection(sphere->GetOutputPort());
+```
+
+[code](../src/point_source_example.cpp)
+
+
+Refs: [1](https://vtk.org/doc/nightly/html/classvtkPointSource.html#a78dc8ac26ecfd8a3a326517e9c09491a)
 
 
 
+### vtkPolyVertex
 
 
-
+[code](../src/poly_vertex.cpp)
 
 

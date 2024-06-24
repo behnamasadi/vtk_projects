@@ -83,14 +83,18 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 ```
 
 ## Basics
-[vtkFloatArray, vtkPoints, vtkPointData, vtkPolyData,](docs/basic_data_types.md)  
+[vtkFloatArray, vtkPoints, vtkPointData, vtkPolyData, vtkPointSource, vtkPolyVertex](docs/basic_data_types.md)  
 [Glyphs, vtkGlyph3D, vtkVertexGlyphFilter](docs/glyphs.md)  
+[SetInputData vtkDataObject*, SetInputConnection vtkAlgorithmOutput*](docs/SetInputData_SetInputConnection.md)
+
+
 [vtkCell, vtkCellArray, vtkTriangle](docs/cell.md)  
 [colorTransferFunction](docs/colorTransferFunction.md)  
 [LookupTable](docs/lookupTable.md)  
 [Height based color map](src/height_based_color_map.cpp)  
 [The Basic Setup](docs/the_basic_setup.md)  
 [Command/Observer and CallBacks for Events](docs/command_observer_for_events_callback.md)  
+[Mouse Event vtkCommand](../src/mouse_event_vtkCommand.cpp)  
 [Actor Properties](docs/actor_properties.md)  
 [Plane Source/ Grid Background](docs/plane_source_grid_background.md)  
 [BoundingBox](docs/boundingbox.md)  
@@ -107,7 +111,7 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [Anti-Aliasing](docs/anti-aliasing.md)  
 [Multiple Layers](docs/multiple_layers.md)  
 [CaptionActor2D](docs/captionActor2D.md)  
-[Octree](docs/)  
+[Octree](docs/octree.md)  
 
 ## Viewport
 
@@ -153,9 +157,11 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 
 ## Camera
 
-[Modify Renderer Camera, SetPosition, SetFocalPoint, SetViewUp, Azimuth, Elevation, SetViewAngle](docs/modify_renderer_camera.md)  
-[Renderer Camera Position Call back](docs/camera_position.md)  
-[Camera Frustum](docs/frustum.md)  
+[Modify Renderer Camera, Set Position, FocalPoint, ViewUp, Azimuth, Elevation, ViewAngle, clipping Range](docs/modify_renderer_camera.md)  
+[Renderer Camera Position Call back, OnLeftButtonDown, OnChar, Pan, Dolly, Get Position, ViewAngle](docs/camera_position.md)  
+[Frustum Source, Camera Frustum Planes](docs/frustum.md)  
+[Select Visible Points](docs/select_visible_points.md)
+[High resolution, Low resolution Actor](docs/high_resolution_low_resolution_actor.md)  
 [Definition of Pan, Tilt and Spin](docs/images/Definition-of-pan-tilt-and-spin.png)  
 [Culling](docs/culling.md)  
   
