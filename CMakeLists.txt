@@ -694,9 +694,12 @@ target_link_libraries(camera_frustum_planes PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS camera_frustum_planes MODULES ${VTK_LIBRARIES})
 
 
-
-
 add_executable(poly_vertex src/poly_vertex.cpp)
 target_link_libraries(poly_vertex PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS poly_vertex MODULES ${VTK_LIBRARIES})
+
+
+add_executable(extract_points src/extract_points.cpp)
+target_link_libraries(extract_points PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS extract_points MODULES ${VTK_LIBRARIES})
 

@@ -84,10 +84,9 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 
 ## Basics
 [vtkFloatArray, vtkPoints, vtkPointData, vtkPolyData, vtkPointSource, vtkPolyVertex](docs/basic_data_types.md)  
+[ExtractPoints with ImplicitFunction](docs/extract_points.md)  
 [Glyphs, vtkGlyph3D, vtkVertexGlyphFilter](docs/glyphs.md)  
-[SetInputData vtkDataObject*, SetInputConnection vtkAlgorithmOutput*](docs/SetInputData_SetInputConnection.md)
-
-
+[SetInputData vtkDataObject*, SetInputConnection vtkAlgorithmOutput*](docs/SetInputData_SetInputConnection.md)  
 [vtkCell, vtkCellArray, vtkTriangle](docs/cell.md)  
 [colorTransferFunction](docs/colorTransferFunction.md)  
 [LookupTable](docs/lookupTable.md)  
@@ -160,7 +159,7 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [Modify Renderer Camera, Set Position, FocalPoint, ViewUp, Azimuth, Elevation, ViewAngle, clipping Range](docs/modify_renderer_camera.md)  
 [Renderer Camera Position Call back, OnLeftButtonDown, OnChar, Pan, Dolly, Get Position, ViewAngle](docs/camera_position.md)  
 [Frustum Source, Camera Frustum Planes](docs/frustum.md)  
-[Select Visible Points](docs/select_visible_points.md)
+[Select Visible Points](docs/select_visible_points.md)  
 [High resolution, Low resolution Actor](docs/high_resolution_low_resolution_actor.md)  
 [Definition of Pan, Tilt and Spin](docs/images/Definition-of-pan-tilt-and-spin.png)  
 [Culling](docs/culling.md)  
