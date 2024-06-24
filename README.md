@@ -83,7 +83,9 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 ```
 
 ## Basics
-[vtkFloatArray, vtkPoints, vtkPointData, vtkPolyData, vtkPointSource, vtkPolyVertex](docs/basic_data_types.md)  
+[vtkFloatArray, vtkPoints, vtkPointData, vtkPolyData, vtkPointSource, vtkPolyVertex](docs/basic_data_types.md) 
+[Clean PolyData](https://vtk.org/doc/nightly/html/classvtkCleanPolyData.html)  
+[Downsample PointCloud](https://examples.vtk.org/site/Cxx/PolyData/DownsamplePointCloud/)  
 [ExtractPoints with ImplicitFunction](docs/extract_points.md)  
 [Glyphs, vtkGlyph3D, vtkVertexGlyphFilter](docs/glyphs.md)  
 [SetInputData vtkDataObject*, SetInputConnection vtkAlgorithmOutput*](docs/SetInputData_SetInputConnection.md)  
