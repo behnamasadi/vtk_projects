@@ -27,8 +27,9 @@ void CameraModifiedCallback(vtkObject *caller, long unsigned int eventId,
   // Get the distance of the camera from the focal point
   double distance = camera->GetDistance();
 
-  // Define your threshold distance here
-  double thresholdDistance = 2.5;
+  // Define your threshold distance here, the higher, the faster you see the
+  // dense cloud, lower (smaller) means you have to zoom more to see the dense
+  double thresholdDistance = 0.5;
 
   // Switch visibility based on the distance
   if (distance > thresholdDistance) {

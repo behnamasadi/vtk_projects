@@ -112,7 +112,8 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [Anti-Aliasing](docs/anti-aliasing.md)  
 [Multiple Layers](docs/multiple_layers.md)  
 [CaptionActor2D](docs/captionActor2D.md)  
-[Octree](docs/octree.md)  
+[Octree  <span style="color:red">*needs update*</span>](docs/octree.md) 
+
 
 ## Viewport
 
@@ -161,28 +162,28 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [Modify Renderer Camera, Set Position, FocalPoint, ViewUp, Azimuth, Elevation, ViewAngle, clipping Range](docs/modify_renderer_camera.md)  
 [Renderer Camera Position Call back, OnLeftButtonDown, OnChar, Pan, Dolly, Get Position, ViewAngle](docs/camera_position.md)  
 [Frustum Source, Camera Frustum Planes](docs/frustum.md)  
-[Select Visible Points](docs/select_visible_points.md)  
 [Definition of Pan, Tilt and Spin](docs/images/Definition-of-pan-tilt-and-spin.png)  
 
-## Filtering, Culling, Decimation, Multi Level of Details, Visible Points in Camera Frustum
-[Actor Multiple levels of detail vtkLODActor](docs/actor_multiple_levels_of_detail.md)  
+## Filtering, Culling, Decimation, Multi Level of Details, Visible Points in Camera
+
+[Actor Multiple Levels of Detail vtkLODActor  <span style="color:red">*needs update*</span>](docs/actor_multiple_levels_of_detail.md)  
 [High resolution, Low resolution Actor](docs/high_resolution_low_resolution_actor.md)  
-[Culling](docs/culling.md)  
+[Culling <span style="color:red">*needs update*</span>](docs/culling.md)  
 [MaskPoints](docs/mask_points.md)  
 [MaskPointsFilter](docs/mask_points_filter.md)  
-[OutlineFilter](docs/outline_filter.md)
+[OutlineFilter](docs/outline_filter.md)  
 [DecimatePro (reducing the number of triangles in a mesh)](docs/decimate_pro.md)  
 [ThresholdPoints](docs/threshold_points.md)  
+[Extract Point Based on Implicit Function ExtractGeometry<span style="color:red">*needs update*</span>](docs/extract_point_based_implicit_function_extract_geometry.md)  
 [HierarchicalBinningFilter](docs/hierarchical_binning_filter.md)  
-[PointCloudFilter](docs/point_cloud_filter.md)  
+[Select Visible Points In Camera ( z-buffer) <span style="color:red">*needs update*</span>](docs/select_visible_points_in_camera.md)  
+[Point Visibility In Camera Frustum <span style="color:red">*needs update*</span>](docs/point_visibility_in_camera_frustum.md)  
+[PointCloudFilter  <span style="color:red">*needs update*</span>](docs/point_cloud_filter.md)  
   - [vtkRadiusOutlierRemoval](docs/point_cloud_filter.md#vtkRadiusOutlierRemoval)  
   - [vtkStatisticalOutlierRemoval](docs/point_cloud_filter.md#vtkStatisticalOutlierRemoval)  
   - [vtkExtractHierarchicalBins](docs/point_cloud_filter.md#vtkExtractHierarchicalBins)  
   - [vtkExtractPoints](docs/point_cloud_filter.md#vtkExtractPoints)  
   - [vtkFitImplicitFunction](docs/point_cloud_filter.md#vtkFitImplicitFunction)    
-  
-  
-
   
 
 ## PCL

@@ -656,11 +656,9 @@ vtk_module_autoinit(TARGETS lookupTable MODULES ${VTK_LIBRARIES})
 
 
 
-add_executable(point_visibility_in_camera src/point_visibility_in_camera.cpp)
-target_link_libraries(point_visibility_in_camera PRIVATE ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS point_visibility_in_camera MODULES ${VTK_LIBRARIES})
-
-
+add_executable(point_visibility_in_camera_frustum src/point_visibility_in_camera_frustum.cpp)
+target_link_libraries(point_visibility_in_camera_frustum PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS point_visibility_in_camera_frustum MODULES ${VTK_LIBRARIES})
 
 add_executable(low_resoloution_high_resoloution src/low_resoloution_high_resoloution.cpp)
 target_link_libraries(low_resoloution_high_resoloution PRIVATE ${VTK_LIBRARIES})

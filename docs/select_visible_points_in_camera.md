@@ -1,7 +1,7 @@
 
 ## vtkSelectVisiblePoints
 
-`vtkSelectVisiblePoints` is a filter that selects points based on whether they are visible or not. Visibility is determined by accessing the z-buffer of a rendering window. (The position of each input point is converted into display coordinates, and then the z-value at that point is obtained. If within the user-specified tolerance, the point is considered visible.)
+vtkSelectVisiblePoints is a filter that selects points based on whether they are visible or not. Visibility is determined by accessing the z-buffer of a rendering window. (The position of each input point is converted into display coordinates, and then the z-value at that point is obtained. If within the user-specified tolerance, the point is considered visible.)
 
 
 
@@ -105,5 +105,3 @@ void CameraModifiedCallback(vtkObject *caller, long unsigned int eventId,
 
 
 [source](../src/select_visible_points.cpp)
-
-

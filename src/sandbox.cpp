@@ -6,6 +6,7 @@
 #include <vtkCaptionActor2D.h>
 #include <vtkCell.h>
 #include <vtkColorTransferFunction.h>
+#include <vtkCommand.h>
 #include <vtkConeSource.h>
 #include <vtkCubeSource.h>
 #include <vtkFloatArray.h>
@@ -14,12 +15,14 @@
 #include <vtkImageMapper3D.h>
 #include <vtkInteractorStyleTrackballActor.h>
 #include <vtkJPEGReader.h>
+#include <vtkLODActor.h>
 #include <vtkLegendScaleActor.h>
 #include <vtkLineSource.h>
 #include <vtkLookupTable.h>
 #include <vtkMatrix4x4.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>
+#include <vtkObjectFactory.h>
 #include <vtkOverlayPass.h>
 #include <vtkPNGReader.h>
 #include <vtkPlaneSource.h>
@@ -41,103 +44,73 @@
 #include <vtkTriangle.h>
 #include <vtkVertexGlyphFilter.h>
 
-int main1(int, char *[]) {
+class MyLODActor : public vtkLODActor {
+public:
+  static MyLODActor *New();
+  vtkTypeMacro(MyLODActor, vtkLODActor);
 
-  // Create a vtkPointData object
-  vtkPointData *pointData = vtkPointData::New();
+  void SetInteractionMode(bool mode) {
+    interactionMode = mode;
+    this->Modified();
+  }
 
-  // Create a vtkDoubleArray to store temperature data at each point
-  vtkDoubleArray *temperatureArray = vtkDoubleArray::New();
-  temperatureArray->SetName("Temperature");
-  temperatureArray->SetNumberOfComponents(1); // One component for temperature
+protected:
+  void Render(vtkRenderer *ren) override {
+    if (interactionMode) {
+      // Set to low or medium resolution
+      this->SetNumberOfLevels(2); // Or adjust as needed
+    } else {
+      // Set to high resolution
+      this->SetNumberOfLevels(0);
+    }
+    vtkLODActor::Render(ren);
+  }
 
-  // Add some temperature values to the array
-  temperatureArray->InsertNextValue(20.0); // Temperature at first point
-  temperatureArray->InsertNextValue(25.0); // Temperature at second point
-  temperatureArray->InsertNextValue(18.0); // Temperature at third point
+private:
+  bool interactionMode = false;
+};
 
-  // Associate the temperature array with the point data
-  pointData->AddArray(temperatureArray);
+vtkStandardNewMacro(MyLODActor);
 
-  // Clean up (not strictly necessary in this simple example)
-  temperatureArray->Delete();
-  pointData->Delete();
+int main() {
+  // Create a larger sphere
+  vtkNew<vtkSphereSource> sphereSource;
+  sphereSource->SetRadius(20);
+  sphereSource->SetPhiResolution(100);
+  sphereSource->SetThetaResolution(100);
 
-  return EXIT_SUCCESS;
-}
-
-int main(int, char *[]) {
-
-  vtkNew<vtkPoints> points;
-
-  /*
-
-  Y----------------------▸
-  |
-  |
-  |
-  |
-  |
-  |
-  ▾
-  0                             2
-  (0, 0, 0)                     (0, 1, 0)
-
-
-
-  1                             3
-  (1, 0, 0)                     (1, 0, 0)
-
-  */
-
-  points->InsertNextPoint(0, 0, 0);
-  points->InsertNextPoint(1, 0, 0);
-  points->InsertNextPoint(0, 1, 0);
-  points->InsertNextPoint(1, 1, 0);
-
-  vtkNew<vtkTriangle> triangle1;
-
-  triangle1->GetPointIds()->SetId(0, 0);
-  triangle1->GetPointIds()->SetId(1, 1);
-  triangle1->GetPointIds()->SetId(2, 3);
-
-  vtkNew<vtkTriangle> triangle2;
-  triangle2->GetPointIds()->SetId(0, 0);
-  triangle2->GetPointIds()->SetId(1, 2);
-  triangle2->GetPointIds()->SetId(2, 3);
-
-  vtkNew<vtkCellArray> triangles;
-  triangles->InsertNextCell(triangle1);
-  triangles->InsertNextCell(triangle2);
-
-  vtkNew<vtkPolyData> polyData;
-  polyData->SetPoints(points);
-  polyData->SetPolys(triangles);
-
-  std::cout << "There are " << polyData->GetNumberOfCells() << " cells."
-            << std::endl;
-
-  std::cout << "There are " << polyData->GetNumberOfPoints() << " points."
-            << std::endl;
-
+  // Create mapper and actor
   vtkNew<vtkPolyDataMapper> mapper;
-  mapper->SetInputData(polyData);
+  mapper->SetInputConnection(sphereSource->GetOutputPort());
 
-  vtkNew<vtkActor> actor;
-  actor->SetMapper(mapper);
+  vtkNew<MyLODActor> lodActor;
+  lodActor->SetMapper(mapper);
 
+  // Create renderer, render window, and interactor
   vtkNew<vtkRenderer> renderer;
   vtkNew<vtkRenderWindow> renderWindow;
-
   renderWindow->AddRenderer(renderer);
   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
-
   renderWindowInteractor->SetRenderWindow(renderWindow);
 
-  renderer->AddActor(actor);
+  // Add the actor to the renderer
+  renderer->AddActor(lodActor);
 
+  // Add an observer to the interactor
+  renderWindowInteractor->AddObserver(
+      vtkCommand::LeftButtonPressEvent,
+      [lodActor](vtkObject *, unsigned long, void *) {
+        lodActor->SetInteractionMode(true);
+      });
+  renderWindowInteractor->AddObserver(
+      vtkCommand::LeftButtonReleaseEvent,
+      [lodActor](vtkObject *, unsigned long, void *) {
+        lodActor->SetInteractionMode(false);
+      });
+
+  // Render and interact
   renderWindow->Render();
   renderWindowInteractor->Start();
 
-  return EXIT_SUCCESS;
+  return 0;
 }
