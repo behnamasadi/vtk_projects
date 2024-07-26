@@ -703,3 +703,26 @@ add_executable(extract_points src/extract_points.cpp)
 target_link_libraries(extract_points PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS extract_points MODULES ${VTK_LIBRARIES})
 
+
+add_executable(level_of_details_actor src/level_of_details_actor.cpp)
+target_link_libraries(level_of_details_actor PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS level_of_details_actor MODULES ${VTK_LIBRARIES})
+
+add_executable(ColorIsosurface src/ColorIsosurface.cxx)
+target_link_libraries(ColorIsosurface PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS ColorIsosurface MODULES ${VTK_LIBRARIES})
+
+add_executable(MaskPoints src/MaskPoints.cpp)
+target_link_libraries(MaskPoints PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS MaskPoints MODULES ${VTK_LIBRARIES})
+
+
+add_executable(ThresholdPoints src/ThresholdPoints.cpp)
+target_link_libraries(ThresholdPoints PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS ThresholdPoints MODULES ${VTK_LIBRARIES})
+
+
+add_executable(vtkLODActor src/vtkLODActor.cpp)
+target_link_libraries(vtkLODActor PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS vtkLODActor MODULES ${VTK_LIBRARIES})
+
