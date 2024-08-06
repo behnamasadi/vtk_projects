@@ -724,3 +724,8 @@ add_executable(vtkLODActor src/vtkLODActor.cpp)
 target_link_libraries(vtkLODActor PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS vtkLODActor MODULES ${VTK_LIBRARIES})
 
+
+add_executable(LODProp3D src/LODProp3D.cpp)
+target_link_libraries(LODProp3D PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS LODProp3D MODULES ${VTK_LIBRARIES})
+

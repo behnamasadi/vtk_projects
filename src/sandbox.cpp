@@ -44,73 +44,122 @@
 #include <vtkTriangle.h>
 #include <vtkVertexGlyphFilter.h>
 
-class MyLODActor : public vtkLODActor {
-public:
-  static MyLODActor *New();
-  vtkTypeMacro(MyLODActor, vtkLODActor);
+// // class MyLODActor : public vtkLODActor {
+// // public:
+// //   static MyLODActor *New();
+// //   vtkTypeMacro(MyLODActor, vtkLODActor);
 
-  void SetInteractionMode(bool mode) {
-    interactionMode = mode;
-    this->Modified();
-  }
+// //   void SetInteractionMode(bool mode) {
+// //     interactionMode = mode;
+// //     this->Modified();
+// //   }
 
-protected:
-  void Render(vtkRenderer *ren) override {
-    if (interactionMode) {
-      // Set to low or medium resolution
-      this->SetNumberOfLevels(2); // Or adjust as needed
-    } else {
-      // Set to high resolution
-      this->SetNumberOfLevels(0);
-    }
-    vtkLODActor::Render(ren);
-  }
+// // protected:
+// //   void Render(vtkRenderer *ren) override {
+// //     if (interactionMode) {
+// //       // Set to low or medium resolution
+// //       this->SetNumberOfLevels(2); // Or adjust as needed
+// //     } else {
+// //       // Set to high resolution
+// //       this->SetNumberOfLevels(0);
+// //     }
+// //     vtkLODActor::Render(ren);
+// //   }
 
-private:
-  bool interactionMode = false;
-};
+// // private:
+// //   bool interactionMode = false;
+// // };
 
-vtkStandardNewMacro(MyLODActor);
+// // vtkStandardNewMacro(MyLODActor);
+
+// int main() {
+//   // Create a larger sphere
+//   vtkNew<vtkSphereSource> sphereSource;
+//   sphereSource->SetRadius(20);
+//   sphereSource->SetPhiResolution(100);
+//   sphereSource->SetThetaResolution(100);
+
+//   // Create mapper and actor
+//   vtkNew<vtkPolyDataMapper> mapper;
+//   mapper->SetInputConnection(sphereSource->GetOutputPort());
+
+//   // vtkNew<MyLODActor> lodActor;
+//   vtkNew<vtkLODActor> lodActor;
+//   lodActor->SetMapper(mapper);
+
+//   // Create renderer, render window, and interactor
+//   vtkNew<vtkRenderer> renderer;
+//   vtkNew<vtkRenderWindow> renderWindow;
+//   renderWindow->AddRenderer(renderer);
+//   vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
+//   renderWindowInteractor->SetRenderWindow(renderWindow);
+
+//   // Add the actor to the renderer
+//   renderer->AddActor(lodActor);
+
+//   // // Add an observer to the interactor
+//   // renderWindowInteractor->AddObserver(
+//   //     vtkCommand::LeftButtonPressEvent,
+//   //     [lodActor](vtkObject *, unsigned long, void *) {
+//   //       lodActor->SetInteractionMode(true);
+//   //     });
+//   // renderWindowInteractor->AddObserver(
+//   //     vtkCommand::LeftButtonReleaseEvent,
+//   //     [lodActor](vtkObject *, unsigned long, void *) {
+//   //       lodActor->SetInteractionMode(false);
+//   //     });
+
+//   // Render and interact
+//   renderWindow->Render();
+//   renderWindowInteractor->Start();
+
+//   return 0;
+// }
+
+#include <vtkActor.h>
+#include <vtkCamera.h>
+#include <vtkLODActor.h>
+#include <vtkLODProp3D.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointSource.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
 int main() {
-  // Create a larger sphere
-  vtkNew<vtkSphereSource> sphereSource;
-  sphereSource->SetRadius(20);
-  sphereSource->SetPhiResolution(100);
-  sphereSource->SetThetaResolution(100);
+  // Create a large point cloud
+  vtkNew<vtkPointSource> pointSource;
+  pointSource->SetNumberOfPoints(10000000);
+  pointSource->SetRadius(10);
+  pointSource->SetCenter(0, 0, 0);
 
-  // Create mapper and actor
+  // Create a polydata mapper for the point cloud
   vtkNew<vtkPolyDataMapper> mapper;
-  mapper->SetInputConnection(sphereSource->GetOutputPort());
+  mapper->SetInputConnection(pointSource->GetOutputPort());
 
-  vtkNew<MyLODActor> lodActor;
+  // Create a LOD actor
+  vtkNew<vtkLODActor> lodActor;
   lodActor->SetMapper(mapper);
 
-  // Create renderer, render window, and interactor
+  // Add the LOD actor to the renderer
   vtkNew<vtkRenderer> renderer;
-  vtkNew<vtkRenderWindow> renderWindow;
-  renderWindow->AddRenderer(renderer);
-  vtkNew<vtkRenderWindowInteractor> renderWindowInteractor;
-  renderWindowInteractor->SetRenderWindow(renderWindow);
-
-  // Add the actor to the renderer
   renderer->AddActor(lodActor);
 
-  // Add an observer to the interactor
-  renderWindowInteractor->AddObserver(
-      vtkCommand::LeftButtonPressEvent,
-      [lodActor](vtkObject *, unsigned long, void *) {
-        lodActor->SetInteractionMode(true);
-      });
-  renderWindowInteractor->AddObserver(
-      vtkCommand::LeftButtonReleaseEvent,
-      [lodActor](vtkObject *, unsigned long, void *) {
-        lodActor->SetInteractionMode(false);
-      });
+  // Create a render window and add the renderer
+  vtkNew<vtkRenderWindow> renderWindow;
+  renderWindow->AddRenderer(renderer);
 
-  // Render and interact
+  // Create an interactor and set the render window
+  vtkNew<vtkRenderWindowInteractor> interactor;
+  interactor->SetRenderWindow(renderWindow);
+
+  // Initialize the interactor and start the rendering loop
+  interactor->Initialize();
   renderWindow->Render();
-  renderWindowInteractor->Start();
+  interactor->Start();
 
   return 0;
 }

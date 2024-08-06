@@ -187,6 +187,10 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
   - [vtkFitImplicitFunction](docs/point_cloud_filter.md#vtkFitImplicitFunction)    
   
 
+## Volumetric Entity 
+[vtkVolume](https://vtk.org/doc/nightly/html/classvtkVolume.html#details)  
+[vtkMarchingCubes](https://vtk.org/doc/nightly/html/classvtkMarchingCubes.html)  
+
 ## PCL
 
 [PCL Pointcloud](docs/pcl_pointcloud.md)  
@@ -195,3 +199,7 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 
 [QQuickVTKItem](docs/qml_vtk_QQuickVTKItem.md)  
 [QQuickVTKRenderItem](docs/QQuickVTKRenderItem.md)  
+
+## 
+[Surface Properties](https://examples.vtk.org/site/VTKBook/03Chapter3/#34-surface-properties)
+specular coefficients

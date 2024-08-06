@@ -26,6 +26,20 @@ int main(int argc, char *argv[]) {
   renderWindow->AddRenderer(renderer);
   renderWindow->SetSize(640, 480);
   vtkNew<vtkRenderWindowInteractor> interactor;
+
+  // vtkRenderWindowInteractor DesiredUpdateRate and StillUpdateRate
+
+  /**
+   * Set/Get the desired update rate. This is used by vtkLODActor's to tell
+   * them how quickly they need to render.  This update is in effect only
+   * when the camera is being rotated, or zoomed.  When the interactor is
+   * still, the StillUpdateRate is used instead.
+   * The default is 15.
+   */
+
+  std::cout << interactor->GetDesiredUpdateRate() << std::endl;
+  std::cout << interactor->GetStillUpdateRate() << std::endl;
+
   interactor->SetRenderWindow(renderWindow);
 
   vtkNew<vtkPDBReader> pdb;
