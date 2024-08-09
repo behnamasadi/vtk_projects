@@ -7,6 +7,7 @@
 #include <pdal/io/LasReader.hpp>
 #include <vector>
 #include <vtkActor.h>
+#include <vtkCallbackCommand.h>
 #include <vtkCommand.h>
 #include <vtkPointData.h>
 #include <vtkPoints.h>
@@ -65,14 +66,31 @@ public:
       : renderer(nullptr), renderWindow(nullptr), polyDataMapper(nullptr) {}
 };
 
+void CallbackFunction(vtkObject *caller, long unsigned int eventId,
+                      void *vtkNotUsed(clientData),
+                      void *vtkNotUsed(callData)) {
+  vtkRenderer *renderer = static_cast<vtkRenderer *>(caller);
+
+  double timeInSeconds = renderer->GetLastRenderTimeInSeconds();
+  double fps = 1.0 / timeInSeconds;
+  std::cout << "FPS: " << fps << std::endl;
+
+  std::cout << "Callback" << std::endl;
+  std::cout << "eventId: " << eventId << std::endl;
+}
+
 int main() {
   // [PDAL loading code remains unchanged]
   // Load point cloud data using PDAL
   pdal::PointTable table;
   pdal::Options options;
-  options.add(
-      "filename",
-      "/home/behnam/workspace/vtk_projects/data/las_files/Palac_Moszna.laz");
+
+  // options.add(
+  //     "filename",
+  //     "/home/behnam/workspace/vtk_projects/data/las_files/Palac_Moszna.laz");
+
+  options.add("filename", "/home/behnam/map.las");
+
   pdal::StageFactory factory;
   pdal::Stage *reader = factory.createStage("readers.las");
   reader->setOptions(options);
@@ -177,6 +195,11 @@ int main() {
   sliderWidget->AddObserver(vtkCommand::InteractionEvent, callback);
 
   callback->polyDataMapper = mapper.GetPointer();
+
+  // frame_rate_callback
+  vtkNew<vtkCallbackCommand> frame_rate_callback;
+  frame_rate_callback->SetCallback(CallbackFunction);
+  renderer->AddObserver(vtkCommand::EndEvent, frame_rate_callback);
 
   // Start the visualization
   renderWindow->Render();

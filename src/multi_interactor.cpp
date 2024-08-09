@@ -134,8 +134,9 @@ int main() {
   pcl::PointCloud<pcl::PointXYZ> cloud;
   pcl::PointXYZ point;
 
+  int number_point_cylander = 5000000;
   double cylanderRadius = 2.0;
-  for (int i = 0; i < 1000; i++) {
+  for (int i = 0; i < number_point_cylander; i++) {
     double x, y, z, radius;
     x = randomSequence->GetRangeValue(4.0, 12.0);
     randomSequence->Next();

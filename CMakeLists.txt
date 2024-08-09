@@ -534,9 +534,7 @@ vtk_module_autoinit(TARGETS QuadricDecimation MODULES ${VTK_LIBRARIES})
 
 
 
-# add_executable(vtk_basic src/vtk_basic.cpp src/vtk_basic.hpp src/vtk_basic_main.cpp)
-# target_link_libraries(vtk_basic PRIVATE ${VTK_LIBRARIES})
-# vtk_module_autoinit(TARGETS vtk_basic MODULES ${VTK_LIBRARIES})
+
 
 find_package(PDAL 1.0.0 REQUIRED CONFIG)
 
@@ -728,4 +726,23 @@ vtk_module_autoinit(TARGETS vtkLODActor MODULES ${VTK_LIBRARIES})
 add_executable(LODProp3D src/LODProp3D.cpp)
 target_link_libraries(LODProp3D PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS LODProp3D MODULES ${VTK_LIBRARIES})
+
+
+#src/vtk_basic.cpp src/vtk_basic.hpp
+add_executable(vtk_basic  src/vtk_basic_main.cpp   qml.qrc )
+target_link_libraries(vtk_basic PRIVATE ${VTK_LIBRARIES} ${PDAL_LIBRARIES})
+vtk_module_autoinit(TARGETS vtk_basic MODULES ${VTK_LIBRARIES})
+
+
+add_executable(FrameRate src/FrameRate.cxx )
+target_link_libraries(FrameRate PRIVATE ${VTK_LIBRARIES} ${PDAL_LIBRARIES})
+vtk_module_autoinit(TARGETS FrameRate MODULES ${VTK_LIBRARIES})
+
+
+add_executable(MinimalQtVTKApp src/MinimalQtVTKApp.cxx)
+target_link_libraries(MinimalQtVTKApp PRIVATE ${VTK_LIBRARIES} ${PDAL_LIBRARIES})
+vtk_module_autoinit(TARGETS MinimalQtVTKApp MODULES ${VTK_LIBRARIES})
+
+
+include_directories(src/SimpleView)
 
