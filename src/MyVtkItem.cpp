@@ -1,88 +1,132 @@
-//#include "MyVtkItem.hpp"
+#include "MyVtkItem.hpp"
 
-struct MyVtkItem : QQuickVTKItem {
+#include <vtkActor.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkObjectFactory.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkPropPicker.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-  Q_OBJECT
+#include <vtkActor.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkObjectFactory.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkPropPicker.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
 
-  vtkUserData initializeVTK(vtkRenderWindow *renderWindow) override {
-    // Create a cone pipeline and add it to the view
-    vtkNew<vtkConeSource> cone;
+struct MyVtkData : vtkObject {
+  static MyVtkData *New();
+  vtkTypeMacro(MyVtkData, vtkObject);
 
-    vtkNew<vtkPolyDataMapper> mapper;
-    mapper->SetInputConnection(cone->GetOutputPort());
-
-    vtkNew<vtkActor> actor;
-    actor->SetMapper(mapper);
-
-    vtkNew<vtkRenderer> renderer;
-    renderer->AddActor(actor);
-    renderer->ResetCamera();
-    renderer->SetBackground(0.0, 1.0, 1.0);
-    renderer->SetBackground2(1.0, 0.0, 0.0);
-    renderer->SetGradientBackground(true);
-
-    renderWindow->AddRenderer(renderer);
-    renderWindow->SetMultiSamples(16);
-
-    vtkSmartPointer<vtkInteractorStyleTrackballCamera> style =
-        vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New();
-
-    // vtkSmartPointer<vtkInteractorStyleRubberBandZoom> style =
-    //     vtkSmartPointer<vtkInteractorStyleRubberBandZoom>::New();
-
-    // vtkSmartPointer<vtkInteractorStyleTerrain> style =
-    //     vtkSmartPointer<vtkInteractorStyleTerrain>::New();
-
-    // vtkSmartPointer<vtkInteractorStyleJoystickCamera> style =
-    //     vtkSmartPointer<vtkInteractorStyleJoystickCamera>::New();
-
-    // vtkSmartPointer<CameraInteractorStyle> style =
-    //     vtkSmartPointer<CameraInteractorStyle>::New();
-
-    vtkNew<vtkRenderWindowInteractor> iRen;
-    renderer->GetRenderWindow()->GetInteractor()->SetInteractorStyle(style);
-    style->SetDefaultRenderer(renderer);
-
-    this->setAcceptHoverEvents(true);
-
-    this->forceActiveFocus();
-    renderWindow->SetBorders(true);
-
-    this->update();
-
-    return nullptr;
-  }
-  void hoverEnterEvent(QHoverEvent *event) override {
-    std::cout << "----" << std::endl;
-  }
-
-  void mouseDoubleClickEvent(QMouseEvent *event) override {
-    std::cout << "----" << std::endl;
-  }
-
-  // Assuming you have a class named VTKBackend
-  void MyVtkItem::handleMouseClick(int x, int y) {
-    if (!this->vtkRenderWindowInteractor) {
-      // Ensure the render window interactor is available
-      std::cout << "00000000000000000000000000000000" << std::endl;
-      return;
-    }
-
-    // Convert the QML mouse coordinates if needed
-
-    // Send a mouse press event
-    std::cout << "1111111111111111111111111111111111111" << std::endl;
-    this->vtkRenderWindowInteractor->InvokeEvent(
-        vtkCommand::LeftButtonPressEvent, nullptr);
-
-    std::cout << "222222222222222222222222222" << std::endl;
-
-    // ... Handle other mouse events if needed ...
-
-    // Then, trigger a mouse release
-    this->vtkRenderWindowInteractor->InvokeEvent(
-        vtkCommand::LeftButtonReleaseEvent, nullptr);
-
-    std::cout << "33333333333333333333333333" << std::endl;
-  }
+  // Place all your persistant VTK objects here
 };
+
+vtkStandardNewMacro(MyVtkData);
+
+void CallbackFunction(vtkObject *caller, long unsigned int eventId,
+                      void *vtkNotUsed(clientData),
+                      void *vtkNotUsed(callData)) {
+  vtkRenderer *renderer = static_cast<vtkRenderer *>(caller);
+
+  double timeInSeconds = renderer->GetLastRenderTimeInSeconds();
+  double fps = 1.0 / timeInSeconds;
+  std::cout << "FPS: " << fps << std::endl;
+
+  std::cout << "Callback" << std::endl;
+  std::cout << "eventId: " << eventId << std::endl;
+}
+
+QQuickVtkItem::vtkUserData
+MyVtkItem::initializeVTK(vtkRenderWindow *renderWindow) {
+  auto vtk = vtkNew<MyVtkData>();
+
+  //////////////////////////////////////////////////////////////////////////////////
+
+  pdal::PointTable table;
+  pdal::Options options;
+
+  // options.add(
+  //     "filename",
+  //     "/home/behnam/workspace/vtk_projects/data/las_files/Palac_Moszna.laz");
+
+  options.add("filename", "/home/behnam/map.las");
+
+  pdal::StageFactory factory;
+  pdal::Stage *reader = factory.createStage("readers.las");
+  reader->setOptions(options);
+  reader->prepare(table);
+
+  pdal::PointViewSet pointViews = reader->execute(table);
+  pdal::PointViewPtr pointView = *pointViews.begin();
+
+  // Convert PDAL Data to VTK Format
+  // Check if the GpsTime dimension is available
+  bool hasGpsTime = pointView->hasDim(pdal::Dimension::Id::GpsTime);
+
+  vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+  points->SetNumberOfPoints(pointView->size());
+
+  // points->Resize()
+  std::cout << " points->GetNumberOfPoints(): " << points->GetNumberOfPoints()
+            << std::endl;
+
+  for (pdal::PointId id = 0; id < pointView->size(); ++id) {
+    float x = pointView->getFieldAs<float>(pdal::Dimension::Id::X, id);
+    float y = pointView->getFieldAs<float>(pdal::Dimension::Id::Y, id);
+    float z = pointView->getFieldAs<float>(pdal::Dimension::Id::Z, id);
+    const float p[3] = {x, y, z};
+    points->InsertPoint(id, p);
+  }
+
+  vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
+  polyData->SetPoints(points);
+
+  vtkSmartPointer<vtkVertexGlyphFilter> glyphFilter =
+      vtkSmartPointer<vtkVertexGlyphFilter>::New();
+  glyphFilter->SetInputData(polyData);
+  glyphFilter->Update();
+
+  // Visualize with VTK
+
+  vtkSmartPointer<vtkPolyDataMapper> mapper =
+      vtkSmartPointer<vtkPolyDataMapper>::New();
+  mapper->SetInputConnection(glyphFilter->GetOutputPort());
+
+  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  actor->SetMapper(mapper);
+
+  ////////////////////////////////////////////////////////////////////////////
+
+  vtkNew<vtkNamedColors> colors;
+
+  int numberOfSpheres = 10;
+
+  // A renderer and render window
+  vtkNew<vtkRenderer> renderer;
+  renderer->AddActor(actor);
+
+  vtkNew<vtkCallbackCommand> callback;
+
+  callback->SetCallback(CallbackFunction);
+  renderer->AddObserver(vtkCommand::EndEvent, callback);
+  // remove    vtkNew<vtkRenderWindow> renderWindow;
+  //   renderWindow->SetSize(640, 480);
+  renderWindow->AddRenderer(renderer);
+  renderWindow->SetWindowName("HighlightPickedActor");
+
+  return vtk;
+}

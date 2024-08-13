@@ -569,9 +569,7 @@ add_executable(multi_interactor src/multi_interactor.cpp src/InteractorStyleSwit
 target_link_libraries(multi_interactor PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS multi_interactor MODULES ${VTK_LIBRARIES})
 
-add_executable(QtQuickCone src/QtQuickCone.cpp src/MyVtkItem.hpp qml.qrc src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
-target_link_libraries(QtQuickCone PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS QtQuickCone MODULES ${VTK_LIBRARIES})
+
 
 
 
@@ -729,8 +727,8 @@ vtk_module_autoinit(TARGETS LODProp3D MODULES ${VTK_LIBRARIES})
 
 
 #src/vtk_basic.cpp src/vtk_basic.hpp
-add_executable(vtk_basic  src/vtk_basic_main.cpp   qml.qrc )
-target_link_libraries(vtk_basic PRIVATE ${VTK_LIBRARIES} ${PDAL_LIBRARIES})
+add_executable(vtk_basic  src/vtk_basic_main.cpp  src/QQuickVtkItem.cpp src/MyVtkItem.cpp  qml.qrc)
+target_link_libraries(vtk_basic PRIVATE  ${VTK_LIBRARIES} ${PDAL_LIBRARIES}  Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets Qt${QT_VERSION_MAJOR}::Concurrent)
 vtk_module_autoinit(TARGETS vtk_basic MODULES ${VTK_LIBRARIES})
 
 
@@ -746,3 +744,13 @@ vtk_module_autoinit(TARGETS MinimalQtVTKApp MODULES ${VTK_LIBRARIES})
 
 include_directories(src/SimpleView)
 
+
+
+add_executable(vtk_forum_snippet  src/vtk_forum_snippet.cpp  qml.qrc )
+target_link_libraries(vtk_forum_snippet PRIVATE ${VTK_LIBRARIES} ${PDAL_LIBRARIES}  Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets Qt${QT_VERSION_MAJOR}::Concurrent)
+vtk_module_autoinit(TARGETS vtk_forum_snippet MODULES ${VTK_LIBRARIES})
+
+
+# add_executable(QtQuickCone src/QtQuickCone.cpp src/MyVtkItem.hpp qml.qrc src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
+# target_link_libraries(QtQuickCone PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+# vtk_module_autoinit(TARGETS QtQuickCone MODULES ${VTK_LIBRARIES})

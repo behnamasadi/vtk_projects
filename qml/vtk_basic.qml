@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
-import com.vtk.example 1.0
+//import com.vtk.example 1.0
+import Vtk 1.0 as Vtk
 
 Window {
   id: win
@@ -22,7 +23,7 @@ Window {
     anchors.fill: parent
     anchors.margins: 100
 
-    MyVtkItem {
+    Vtk.MyVtkItem {
       id: vtk
       anchors.fill: parent
       anchors.margins: 5

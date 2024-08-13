@@ -1,3 +1,4 @@
+/*
 #include <QtQml/QQmlApplicationEngine>
 
 #include <QtQuick/QQuickWindow>
@@ -239,3 +240,50 @@ public:
     return vtk;
   }
 };
+*/
+
+#ifndef MYVTKITEM_HPP
+#define MYVTKITEM_HPP
+
+#include "QQuickVtkItem.h"
+#include <QLoggingCategory>
+#include <QQuickWindow>
+#include <QVTKRenderWindowAdapter.h>
+#include <QtGui/QGuiApplication>
+#include <QtGui/QSurfaceFormat>
+#include <QtQml/QQmlApplicationEngine>
+#include <QtQuick/QQuickWindow>
+#include <pdal/Options.hpp>
+#include <pdal/PointTable.hpp>
+#include <pdal/PointView.hpp>
+#include <pdal/StageFactory.hpp>
+#include <pdal/io/LasReader.hpp>
+#include <vtkActor.h>
+#include <vtkCallbackCommand.h>
+#include <vtkCommand.h>
+#include <vtkConeSource.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkMinimalStandardRandomSequence.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkPointData.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkPropPicker.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSliderRepresentation2D.h>
+#include <vtkSliderWidget.h>
+#include <vtkSmartPointer.h>
+#include <vtkSphereSource.h>
+#include <vtkVertexGlyphFilter.h>
+
+class MyVtkItem : public QQuickVtkItem {
+public:
+  vtkUserData initializeVTK(vtkRenderWindow *renderWindow) override;
+};
+
+#endif // MYVTKITEM_HPP
