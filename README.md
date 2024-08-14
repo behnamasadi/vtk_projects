@@ -30,11 +30,13 @@ to check if you have installed debug or release:
 objdump -h libvtkImagingStencil-9.3.so.9.3 | grep 'debug_info'
 ```
 
-
+## Supported Data Formats
 [Supported Data Formats](https://docs.vtk.org/en/latest/supported_data_formats.html)  
 
+## List of VTK Modules
 [List of VTK Modules](https://docs.vtk.org/en/latest/modules/index.html)  
 
+## VTK - numpy integration
 [VTK - numpy integration](https://docs.vtk.org/en/latest/learning.html)  
 
 
