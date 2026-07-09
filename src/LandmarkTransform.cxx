@@ -22,6 +22,8 @@
 #ifdef vtkGenericDataArray_h
 #define InsertNextTupleValue InsertNextTypedTuple
 #endif
+#include <iostream>
+
 
 namespace {
 void AxesLines(vtkSmartPointer<vtkPolyData> linesPolyData);

@@ -13,6 +13,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkTransform.h>
+#include <iostream>
 
 /*
 source -> mapper -> actor -> renderer -> rendererWindow

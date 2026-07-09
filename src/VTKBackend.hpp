@@ -1,5 +1,6 @@
 // VTKBackend.h
 
+#include <iostream>
 #include <QObject>
 #include <QQuickVTKItem.h>
 #include <QVTKInteractor.h>

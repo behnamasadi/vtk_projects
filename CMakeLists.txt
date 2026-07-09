@@ -62,7 +62,9 @@ message(STATUS "QT version: " ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
 message(STATUS "QT dir" ${Qt${QT_VERSION_MAJOR}_DIR})
 
 
-if(EXISTS "${PCL_DIR}")
+option(USE_PCL "Enable PCL-dependent targets (PCL may not be installed; build from source and pass -DUSE_PCL=ON -DPCL_DIR=...)" OFF)
+
+if(USE_PCL AND EXISTS "${PCL_DIR}")
 	find_package(PCL 1.14 REQUIRED COMPONENTS
 		common
 		octree
@@ -87,7 +89,7 @@ if(EXISTS "${PCL_DIR}")
 		stereo)
 endif()
 
-if(${PCL_FOUND})
+if(USE_PCL AND PCL_FOUND)
 	include_directories(${PCL_INCLUDE_DIRS})
 	link_directories(${PCL_LIBRARY_DIRS})
 	add_definitions(${PCL_DEFINITIONS})
@@ -154,9 +156,11 @@ add_executable(AffineWidget src/AffineWidget.cxx)
 target_link_libraries(AffineWidget PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS AffineWidget MODULES ${VTK_LIBRARIES})
 
+if(USE_PCL AND PCL_FOUND)
 add_executable(AngleWidget src/AngleWidget.cxx)
-target_link_libraries(AngleWidget PRIVATE ${VTK_LIBRARIES})
+target_link_libraries(AngleWidget PRIVATE ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS AngleWidget MODULES ${VTK_LIBRARIES})
+endif()
 
 add_executable(AngleWidget2D src/AngleWidget2D.cxx)
 target_link_libraries(AngleWidget2D PRIVATE ${VTK_LIBRARIES})
@@ -365,9 +369,11 @@ vtk_module_autoinit(TARGETS HighlightWithSilhouette MODULES ${VTK_LIBRARIES})
 
 
 
+if(USE_PCL AND PCL_FOUND)
 add_executable(DistanceWidget3D src/DistanceWidget3D.cpp)
-target_link_libraries(DistanceWidget3D PRIVATE ${VTK_LIBRARIES})
+target_link_libraries(DistanceWidget3D PRIVATE ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS DistanceWidget3D MODULES ${VTK_LIBRARIES})
+endif()
 
 add_executable(Callback src/Callback.cpp)
 target_link_libraries(Callback PRIVATE ${VTK_LIBRARIES})
@@ -442,13 +448,17 @@ vtk_module_autoinit(TARGETS sandbox MODULES ${VTK_LIBRARIES})
 
 
 
+if(USE_PCL AND PCL_FOUND)
 add_executable(BoundingBox src/BoundingBox.cpp)
-target_link_libraries(BoundingBox PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+target_link_libraries(BoundingBox PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS BoundingBox MODULES ${VTK_LIBRARIES})
+endif()
 
+if(USE_PCL AND PCL_FOUND)
 add_executable(OutlineFilter src/OutlineFilter.cpp)
-target_link_libraries(OutlineFilter PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+target_link_libraries(OutlineFilter PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS OutlineFilter MODULES ${VTK_LIBRARIES})
+endif()
 
 add_executable(Frustum src/Frustum.cxx)
 target_link_libraries(Frustum PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
@@ -496,8 +506,10 @@ target_link_libraries(TexturedButtonWidget PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS TexturedButtonWidget MODULES ${VTK_LIBRARIES})
 
 
+if(USE_PCL AND PCL_FOUND)
 add_executable(toolbox_qml src/toolbox_qml.cpp qml.qrc)
 target_link_libraries(toolbox_qml PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${PCL_LIBRARIES} ${VTK_LIBRARIES})
+endif()
 
 add_executable(image_overlay src/image_overlay.cpp)
 target_link_libraries(image_overlay PRIVATE  ${VTK_LIBRARIES})
@@ -536,9 +548,13 @@ vtk_module_autoinit(TARGETS QuadricDecimation MODULES ${VTK_LIBRARIES})
 
 
 
-find_package(PDAL 1.0.0 REQUIRED CONFIG)
+option(USE_PDAL "Enable PDAL-dependent targets (PDAL is not packaged on Ubuntu 24.04; build from source and pass -DUSE_PDAL=ON -DPDAL_DIR=...)" OFF)
 
-if(${PDAL_FOUND})
+if(USE_PDAL)
+find_package(PDAL 1.0.0 REQUIRED CONFIG)
+endif()
+
+if(USE_PDAL AND PDAL_FOUND)
 message("PDAL_FOUND:" ${PDAL_FOUND})
 message("PDAL_VERSION:" ${PDAL_VERSION})
 
@@ -565,17 +581,21 @@ target_link_libraries(main PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MA
 vtk_module_autoinit(TARGETS main MODULES ${VTK_LIBRARIES})
 
 
+if(USE_PCL AND PCL_FOUND)
 add_executable(multi_interactor src/multi_interactor.cpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
-target_link_libraries(multi_interactor PRIVATE ${VTK_LIBRARIES})
+target_link_libraries(multi_interactor PRIVATE ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS multi_interactor MODULES ${VTK_LIBRARIES})
+endif()
 
 
 
 
 
-add_executable(dynamic_split_view qml.qrc src/dynamic_split_view.cpp)
-target_link_libraries(dynamic_split_view PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS dynamic_split_view MODULES ${VTK_LIBRARIES})
+# dynamic_split_view uses <vtkCapsuleSource.h>, which is not present in this VTK
+# 9.7 install. Commented out until VTK is rebuilt with vtkCapsuleSource available.
+# add_executable(dynamic_split_view qml.qrc src/dynamic_split_view.cpp)
+# target_link_libraries(dynamic_split_view PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
+# vtk_module_autoinit(TARGETS dynamic_split_view MODULES ${VTK_LIBRARIES})
 
 # add_executable(QQuickVTKRender src/QQuickVTKRender.cpp qml.qrc src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)
 # target_link_libraries(QQuickVTKRender PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
@@ -597,14 +617,20 @@ target_link_libraries(vtk_las_reader PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS vtk_las_reader MODULES ${VTK_LIBRARIES})
 
 
+# vtk_pdal_reader includes <vtkPDALReader.h>, which is only available when VTK is
+# built with the IOPDAL module (requires PDAL). Gate it behind USE_PDAL.
+if(USE_PDAL)
 add_executable(vtk_pdal_reader src/vtk_pdal_reader.cpp)
 target_link_libraries(vtk_pdal_reader PRIVATE  ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS vtk_pdal_reader MODULES ${VTK_LIBRARIES})
+endif()
 
 
+if(USE_PDAL)
 add_executable(pdal_intensity src/pdal_intensity.cpp)
 target_link_libraries(pdal_intensity PRIVATE  ${VTK_LIBRARIES} ${PDAL_LIBRARIES})
 vtk_module_autoinit(TARGETS pdal_intensity MODULES ${VTK_LIBRARIES})
+endif()
 
 
 # add_executable(decimate_bag src/decimate_bag.cpp src/decimate_bagVtkItem.hpp  src/decimate_bagVtkItem.cpp   qml.qrc)
@@ -613,9 +639,11 @@ vtk_module_autoinit(TARGETS pdal_intensity MODULES ${VTK_LIBRARIES})
 
 
 
+if(USE_PDAL)
 add_executable(height_based_color_map src/height_based_color_map.cpp)
 target_link_libraries(height_based_color_map PRIVATE ${PDAL_LIBRARIES} Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS height_based_color_map MODULES ${VTK_LIBRARIES})
+endif()
 
 
 add_executable(DepthSortPolyData src/DepthSortPolyData.cxx)
@@ -727,9 +755,12 @@ vtk_module_autoinit(TARGETS LODProp3D MODULES ${VTK_LIBRARIES})
 
 
 #src/vtk_basic.cpp src/vtk_basic.hpp
+# vtk_basic needs both PDAL (vtk_basic_main.cpp) and PCL (MyVtkItem.hpp)
+if(USE_PDAL AND USE_PCL AND PCL_FOUND)
 add_executable(vtk_basic  src/vtk_basic_main.cpp  src/QQuickVtkItem.cpp src/MyVtkItem.cpp  qml.qrc)
-target_link_libraries(vtk_basic PRIVATE  ${VTK_LIBRARIES} ${PDAL_LIBRARIES}  Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets Qt${QT_VERSION_MAJOR}::Concurrent)
+target_link_libraries(vtk_basic PRIVATE  ${VTK_LIBRARIES} ${PDAL_LIBRARIES} ${PCL_LIBRARIES}  Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets Qt${QT_VERSION_MAJOR}::Concurrent)
 vtk_module_autoinit(TARGETS vtk_basic MODULES ${VTK_LIBRARIES})
+endif()
 
 
 add_executable(FrameRate src/FrameRate.cxx )

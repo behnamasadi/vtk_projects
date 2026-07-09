@@ -12,6 +12,7 @@
 #include <vtkScalarBarWidget.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkUnstructuredGridReader.h>
+#include <iostream>
 
 int main(int argc, char *argv[]) {
   vtkNew<vtkNamedColors> colors;

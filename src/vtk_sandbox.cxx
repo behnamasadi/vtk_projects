@@ -34,6 +34,7 @@
 #include <algorithm>
 #include <cctype>
 #include <string>
+#include <iostream>
 
 //#include <vtkZSpaceInteractorStyle.h>
 

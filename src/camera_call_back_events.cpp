@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vtkCamera.h>
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkMinimalStandardRandomSequence.h>

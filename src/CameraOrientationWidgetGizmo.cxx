@@ -8,6 +8,8 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkXMLPolyDataReader.h>
+#include <iostream>
+#include <iostream>
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {

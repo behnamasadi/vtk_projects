@@ -10,6 +10,7 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkTriangle.h>
+#include <iostream>
 
 /*
 

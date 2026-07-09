@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vtkActor.h>
 #include <vtkCellData.h>
 #include <vtkDataSet.h>
@@ -35,7 +36,7 @@ int main(int, char *[]) {
       colors->GetColor3d("MistyRose").GetData());
 
   vtkPolyData *mesh = triangleFilter->GetOutput();
-  cout << "There are " << mesh->GetNumberOfCells() << " cells." << endl;
+  std::cout << "There are " << mesh->GetNumberOfCells() << " cells." << std::endl;
 
   vtkNew<vtkMeshQuality> qualityFilter;
   qualityFilter->SetInputData(mesh);
@@ -46,12 +47,12 @@ int main(int, char *[]) {
   auto qualityArray = dynamic_cast<vtkDoubleArray *>(
       qualityMesh->GetCellData()->GetArray("Quality"));
 
-  cout << "There are " << qualityArray->GetNumberOfTuples() << " values."
-       << endl;
+  std::cout << "There are " << qualityArray->GetNumberOfTuples() << " values."
+       << std::endl;
 
   for (vtkIdType i = 0; i < qualityArray->GetNumberOfTuples(); i++) {
     double val = qualityArray->GetValue(i);
-    cout << "value " << i << " : " << val << endl;
+    std::cout << "value " << i << " : " << val << std::endl;
   }
 
   vtkNew<vtkThreshold> selectCells;

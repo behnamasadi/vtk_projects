@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vtkCamera.h>
 #include <vtkNamedColors.h>
 #include <vtkPolyData.h>

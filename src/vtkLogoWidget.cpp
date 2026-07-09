@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include <vtkCommand.h>
 #include <vtkImageData.h>
 #include <vtkLogoRepresentation.h>

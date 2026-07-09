@@ -15,6 +15,7 @@
 #include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 #include <vtkXMLPolyDataReader.h>
+#include <iostream>
 
 namespace {
 // Callback for the interaction

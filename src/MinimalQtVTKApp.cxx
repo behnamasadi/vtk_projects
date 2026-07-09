@@ -1,3 +1,4 @@
+#include <iostream>
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkActor.h>
 #include <vtkCallbackCommand.h>

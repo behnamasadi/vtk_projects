@@ -14,6 +14,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkSphereSource.h>
+#include <iostream>
 
 void func(vtkObject *caller, unsigned long eid, void *clientdata,
           void *calldata) {

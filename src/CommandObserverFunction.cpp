@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vtkActor.h>
 #include <vtkActorCollection.h>
 #include <vtkAppendFilter.h>

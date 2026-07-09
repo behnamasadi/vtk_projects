@@ -41,6 +41,7 @@
 
 //   return 0;
 // }
+#include <iostream>
 #include <vtkActor.h>
 #include <vtkCommand.h>
 #include <vtkCoordinate.h>

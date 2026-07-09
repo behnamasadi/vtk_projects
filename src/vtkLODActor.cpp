@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vtkGlyph3D.h>
 #include <vtkLODActor.h>
 #include <vtkNamedColors.h>

@@ -13,6 +13,7 @@
 #include <vtkRenderer.h>
 #include <vtkSphereSource.h>
 #include <vtkWidgetEvent.h>
+#include <iostream>
 
 namespace {
 // This does the actual work.

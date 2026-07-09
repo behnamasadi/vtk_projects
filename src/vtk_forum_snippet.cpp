@@ -1,3 +1,4 @@
+#include <iostream>
 #include <QQuickVTKItem.h>
 #include <QQuickWindow>
 #include <QVTKRenderWindowAdapter.h>

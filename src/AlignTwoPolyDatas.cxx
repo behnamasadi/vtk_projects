@@ -47,6 +47,7 @@
 #if VTK_HAS_COW
 #include <vtkCameraOrientationWidget.h>
 #endif
+#include <iostream>
 
 namespace {
 /**

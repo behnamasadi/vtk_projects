@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vtkCallbackCommand.h>
 #include <vtkLODProp3D.h>
 #include <vtkNamedColors.h>

@@ -1,9 +1,10 @@
+#include <iostream>
 #include <vtkActor.h>
 #include <vtkAreaPicker.h>
 #include <vtkDataSetMapper.h>
 #include <vtkDataSetSurfaceFilter.h>
 #include <vtkExtractPolyDataGeometry.h>
-#include <vtkIdFilter.h>
+#include <vtkGenerateIds.h>
 #include <vtkIdTypeArray.h>
 #include <vtkInteractorStyleRubberBandPick.h>
 #include <vtkNamedColors.h>
@@ -111,7 +112,7 @@ int main(int argc, char *argv[]) {
 
   vtkNew<vtkNamedColors> colors;
 
-  vtkNew<vtkIdFilter> idFilter;
+  vtkNew<vtkGenerateIds> idFilter;
   idFilter->SetInputData(polyData);
 #if VTK890
   idFilter->SetCellIdsArrayName("OriginalIds");

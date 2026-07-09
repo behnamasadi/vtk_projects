@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vtkActor.h>
 #include <vtkCamera.h>
 #include <vtkCommand.h>

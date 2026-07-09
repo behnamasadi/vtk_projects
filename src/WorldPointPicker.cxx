@@ -11,6 +11,7 @@
 #include <vtkRendererCollection.h>
 #include <vtkSphereSource.h>
 #include <vtkWorldPointPicker.h>
+#include <iostream>
 
 namespace {
 

@@ -35,7 +35,8 @@ int main(int, char *[]) {
 
   vtkNew<vtkThresholdPoints> threshold;
   threshold->SetInputData(polydata);
-  threshold->ThresholdByLower(3);
+  threshold->SetThresholdFunction(vtkThresholdPoints::THRESHOLD_LOWER);
+  threshold->SetLowerThreshold(3);
   // threshold->ThresholdByUpper(3);
   threshold->SetInputArrayToProcess(
       0, 0, 0, vtkDataObject::FIELD_ASSOCIATION_POINTS, "index");

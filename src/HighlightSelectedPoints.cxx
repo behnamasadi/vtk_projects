@@ -1,9 +1,10 @@
+#include <iostream>
 #include <vtkActor.h>
 #include <vtkAreaPicker.h>
 #include <vtkDataSetMapper.h>
 #include <vtkDataSetSurfaceFilter.h>
 #include <vtkExtractGeometry.h>
-#include <vtkIdFilter.h>
+#include <vtkGenerateIds.h>
 #include <vtkIdTypeArray.h>
 #include <vtkInteractorStyleRubberBandPick.h>
 #include <vtkNamedColors.h>
@@ -101,7 +102,7 @@ int main(int, char *[]) {
   pointSource->SetNumberOfPoints(20);
   pointSource->Update();
 
-  vtkNew<vtkIdFilter> idFilter;
+  vtkNew<vtkGenerateIds> idFilter;
   idFilter->SetInputConnection(pointSource->GetOutputPort());
 #if VTK890
   idFilter->SetCellIdsArrayName("OriginalIds");

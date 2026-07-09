@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vtkActor.h>
 #include <vtkCellIterator.h>
 #include <vtkCommand.h>

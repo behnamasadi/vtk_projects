@@ -11,7 +11,7 @@
 #include <vtkRenderer.h>
 #include <vtkRendererCollection.h>
 #include <vtkSphereSource.h>
-
+#include <iostream>
 namespace {
 
 // Define interaction style

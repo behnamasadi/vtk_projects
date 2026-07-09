@@ -19,6 +19,7 @@
 
 #include <vtksys/RegularExpression.hxx>
 #include <vtksys/SystemTools.hxx>
+#include <iostream>
 
 namespace {
 vtkSmartPointer<vtkPolyData> ReadPolyData(const char *fileName);

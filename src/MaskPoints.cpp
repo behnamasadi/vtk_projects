@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vtkMaskPoints.h>
 #include <vtkNamedColors.h>
 #include <vtkNew.h>

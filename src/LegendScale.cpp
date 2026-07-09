@@ -425,7 +425,7 @@ int main(int, char *[]) {
   // scalarBar->GetPositionCoordinate()->SetValue(0.1, 0.05);
   // scalarBar->SetWidth(0.8);
   // scalarBar->SetHeight(0.1);
-  renderer->AddActor2D(scalarBar);
+  renderer->AddActor(scalarBar);
 
   // Reset the camera to show the full scene
   renderer->ResetCamera();

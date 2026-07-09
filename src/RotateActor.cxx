@@ -13,6 +13,7 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkTransform.h>
+#include <iostream>
 
 namespace {
 

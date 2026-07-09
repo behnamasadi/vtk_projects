@@ -15,6 +15,7 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <iostream>
 
 namespace {
 void ViewportBorder(vtkRenderer *renderer, double *color, bool last = false);

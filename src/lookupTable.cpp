@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vtkActor.h>
 #include <vtkFloatArray.h>
 #include <vtkLookupTable.h>

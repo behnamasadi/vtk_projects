@@ -1,6 +1,6 @@
 
 #include <vtkActor.h>
-#include <vtkInteractorStyleTrackball.h>
+#include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkPointSource.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderWindow.h>

@@ -42,10 +42,41 @@ objdump -h libvtkImagingStencil-9.3.so.9.3 | grep 'debug_info'
 
 # How to build Project
 
-configure it:
+## Dependencies
+
+The project needs VTK (built from source into `~/usr`) and the Qt5 development
+packages (the runtime `libqt5*-5` packages are **not** enough — CMake needs the
+`-dev` packages that ship the `Qt5*Config.cmake` files):
 
 ```
-cmake -G "Ninja Multi-Config"  -S . -B build -DVTK_DIR="/home/$USER/usr/lib/cmake/vtk-9.3/" -DPCL_DIR="/home/$USER/usr/share/pcl-1.14/"
+sudo apt install qtdeclarative5-dev qtquickcontrols2-5-dev libqt5svg5-dev \
+                 qtbase5-dev libqt5sql5 libboost-filesystem-dev libboost-system-dev
+```
+
+configure it (VTK-only, no PCL/PDAL):
+
+```
+cmake -G "Ninja Multi-Config"  -S . -B build -DVTK_DIR="/home/$USER/usr/lib/cmake/vtk-9.3/"
+```
+
+### PCL and PDAL (optional)
+
+Both **PCL** and **PDAL** are **optional and disabled by default** — the project
+configures and builds without them. Their dependent targets are only built when
+you opt in:
+
+| Option | Enables targets |
+|--------|-----------------|
+| `-DUSE_PCL=ON`  | `qml_pcl`, `DownsamplePointCloud`, `pointcloud`, `polygon_mesh`, `sphere`, `AreaPicking`, `toolbox_qml` |
+| `-DUSE_PDAL=ON` | `pdal_las_vtk`, `las_time_based_filter`, `pdal_intensity`, `height_based_color_map`, `vtk_basic` |
+
+PDAL is no longer packaged on Ubuntu 24.04, and PCL may not be installed either;
+build each from source into `~/usr` and point CMake at it. Enable one or both:
+
+```
+cmake -G "Ninja Multi-Config"  -S . -B build -DVTK_DIR="/home/$USER/usr/lib/cmake/vtk-9.3/" \
+      -DUSE_PCL=ON  -DPCL_DIR="/home/$USER/usr/share/pcl-1.14/" \
+      -DUSE_PDAL=ON -DPDAL_DIR="/home/$USER/usr/lib/cmake/PDAL/"
 ```
 
 build it:

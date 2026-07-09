@@ -7,6 +7,7 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <iostream>
 
 // int main(int, char *[]) {
 //   vtkNew<vtkNamedColors> colors;
