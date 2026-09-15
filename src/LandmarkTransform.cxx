@@ -14,7 +14,7 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
-#include <vtkTransformPolyDataFilter.h>
+#include <vtkTransformFilter.h>
 #include <vtkUnsignedCharArray.h>
 #include <vtkVertexGlyphFilter.h>
 
@@ -92,7 +92,7 @@ int main(int, char *[]) {
   targetGlyphFilter->SetInputData(target);
   targetGlyphFilter->Update();
 
-  vtkNew<vtkTransformPolyDataFilter> transformFilter;
+  vtkNew<vtkTransformFilter> transformFilter;
   transformFilter->SetInputConnection(sourceGlyphFilter->GetOutputPort());
   transformFilter->SetTransform(landmarkTransform);
   transformFilter->Update();

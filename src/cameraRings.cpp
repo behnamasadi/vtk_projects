@@ -9,7 +9,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkSphereSource.h>
 #include <vtkTransform.h>
-#include <vtkTransformPolyDataFilter.h>
+#include <vtkTransformFilter.h>
 
 // int main() {
 
@@ -49,8 +49,8 @@
 //       vtkSmartPointer<vtkTransform>::New();
 //   transform->RotateX(90.0); // Rotate to make it horizontal
 
-//   vtkSmartPointer<vtkTransformPolyDataFilter> transformFilter =
-//       vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+//   vtkSmartPointer<vtkTransformFilter> transformFilter =
+//       vtkSmartPointer<vtkTransformFilter>::New();
 //   transformFilter->SetInputConnection(ringSource->GetOutputPort());
 //   transformFilter->SetTransform(transform);
 //   transformFilter->Update();
@@ -140,8 +140,8 @@ int main() {
       vtkSmartPointer<vtkTransform>::New();
   transform->RotateX(90.0);
 
-  vtkSmartPointer<vtkTransformPolyDataFilter> transformFilter =
-      vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkSmartPointer<vtkTransformFilter> transformFilter =
+      vtkSmartPointer<vtkTransformFilter>::New();
   transformFilter->SetInputConnection(polygonSource1->GetOutputPort());
   transformFilter->SetTransform(transform);
   transformFilter->Update();

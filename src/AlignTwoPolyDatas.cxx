@@ -17,7 +17,7 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkTransform.h>
-#include <vtkTransformPolyDataFilter.h>
+#include <vtkTransformFilter.h>
 #include <vtkVersion.h>
 
 // Readers
@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
   if (sourceFound && targetFound) {
     trnf->RotateY(90);
   }
-  vtkNew<vtkTransformPolyDataFilter> tpd;
+  vtkNew<vtkTransformFilter> tpd;
   tpd->SetTransform(trnf);
   tpd->SetInputData(targetPolyData);
   tpd->Update();
@@ -126,7 +126,8 @@ int main(int argc, char *argv[]) {
           ->GetComponent(0, 0);
 
   // Get initial alignment using oriented bounding boxes
-  AlignBoundingBoxes(sourcePolyData, tpd->GetOutput());
+  AlignBoundingBoxes(
+      sourcePolyData, vtkPolyData::SafeDownCast(tpd->GetOutput()));
 
   distance->SetInputData(0, tpd->GetOutput());
   distance->SetInputData(1, sourcePolyData);
@@ -159,7 +160,7 @@ int main(int argc, char *argv[]) {
   //  icp->Print(std::cout);
 
   auto lmTransform = icp->GetLandmarkTransform();
-  vtkNew<vtkTransformPolyDataFilter> transform;
+  vtkNew<vtkTransformFilter> transform;
   transform->SetInputData(sourcePolyData);
   transform->SetTransform(lmTransform);
   transform->SetTransform(icp);
@@ -346,7 +347,7 @@ void AlignBoundingBoxes(vtkPolyData *source, vtkPolyData *target) {
   vtkNew<vtkLandmarkTransform> lmTransform;
   lmTransform->SetModeToSimilarity();
   lmTransform->SetTargetLandmarks(targetLandmarks->GetPoints());
-  // vtkNew<vtkTransformPolyDataFilter> lmTransformPD;
+  // vtkNew<vtkTransformFilter> lmTransformPD;
   double bestDistance = VTK_DOUBLE_MAX;
   vtkNew<vtkPoints> bestPoints;
   BestBoundingBox("X", target, source, targetLandmarks, sourceLandmarks,
@@ -359,7 +360,7 @@ void AlignBoundingBoxes(vtkPolyData *source, vtkPolyData *target) {
   lmTransform->SetSourceLandmarks(bestPoints);
   lmTransform->Modified();
 
-  vtkNew<vtkTransformPolyDataFilter> transformPD;
+  vtkNew<vtkTransformFilter> transformPD;
   transformPD->SetInputData(source);
   transformPD->SetTransform(lmTransform);
   transformPD->Update();
@@ -372,9 +373,9 @@ void BestBoundingBox(std::string const &axis, vtkPolyData *target,
                      vtkPoints *bestPoints) {
   vtkNew<vtkHausdorffDistancePointSetFilter> distance;
   vtkNew<vtkTransform> testTransform;
-  vtkNew<vtkTransformPolyDataFilter> testTransformPD;
+  vtkNew<vtkTransformFilter> testTransformPD;
   vtkNew<vtkLandmarkTransform> lmTransform;
-  vtkNew<vtkTransformPolyDataFilter> lmTransformPD;
+  vtkNew<vtkTransformFilter> lmTransformPD;
 
   lmTransform->SetModeToSimilarity();
   lmTransform->SetTargetLandmarks(targetLandmarks->GetPoints());

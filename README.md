@@ -1,12 +1,40 @@
 # Building VTK
 
+Build and install PDAL **before** configuring VTK. VTK discovers PDAL only at
+VTK configure time; installing PDAL later will not enable `VTK::IOPDAL` in an
+existing VTK build.
+
+## Build and install PDAL
+
+Install PDAL's PROJ and GDAL development dependencies first:
+
+```
+sudo apt install libproj-dev
+sudo apt install libgdal-dev
+```
+
+Then build PDAL into the same prefix that will be used for VTK:
+
+```
+git clone https://github.com/PDAL/PDAL.git
+cmake -S PDAL -B PDAL/build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX="$HOME/usr"
+cmake --build PDAL/build --target install
+```
+
+## Build and install VTK
+
 ```
 git clone https://github.com/Kitware/VTK.git
 ```
 
-configure it:
+Configure VTK with the PDAL installation prefix so `VTK::IOPDAL` can be enabled and found:
+
 ```
-cmake -G "Ninja Multi-Config"  -S . -B build -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake -DCMAKE_PREFIX_PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5  -DCMAKE_INSTALL_PREFIX=~/usr -DVTK_REPORT_OPENGL_ERRORS=OFF -DVTK_MODULE_ENABLE_VTK_GUISupportQt=YES     -DVTK_MODULE_ENABLE_VTK_GUISupportQtQuick=YES -DVTK_WRAP_JAVA=OFF -DVTK_WRAP_PYTHON=OFF  -DVTK_ENABLE_WRAPPING=OFF  -DVTK_BUILD_TESTING=OFF -DVTK_GROUP_ENABLE_Rendering=DONT_WANT -DVTK_MODULE_ENABLE_VTK_RenderingQt=YES -DVTK_MODULE_ENABLE_VTK_hdf5=YES -DVTK_MODULE_ENABLE_VTK_IOHDF=YES -DVTK_MODULE_ENABLE_VTK_InteractionImage=YES    -DVTK_MODULE_ENABLE_VTK_RenderingLOD=YES -DVTK_MODULE_ENABLE_VTK_ViewsCore=YES -DVTK_MODULE_ENABLE_VTK_ViewsContext2D=YES -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES -DVTK_GROUP_ENABLE_Qt=YES -DVTK_MODULE_ENABLE_VTK_ViewsQt=YES -DVTK_GROUP_ENABLE_Views=YES -DVTK_MODULE_ENABLE_VTK_RenderingUI=YES -DVTK_MODULE_ENABLE_VTK_RenderingVolume=YES -DVTK_MODULE_ENABLE_VTK_RenderingVolumeOpenGL2=YES -DVTK_QT_VERSION=5 -DVTK_MODULE_ENABLE_VTK_opengl=YES -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES -DVTK_MODULE_ENABLE_VTK_RenderingSceneGraph=YES -DVTK_MODULE_ENABLE_VTK_InteractionWidgets=YES -DVTK_MODULE_ENABLE_VTK_IOPDAL=YES -DVTK_REPORT_OPENGL_ERRORS=OFF 
+cmake -G "Ninja Multi-Config" -S . -B build -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake \
+  -DCMAKE_PREFIX_PATH="$HOME/usr;/usr/lib/x86_64-linux-gnu/cmake/Qt5" \
+  -DPDAL_DIR="$HOME/usr/lib/cmake/PDAL" -DCMAKE_INSTALL_PREFIX="$HOME/usr" \
+  -DVTK_REPORT_OPENGL_ERRORS=OFF -DVTK_MODULE_ENABLE_VTK_GUISupportQt=YES     -DVTK_MODULE_ENABLE_VTK_GUISupportQtQuick=YES -DVTK_WRAP_JAVA=OFF -DVTK_WRAP_PYTHON=OFF  -DVTK_ENABLE_WRAPPING=OFF  -DVTK_BUILD_TESTING=OFF -DVTK_GROUP_ENABLE_Rendering=DONT_WANT -DVTK_MODULE_ENABLE_VTK_RenderingQt=YES -DVTK_MODULE_ENABLE_VTK_hdf5=YES -DVTK_MODULE_ENABLE_VTK_IOHDF=YES -DVTK_MODULE_ENABLE_VTK_InteractionImage=YES    -DVTK_MODULE_ENABLE_VTK_RenderingLOD=YES -DVTK_MODULE_ENABLE_VTK_ViewsCore=YES -DVTK_MODULE_ENABLE_VTK_ViewsContext2D=YES -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES -DVTK_GROUP_ENABLE_Qt=YES -DVTK_MODULE_ENABLE_VTK_ViewsQt=YES -DVTK_GROUP_ENABLE_Views=YES -DVTK_MODULE_ENABLE_VTK_RenderingUI=YES -DVTK_MODULE_ENABLE_VTK_RenderingVolume=YES -DVTK_MODULE_ENABLE_VTK_RenderingVolumeOpenGL2=YES -DVTK_QT_VERSION=5 -DVTK_MODULE_ENABLE_VTK_opengl=YES -DVTK_MODULE_ENABLE_VTK_RenderingContextOpenGL2=YES -DVTK_MODULE_ENABLE_VTK_RenderingSceneGraph=YES -DVTK_MODULE_ENABLE_VTK_InteractionWidgets=YES -DVTK_MODULE_ENABLE_VTK_IOPDAL=YES -DVTK_REPORT_OPENGL_ERRORS=OFF
 ```
 
 build and install:
@@ -70,8 +98,8 @@ you opt in:
 | `-DUSE_PCL=ON`  | `qml_pcl`, `DownsamplePointCloud`, `pointcloud`, `polygon_mesh`, `sphere`, `AreaPicking`, `toolbox_qml` |
 | `-DUSE_PDAL=ON` | `pdal_las_vtk`, `las_time_based_filter`, `pdal_intensity`, `height_based_color_map`, `vtk_basic` |
 
-PDAL is no longer packaged on Ubuntu 24.04, and PCL may not be installed either;
-build each from source into `~/usr` and point CMake at it. Enable one or both:
+PDAL must be built and installed into `~/usr` before VTK, as described above.
+PCL may also need to be built from source. Enable one or both:
 
 ```
 cmake -G "Ninja Multi-Config"  -S . -B build -DVTK_DIR="/home/$USER/usr/lib/cmake/vtk-9.3/" \
@@ -146,7 +174,7 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [Multiple Layers](docs/multiple_layers.md)  
 [CaptionActor2D](docs/captionActor2D.md)  
 [Octree  <span style="color:red">*needs update*</span>](docs/octree.md) 
-
+[COPC, LAZ, LOD, PDAL, Potree, VTK octrees, and camera pivot](docs/copc_laz_lod_tutorial.md)\n
 
 ## Viewport
 

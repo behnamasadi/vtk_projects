@@ -13,6 +13,21 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
 
 find_package(Boost COMPONENTS filesystem system REQUIRED)
 
+option(USE_PDAL "Enable PDAL-dependent targets (requires PDAL to be installed before VTK)" OFF)
+
+# VTK's IOPDAL module is configured while VTK itself is built. Therefore PDAL
+# must already be installed when configuring VTK, and it must be found before
+# loading VTK's package configuration here as well.
+if(USE_PDAL)
+  if(NOT PDAL_DIR OR PDAL_DIR STREQUAL "")
+    set(PDAL_DIR "$ENV{HOME}/usr/lib/cmake/PDAL")
+  endif()
+
+  message(STATUS "Using PDAL_DIR: ${PDAL_DIR}")
+  find_package(PDAL 2.10.0 REQUIRED CONFIG)
+  message(STATUS "PDAL version: ${PDAL_VERSION}")
+endif()
+
 message("###################### VTK #####################")
 # Check if VTK_DIR is passed in command line and not empty
 if(NOT VTK_DIR OR VTK_DIR STREQUAL "")
@@ -547,33 +562,26 @@ vtk_module_autoinit(TARGETS QuadricDecimation MODULES ${VTK_LIBRARIES})
 
 
 
-
-option(USE_PDAL "Enable PDAL-dependent targets (PDAL is not packaged on Ubuntu 24.04; build from source and pass -DUSE_PDAL=ON -DPDAL_DIR=...)" OFF)
-
 if(USE_PDAL)
-find_package(PDAL 1.0.0 REQUIRED CONFIG)
+    add_executable(pdal_las_vtk src/pdal_las_vtk.cpp)
+    target_link_libraries(pdal_las_vtk PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
+    vtk_module_autoinit(TARGETS pdal_las_vtk MODULES ${VTK_LIBRARIES})
+
+    add_executable(las_time_based_filter src/las_time_based_filter.cpp)
+    target_link_libraries(las_time_based_filter PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
+    vtk_module_autoinit(TARGETS las_time_based_filter MODULES ${VTK_LIBRARIES})
+
+	add_executable(create_copc_in_memory src/create_copc_in_memory.cpp)
+	target_link_libraries(create_copc_in_memory PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
+	vtk_module_autoinit(TARGETS create_copc_in_memory MODULES ${VTK_LIBRARIES})
+
+
+	add_executable(copc_lod_queries src/copc_lod_queries.cpp)
+	target_link_libraries(copc_lod_queries PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
+	vtk_module_autoinit(TARGETS copc_lod_queries MODULES ${VTK_LIBRARIES})
+
 endif()
 
-if(USE_PDAL AND PDAL_FOUND)
-message("PDAL_FOUND:" ${PDAL_FOUND})
-message("PDAL_VERSION:" ${PDAL_VERSION})
-
-include_directories(${PDAL_INCLUDE_DIRS})
-link_directories(${PDAL_LIBRARY_DIRS})
-add_definitions(${PDAL_DEFINITIONS})
-
-set(CMAKE_CXX_FLAGS "-std=c++11")
-
-
-add_executable(pdal_las_vtk src/pdal_las_vtk.cpp)
-target_link_libraries(pdal_las_vtk PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS pdal_las_vtk MODULES ${VTK_LIBRARIES})
-
-
-add_executable(las_time_based_filter src/las_time_based_filter.cpp)
-target_link_libraries(las_time_based_filter PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
-vtk_module_autoinit(TARGETS las_time_based_filter MODULES ${VTK_LIBRARIES})
-endif()
 
 
 add_executable(main src/main.cpp src/VTKBackend.hpp src/VTKBackend.cpp qml.qrc)
@@ -780,6 +788,12 @@ include_directories(src/SimpleView)
 add_executable(vtk_forum_snippet  src/vtk_forum_snippet.cpp  qml.qrc )
 target_link_libraries(vtk_forum_snippet PRIVATE ${VTK_LIBRARIES} ${PDAL_LIBRARIES}  Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt5::Widgets Qt${QT_VERSION_MAJOR}::Concurrent)
 vtk_module_autoinit(TARGETS vtk_forum_snippet MODULES ${VTK_LIBRARIES})
+
+
+add_executable(camera_lod_COCP src/camera_lod_COCP.cpp)
+target_link_libraries(camera_lod_COCP PRIVATE ${VTK_LIBRARIES})
+vtk_module_autoinit(TARGETS camera_lod_COCP MODULES ${VTK_LIBRARIES})
+
 
 
 # add_executable(QtQuickCone src/QtQuickCone.cpp src/MyVtkItem.hpp qml.qrc src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp src/InteractorStyleSwitch.hpp src/InteractorStyleSwitch.cpp src/ActorManipulationInteractorStyle.hpp src/ActorManipulationInteractorStyle.cpp src/CameraInteractorStyle.cpp src/CameraInteractorStyle.hpp)

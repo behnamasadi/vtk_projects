@@ -12,7 +12,7 @@
 #include <vtkRenderer.h>
 #include <vtkSmartPointer.h>
 #include <vtkTransform.h>
-#include <vtkTransformPolyDataFilter.h>
+#include <vtkTransformFilter.h>
 
 struct CallbackData {
   vtkRenderer *renderer;
@@ -82,13 +82,13 @@ int main(int, char *[]) {
   transformZ->RotateX(90);
 
   // Apply the transformations
-  vtkSmartPointer<vtkTransformPolyDataFilter> transformFilterX =
-      vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkSmartPointer<vtkTransformFilter> transformFilterX =
+      vtkSmartPointer<vtkTransformFilter>::New();
   transformFilterX->SetTransform(transformX);
   transformFilterX->SetInputConnection(arcSource->GetOutputPort());
 
-  vtkSmartPointer<vtkTransformPolyDataFilter> transformFilterZ =
-      vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+  vtkSmartPointer<vtkTransformFilter> transformFilterZ =
+      vtkSmartPointer<vtkTransformFilter>::New();
   transformFilterZ->SetTransform(transformZ);
   transformFilterZ->SetInputConnection(arcSource->GetOutputPort());
 
