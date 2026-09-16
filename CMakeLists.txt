@@ -580,6 +580,17 @@ if(USE_PDAL)
 	target_link_libraries(copc_lod_queries PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
 	vtk_module_autoinit(TARGETS copc_lod_queries MODULES ${VTK_LIBRARIES})
 
+	# Load one bounds box at one level of detail and render it.
+	add_executable(copc_partial_load_vtk src/copc_partial_load_vtk.cpp)
+	target_link_libraries(copc_partial_load_vtk PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
+	vtk_module_autoinit(TARGETS copc_partial_load_vtk MODULES ${VTK_LIBRARIES})
+
+	# Camera-driven streaming: the frustum and the screen-space error decide
+	# the bounds and the resolution on every EndInteractionEvent.
+	add_executable(copc_camera_streaming src/copc_camera_streaming.cpp)
+	target_link_libraries(copc_camera_streaming PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
+	vtk_module_autoinit(TARGETS copc_camera_streaming MODULES ${VTK_LIBRARIES})
+
 endif()
 
 
@@ -793,6 +804,13 @@ vtk_module_autoinit(TARGETS vtk_forum_snippet MODULES ${VTK_LIBRARIES})
 add_executable(camera_lod_COCP src/camera_lod_COCP.cpp)
 target_link_libraries(camera_lod_COCP PRIVATE ${VTK_LIBRARIES})
 vtk_module_autoinit(TARGETS camera_lod_COCP MODULES ${VTK_LIBRARIES})
+
+
+# Reads the COPC octree index straight out of the file with std::ifstream.
+# Deliberately has NO dependencies -- not PDAL, not VTK, not a LAZ decoder --
+# so it builds and runs anywhere, and shows that the LOD levels are data in
+# the file rather than something a library invents.
+add_executable(copc_hierarchy_inspect src/copc_hierarchy_inspect.cpp)
 
 
 

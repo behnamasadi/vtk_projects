@@ -96,7 +96,7 @@ you opt in:
 | Option | Enables targets |
 |--------|-----------------|
 | `-DUSE_PCL=ON`  | `qml_pcl`, `DownsamplePointCloud`, `pointcloud`, `polygon_mesh`, `sphere`, `AreaPicking`, `toolbox_qml` |
-| `-DUSE_PDAL=ON` | `pdal_las_vtk`, `las_time_based_filter`, `pdal_intensity`, `height_based_color_map`, `vtk_basic` |
+| `-DUSE_PDAL=ON` | `pdal_las_vtk`, `las_time_based_filter`, `pdal_intensity`, `height_based_color_map`, `vtk_basic`, `create_copc_in_memory`, `copc_lod_queries`, `copc_partial_load_vtk`, `copc_camera_streaming` |
 
 PDAL must be built and installed into `~/usr` before VTK, as described above.
 PCL may also need to be built from source. Enable one or both:
@@ -118,6 +118,28 @@ or be more specific:
 ```
 cmake --build build --target all --config Release
 ```
+
+## COPC, LAZ, LOD and the camera
+
+[docs/copc_laz_lod_tutorial.md](docs/copc_laz_lod_tutorial.md) walks the whole
+stack: LAS → LAZ → COPC's octree → PDAL's `bounds`/`resolution` → the VTK
+camera's frustum and focal point → a camera-driven streaming loop.
+
+`copc_hierarchy_inspect` is the quickest way in, because it has **no
+dependencies** — it reads the COPC octree index out of a file with plain
+`std::ifstream` and never decompresses a point:
+
+```
+g++ -std=c++17 -O2 -o copc_hierarchy_inspect src/copc_hierarchy_inspect.cpp
+curl -LO https://raw.githubusercontent.com/PDAL/PDAL/master/test/data/copc/lone-star.copc.laz
+./copc_hierarchy_inspect lone-star.copc.laz
+./copc_hierarchy_inspect lone-star.copc.laz --bounds 515370,515380,4918340,4918350 --resolution 0.1
+```
+
+It prints the LOD ladder stored in the file and tells you, before any I/O on
+point data, how many nodes, points and bytes a given bounds + resolution query
+would actually touch.
+
 
 If you prefer `preset` use:
 
