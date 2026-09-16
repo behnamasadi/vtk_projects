@@ -14,6 +14,7 @@ Code in this repo:
 | `copc_partial_load_vtk` | [src/copc_partial_load_vtk.cpp](../src/copc_partial_load_vtk.cpp) | Load one box at one LOD into a `vtkPolyData` and render it — §9 |
 | `copc_camera_streaming` | [src/copc_camera_streaming.cpp](../src/copc_camera_streaming.cpp) | The closed loop: the camera derives both the bounds and the resolution — §10 |
 | *(python)* | [python/copc_hierarchy_inspect.py](../python/copc_hierarchy_inspect.py) | Same inspector in Python, **and it works over HTTP** on a remote file — §8a |
+| *(python)* | [python/copc_partial_load_vtk.py](../python/copc_partial_load_vtk.py) | Partial load + VTK in Python: URLs, predicted-vs-actual cost, offscreen PNGs — §9a |
 
 The PDAL targets need `-DUSE_PDAL=ON`; PDAL must be installed *before* VTK is
 configured (see [README](../README.md)). `camera_lod_COCP` is pure VTK.
@@ -949,6 +950,113 @@ but no cells renders as an empty window.
 `--ladder` prints the point count, the share of the file, the resulting RAM and
 the wall time for five resolutions over identical bounds — the same table as
 §8, but with the points actually in memory this time.
+
+---
+
+## 9a. The partial load in Python, with VTK
+
+**`python/copc_partial_load_vtk.py`** — the Python twin of §9, and the easiest
+way to see partial loading actually happen.
+
+```
+conda env create -f python/environment.yml && conda activate copc
+# or: conda install -c conda-forge laspy lazrs numpy vtk
+```
+
+It differs from the C++ version in three useful ways:
+
+* **it works on a URL**, so you can render a window of a cloud on S3;
+* it **predicts the query's cost from the index first** (by importing
+  `copc_hierarchy_inspect.py`) and then reports predicted vs. actual;
+* it renders **offscreen to a PNG**, so it is usable over SSH and in CI.
+
+`laspy.CopcReader` performs the query by default; `--backend pdal` runs the same
+thing through PDAL for parity with the C++ examples.
+
+### Seeing the LOD
+
+Same 500 × 500 m box out of Autzen (3.4 × 4.6 km, 10.6 M points, 77 MB on S3).
+Only `--resolution` differs:
+
+```
+python python/copc_partial_load_vtk.py \
+    https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz \
+    --bounds 636000,636500,850000,850500 --resolution 8 \
+    --offscreen --screenshot coarse.png
+```
+
+| `--resolution 8` — 49,783 points, 0.47 % of the file, 4.00 % of the bytes | `--resolution 1` — 263,353 points, 2.47 % of the file, 8.50 % of the bytes |
+|---|---|
+| ![coarse](images/copc_lod_r8.png) | ![fine](images/copc_lod_r1.png) |
+
+Identical bounds, identical code, one option changed. The orange wireframe is
+the query box; the grey one is the full dataset extent, which mostly runs off
+screen because the query is 1.57 % of it.
+
+### Predicted vs. actual
+
+The run prints both, which is where the octree stops being abstract:
+
+```
+=== QUERY ===================================================
+bounds     : ([636000.000,636500.000],[850000.000,850500.000])
+             500.000 x 500.000 units (1.57 % of the extent)
+resolution : 2.0
+
+Predicted from the index:
+  nodes to read    : 22 of 278   (256 culled by bounds, 0 by depth)
+  deepest level    : 5 (spacing 1.1366)
+  bytes to read    : 6,897,746 of 81,123,042   (8.50 %)
+  points in those nodes: 812,085  (upper bound -- the reader then crops)
+
+Actual (laspy):
+  points loaded    : 263,353 of 10,653,336   (2.47 %)
+  coordinate array : 6.03 MB
+  load time        : 2.318 s
+  kept / read      : 32.4 % of the points that had to be decompressed
+
+-> 263,353 points are in memory. The other 10,389,983 were never
+   allocated, and never downloaded.
+```
+
+**256 of 278 nodes were eliminated before any I/O**, by arithmetic on their
+keys. Of the 22 that survived, ~8.5 % of the file's bytes were fetched over
+HTTP, and a third of the points inside them were kept. That "kept / read" ratio
+is the practical number to watch: it is the price of nodes being the unit of
+I/O, and it improves as your query box approaches the node size.
+
+### numpy → VTK
+
+The one piece of real glue, and the same trap as in C++ — **points with no
+vertex cells render an empty window**:
+
+```python
+points = vtk.vtkPoints()
+points.SetData(numpy_to_vtk(np.ascontiguousarray(xyz, dtype=np.float64), deep=True))
+polydata.SetPoints(points)
+
+# a vtkCellArray of verts wants [1, i0, 1, i1, 1, i2, ...]
+connectivity = np.empty((count, 2), dtype=np.int64)
+connectivity[:, 0] = 1
+connectivity[:, 1] = np.arange(count, dtype=np.int64)
+
+cells = vtk.vtkCellArray()
+cells.SetCells(count, numpy_to_vtkIdTypeArray(connectivity.ravel(), deep=True))
+polydata.SetVerts(cells)
+```
+
+Building the connectivity with numpy rather than a Python loop matters: at a
+few hundred thousand points, `InsertNextCell` in a Python `for` loop is the
+slowest thing in the program by a wide margin.
+
+Two VTK-Python differences worth knowing, both hit while writing this:
+
+* `vtkRenderer.AddActor2D` is **not exposed** in the Python bindings even though
+  `vtkViewport::AddActor2D` exists in C++. Use `AddViewProp`, which takes 2D and
+  3D props alike.
+* `vtkScalarBarActor` scales its title to the bar's bounding box, so a default
+  scalar bar renders a "Z" the size of the window. Call
+  `UnconstrainedFontSizeOn()` and set the title/label font sizes explicitly.
 
 ---
 

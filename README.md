@@ -138,7 +138,21 @@ curl -LO https://raw.githubusercontent.com/PDAL/PDAL/master/test/data/copc/lone-
 
 It prints the LOD ladder stored in the file and tells you, before any I/O on
 point data, how many nodes, points and bytes a given bounds + resolution query
-would actually touch.
+would actually touch. Point it at a URL and it inspects a remote file with
+HTTP range requests — the full octree of a 10.6 M point cloud costs about 9 KB
+of an 81 MB file.
+
+`python/copc_partial_load_vtk.py` then loads one box at one level of detail and
+renders it, locally or straight off S3:
+
+```
+conda env create -f python/environment.yml && conda activate copc
+
+python python/copc_partial_load_vtk.py \
+    https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz \
+    --bounds 636000,636500,850000,850500 --resolution 2 \
+    --offscreen --screenshot autzen.png
+```
 
 
 If you prefer `preset` use:
