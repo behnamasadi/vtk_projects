@@ -154,6 +154,16 @@ python python/copc_partial_load_vtk.py \
     --offscreen --screenshot autzen.png
 ```
 
+`python/copc_camera_streaming.py` closes the loop: the camera frustum picks the
+bounds, the screen-space error picks the resolution, and the point budget is
+enforced against the octree index so every reload costs exactly one query.
+`--demo N` flies a scripted zoom headlessly and prints each decision.
+
+```
+python python/copc_camera_streaming.py lone-star.copc.laz --demo 5 \
+    --screenshot-prefix step
+```
+
 
 If you prefer `preset` use:
 

@@ -15,6 +15,7 @@ Code in this repo:
 | `copc_camera_streaming` | [src/copc_camera_streaming.cpp](../src/copc_camera_streaming.cpp) | The closed loop: the camera derives both the bounds and the resolution — §10 |
 | *(python)* | [python/copc_hierarchy_inspect.py](../python/copc_hierarchy_inspect.py) | Same inspector in Python, **and it works over HTTP** on a remote file — §8a |
 | *(python)* | [python/copc_partial_load_vtk.py](../python/copc_partial_load_vtk.py) | Partial load + VTK in Python: URLs, predicted-vs-actual cost, offscreen PNGs — §9a |
+| *(python)* | [python/copc_camera_streaming.py](../python/copc_camera_streaming.py) | The streaming loop in Python, with the budget enforced from the index — §10a |
 
 The PDAL targets need `-DUSE_PDAL=ON`; PDAL must be installed *before* VTK is
 configured (see [README](../README.md)). `camera_lod_COCP` is pure VTK.
@@ -1168,6 +1169,123 @@ Honest limits, so the gap to a production viewer is visible:
   everything. §7 sketches the version that does not.
 * One `vtkPolyData` for everything, so VTK's own per-actor frustum culling has
   nothing to cull. One actor per node would fix that.
+
+---
+
+## 10a. The streaming loop in Python — and a smarter budget
+
+**`python/copc_camera_streaming.py`** — the Python twin of §10, with one
+genuine improvement over the C++ version that is worth understanding.
+
+```
+# interactive, local or remote
+python python/copc_camera_streaming.py \
+    https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz \
+    --budget 400000 --error 2.5
+
+# headless: fly a scripted zoom, print every decision, write a PNG per step
+python python/copc_camera_streaming.py lone-star.copc.laz \
+    --demo 5 --screenshot-prefix step
+```
+
+`--demo` is not a toy: it is how this loop gets tested without a human holding
+the mouse. Each step dollies in 1.8× and runs a full decision cycle.
+
+| step 0 — whole extent, level 1, 131,060 points | step 4 — 4.87 % of the extent, level 3, 57,977 points |
+|---|---|
+| ![overview](images/copc_stream_step0.png) | ![zoomed](images/copc_stream_step4.png) |
+
+### The decision, printed
+
+```
+----- step 4 ------------------------------------------------
+CAMERA
+  distance to focal point : 1064.416
+  focal length            : 1492.820 px
+
+DERIVED QUERY
+  visible box   : ([636751.250,637830.250],[850850.250,851569.562])
+                  1079.0 x 719.3 units (4.87 % of extent)
+  resolution    : 1.42605  (= 2.0 px * 1064.416 / 1492.820)
+  index says    : level 5 would read 8,210,626 bytes
+  budget picks  : level 3 -> 9 of 278 nodes, 2,974,047 bytes, <= 271,636 points
+  (coarsened 2 level(s) to stay under 400,000; resolution now 4.54640)
+
+RESULT
+  points loaded : 57,977  (0.54 % of the file)
+  load time     : 2.237 s
+  queries made  : 1  (the level was chosen from the index)
+```
+
+Across the five steps the visible box goes 100 % → 4.87 % of the extent and the
+derived resolution falls 14.97 → 1.43, while the loaded point count stays
+between 50 k and 200 k. **That flatness is the whole payoff.** Cost tracks the
+screen, not the file: the same loop behaves identically on an 80 MB file and an
+80 GB one.
+
+### Why the budget is enforced from the index
+
+This is the one place the Python version is genuinely better than the C++ one,
+and it is worth copying back.
+
+The C++ version enforces its budget the obvious way: query, notice the result is
+too big, double the resolution, **query again**. That costs a full round trip per
+guess. Worse, doubling the resolution does not always change the depth — in an
+earlier run of this demo one retry came back with the identical 472,796 points,
+a network query spent to learn nothing, and the next doubling then overshot to
+58 k.
+
+The Python version holds the octree index in memory (it imports
+`copc_hierarchy_inspect.py`), so it can **cost every candidate level against
+this box in pure arithmetic** and pick the deepest one that fits, before any
+point data moves:
+
+```python
+wanted_level = cost_query(nodes, info, box, resolution).max_level
+
+for level in range(wanted_level, -1, -1):
+    candidate = cost_query(nodes, info, box, info.spacing_at(level))
+
+    if candidate.points <= self.point_budget:
+        chosen_level, cost = level, candidate
+        break
+
+# exactly ONE query, at a level we already know fits
+loaded = load_laspy(source, box, info.spacing_at(chosen_level), zmin, zmax)
+```
+
+Always one query, never over budget. This works because `cost_query` counts the
+points inside the *nodes* that would be read, which is an **upper bound** on
+what comes back after cropping (§8a) — so a level that fits by that measure is
+guaranteed to fit for real.
+
+The cost of that safety is visible in the numbers above: it picked level 3 with
+a bound of 271,636 against a budget of 400,000, and the query actually returned
+57,977. **It is conservative, and sometimes a whole level more conservative than
+it needed to be.** Scaling the bound by how much of each node the box actually
+overlaps would tighten it; erring toward "too few points" is the right default
+in the meantime, because the alternative is a dropped frame.
+
+**This is the real argument for keeping the hierarchy client-side.** A one-shot
+`readers.copc` call is a black box: you ask, you wait, you find out. A viewer
+that has parsed the index can answer "what will this cost?" for any box at any
+level, instantly and offline, and never issue a query it will regret. Everything
+in §7 — per-node loading, caching, prefetching, frame budgeting — depends on
+having it.
+
+### Still missing
+
+Same honest gaps as the C++ version, minus the retry problem:
+
+* The load is **synchronous**, on `EndInteractionEvent`. The drag stays smooth
+  because nothing blocks during it, but a large query freezes the UI for its
+  duration. Over HTTP that is ~2 s per step in the runs above.
+* It reloads the **whole visible box** each time rather than diffing against
+  what it already holds. No node cache, so panning re-fetches everything.
+* One `vtkPolyData` for everything, so VTK's own per-actor culling has nothing
+  to work with.
+
+§7 sketches the version that fixes all three.
 
 ---
 
