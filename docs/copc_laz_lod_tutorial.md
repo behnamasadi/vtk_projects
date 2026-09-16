@@ -11,6 +11,7 @@ Code in this repo:
 | `copc_lod_queries` | [src/copc_lod_queries.cpp](../src/copc_lod_queries.cpp) | Same bounds, five different `resolution` values — the LOD pyramid made numeric |
 | `camera_lod_COCP` | [src/camera_lod_COCP.cpp](../src/camera_lod_COCP.cpp) | The VTK side: camera, focal point, frustum planes, projected pixel size → LOD level |
 | `copc_hierarchy_inspect` | [src/copc_hierarchy_inspect.cpp](../src/copc_hierarchy_inspect.cpp) | **No dependencies.** Reads the octree index out of the file and costs a query before running it — §8 |
+| *(header)* | [src/copc_index.hpp](../src/copc_index.hpp) | The COPC index parser and query-costing arithmetic, shared by the inspector and the streaming viewer |
 | `copc_partial_load_vtk` | [src/copc_partial_load_vtk.cpp](../src/copc_partial_load_vtk.cpp) | Load one box at one LOD into a `vtkPolyData` and render it — §9 |
 | `copc_camera_streaming` | [src/copc_camera_streaming.cpp](../src/copc_camera_streaming.cpp) | The closed loop: the camera derives both the bounds and the resolution — §10 |
 | *(python)* | [python/copc_hierarchy_inspect.py](../python/copc_hierarchy_inspect.py) | Same inspector in Python, **and it works over HTTP** on a remote file — §8a |
@@ -491,7 +492,8 @@ the same frame.
 Worth knowing so you are not surprised:
 
 * There is no COPC in `camera_lod_COCP` — it prints an LOD number, it does not
-  fetch anything. (The filename also spells it `COCP`.)
+  fetch anything. (The filename also spells it `COCP`.) `copc_camera_streaming`
+  is the one that actually reads a file.
 * `ObjectWorldSize` is a fixed 10.0 for the whole scene; a real viewer uses each
   *node's* bbox size and its own distance.
 * The green frustum is built once at startup and never updated — `FrustumActor`
@@ -1125,10 +1127,11 @@ in pixels — a unit a human can actually reason about.
 
 Three things separate this from a toy:
 
-* **Budget.** If the derived resolution returns more than `--budget` points, it
-  doubles the resolution and retries. Each doubling is exactly one octree level
-  shallower, so this converges in a couple of steps. Frame rate is the real
-  constraint, not fidelity.
+* **Budget, enforced from the index.** The viewer parses the COPC octree itself
+  (`src/copc_index.hpp`) and costs every candidate level against the visible box
+  *before* querying, picking the deepest that fits `--budget`. Every camera move
+  therefore costs **exactly one** PDAL query. See §10a for why this replaced a
+  query-and-retry loop, and what it costs in conservatism.
 * **Debounce.** The reload runs on `EndInteractionEvent` — mouse release — not on
   `ModifiedEvent`, which fires continuously during a drag. It also skips the
   query entirely if the box moved less than 20 % of its own size and the
@@ -1225,20 +1228,26 @@ screen, not the file: the same loop behaves identically on an 80 MB file and an
 
 ### Why the budget is enforced from the index
 
-This is the one place the Python version is genuinely better than the C++ one,
-and it is worth copying back.
+Both versions do this now, and the story of why is the useful part.
 
-The C++ version enforces its budget the obvious way: query, notice the result is
-too big, double the resolution, **query again**. That costs a full round trip per
-guess. Worse, doubling the resolution does not always change the depth — in an
-earlier run of this demo one retry came back with the identical 472,796 points,
-a network query spent to learn nothing, and the next doubling then overshot to
+The obvious way to enforce a point budget is: query, notice the result is too
+big, double the resolution, **query again**. That is what the C++ viewer did
+first, and what the `--demo` run above was written to test. It costs a full
+round trip per guess — and worse, doubling the resolution does not always change
+the depth. In one run a retry came back with the **identical 472,796 points**: a
+network query spent to learn nothing, after which the next doubling overshot to
 58 k.
 
-The Python version holds the octree index in memory (it imports
-`copc_hierarchy_inspect.py`), so it can **cost every candidate level against
-this box in pure arithmetic** and pick the deepest one that fits, before any
-point data moves:
+The fix is to hold the octree index in memory and **cost every candidate level
+against this box in pure arithmetic**, picking the deepest that fits before any
+point data moves. Python gets the index by importing
+`copc_hierarchy_inspect.py`; C++ gets it from `src/copc_index.hpp`, the
+dependency-free parser shared with `copc_hierarchy_inspect` (`copc::openIndex`,
+`copc::costQuery`, `copc::chooseLevelForBudget`). The two implementations agree
+exactly — same chosen level, node count, byte count and bound on the same file
+and box.
+
+In Python:
 
 ```python
 wanted_level = cost_query(nodes, info, box, resolution).max_level
@@ -1254,6 +1263,21 @@ for level in range(wanted_level, -1, -1):
 loaded = load_laspy(source, box, info.spacing_at(chosen_level), zmin, zmax)
 ```
 
+and the same thing in C++, where the loop lives in the shared header:
+
+```cpp
+const copc::BudgetChoice choice = copc::chooseLevelForBudget(
+    Octree.nodes, Octree.info,
+    box.xmin, box.xmax, box.ymin, box.ymax,
+    resolution, PointBudget);
+
+if (choice.chosenLevel < choice.wantedLevel)
+    resolution = choice.resolution;
+
+// exactly ONE query, at a level we already know fits
+polyData = query(box, resolution, points, seconds);
+```
+
 Always one query, never over budget. This works because `cost_query` counts the
 points inside the *nodes* that would be read, which is an **upper bound** on
 what comes back after cropping (§8a) — so a level that fits by that measure is
@@ -1267,15 +1291,17 @@ overlaps would tighten it; erring toward "too few points" is the right default
 in the meantime, because the alternative is a dropped frame.
 
 **This is the real argument for keeping the hierarchy client-side.** A one-shot
-`readers.copc` call is a black box: you ask, you wait, you find out. A viewer
-that has parsed the index can answer "what will this cost?" for any box at any
-level, instantly and offline, and never issue a query it will regret. Everything
-in §7 — per-node loading, caching, prefetching, frame budgeting — depends on
-having it.
+`readers.copc` call is a black box: you ask, you wait, you find out. PDAL walks
+the hierarchy on every `execute()` but does not hand it back, so the C++ viewer
+parses it separately — 300 lines of `std::ifstream`, no dependencies. A viewer
+that has the index can answer "what will this cost?" for any box at any level,
+instantly and offline, and never issue a query it will regret. Everything in §7
+— per-node loading, caching, prefetching, frame budgeting — depends on having
+it.
 
 ### Still missing
 
-Same honest gaps as the C++ version, minus the retry problem:
+Same honest gaps in both versions:
 
 * The load is **synchronous**, on `EndInteractionEvent`. The drag stays smooth
   because nothing blocks during it, but a large query freezes the UI for its

@@ -23,6 +23,10 @@
 //      * which nodes a given bounds + resolution query would touch
 //      * how many bytes that query would read vs. the size of the whole file
 //
+// The parsing lives in src/copc_index.hpp so that copc_camera_streaming can
+// use the same index to pick a level of detail before it queries. This file is
+// the reporting front end for it.
+//
 // Build (no CMake needed):
 //      g++ -std=c++17 -O2 -o copc_hierarchy_inspect src/copc_hierarchy_inspect.cpp
 //
@@ -34,302 +38,30 @@
 // Assumes a little-endian host (x86-64, arm64). LAS is little-endian on disk.
 // ============================================================================
 
+#include "copc_index.hpp"
+
 #include <algorithm>
-#include <cmath>
-#include <cstdint>
-#include <cstring>
-#include <fstream>
+#include <cstdio>
+#include <cstdlib>
 #include <iomanip>
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
 
-// ----------------------------------------------------------------------------
-// Little helper: read a POD value from a byte buffer at a given offset.
-// ----------------------------------------------------------------------------
-template <typename T>
-static T readAt(const std::vector<char> &buf, std::size_t offset)
-{
-    T value{};
-    std::memcpy(&value, buf.data() + offset, sizeof(T));
-    return value;
-}
+using copc::Bounds3;
+using copc::CopcInfo;
+using copc::Index;
+using copc::LasHeader;
+using copc::Node;
+using copc::QueryCost;
+using copc::VoxelKey;
+using copc::boundsOf;
 
-// ============================================================================
-// PART 1  --  The LAS public header block
-//
-// 375 bytes, fixed layout, LAS 1.4. Every offset below is straight out of the
-// ASPRS spec. This is all you need to know how big the cloud is and where it
-// lives in space -- WITHOUT reading any points.
-// ============================================================================
-
-struct LasHeader
-{
-    uint8_t versionMajor = 0;
-    uint8_t versionMinor = 0;
-    uint16_t headerSize = 0;
-    uint32_t offsetToPointData = 0;
-    uint32_t numberOfVlrs = 0;
-    uint8_t pointDataRecordFormat = 0;
-    uint16_t pointDataRecordLength = 0;
-    uint64_t numberOfPointRecords = 0;
-
-    double scaleX = 0, scaleY = 0, scaleZ = 0;
-    double offsetX = 0, offsetY = 0, offsetZ = 0;
-    double minX = 0, maxX = 0;
-    double minY = 0, maxY = 0;
-    double minZ = 0, maxZ = 0;
-};
-
-static LasHeader parseLasHeader(const std::vector<char> &buf)
-{
-    if (buf.size() < 375)
-        throw std::runtime_error("file shorter than a LAS 1.4 header");
-
-    if (std::strncmp(buf.data(), "LASF", 4) != 0)
-        throw std::runtime_error("not a LAS/LAZ file (missing LASF signature)");
-
-    LasHeader h;
-
-    h.versionMajor = readAt<uint8_t>(buf, 24);
-    h.versionMinor = readAt<uint8_t>(buf, 25);
-    h.headerSize = readAt<uint16_t>(buf, 94);
-    h.offsetToPointData = readAt<uint32_t>(buf, 96);
-    h.numberOfVlrs = readAt<uint32_t>(buf, 100);
-
-    // The high bit of the point format flags LAZ compression.
-    h.pointDataRecordFormat = readAt<uint8_t>(buf, 104);
-    h.pointDataRecordLength = readAt<uint16_t>(buf, 105);
-
-    h.scaleX = readAt<double>(buf, 131);
-    h.scaleY = readAt<double>(buf, 139);
-    h.scaleZ = readAt<double>(buf, 147);
-    h.offsetX = readAt<double>(buf, 155);
-    h.offsetY = readAt<double>(buf, 163);
-    h.offsetZ = readAt<double>(buf, 171);
-
-    h.maxX = readAt<double>(buf, 179);
-    h.minX = readAt<double>(buf, 187);
-    h.maxY = readAt<double>(buf, 195);
-    h.minY = readAt<double>(buf, 203);
-    h.maxZ = readAt<double>(buf, 211);
-    h.minZ = readAt<double>(buf, 219);
-
-    // LAS 1.4 moved the authoritative count to a 64-bit field at 247. Older
-    // writers only fill the legacy 32-bit field at 107.
-    h.numberOfPointRecords = readAt<uint64_t>(buf, 247);
-
-    if (h.numberOfPointRecords == 0)
-        h.numberOfPointRecords = readAt<uint32_t>(buf, 107);
-
-    return h;
-}
-
-// ============================================================================
-// PART 2  --  The "copc info" VLR
-//
-// The COPC spec pins this down completely: it is ALWAYS the first VLR, so its
-// 54-byte VLR header starts at 375 and its 160 bytes of payload start at 429.
-// No searching required.
-//
-//      offset 429   double center_x
-//      offset 437   double center_y
-//      offset 445   double center_z
-//      offset 453   double halfsize        <-- root cube half edge length
-//      offset 461   double spacing         <-- ROOT NODE POINT SPACING
-//      offset 469   uint64 root_hier_offset
-//      offset 477   uint64 root_hier_size
-//      offset 485   double gpstime_minimum
-//      offset 493   double gpstime_maximum
-//      offset 501   uint64 reserved[11]
-//
-// `spacing` is the single number that defines the whole LOD ladder:
-//
-//      spacing(level d) = spacing / 2^d
-//
-// ============================================================================
-
-struct CopcInfo
-{
-    double centerX = 0, centerY = 0, centerZ = 0;
-    double halfsize = 0;
-    double spacing = 0;
-    uint64_t rootHierOffset = 0;
-    uint64_t rootHierSize = 0;
-    double gpsTimeMin = 0, gpsTimeMax = 0;
-};
-
-static CopcInfo parseCopcInfo(const std::vector<char> &buf)
-{
-    if (buf.size() < 589)
-        throw std::runtime_error("file too short to contain a copc info VLR");
-
-    // Sanity-check the VLR header sitting at 375 before trusting the payload.
-    char userId[17] = {0};
-    std::memcpy(userId, buf.data() + 375 + 2, 16);
-
-    const uint16_t recordId = readAt<uint16_t>(buf, 375 + 2 + 16);
-
-    if (std::strncmp(userId, "copc", 4) != 0 || recordId != 1)
-    {
-        throw std::runtime_error(
-            "no copc info VLR at offset 375 -- this is a plain LAS/LAZ file, "
-            "not a COPC file (so it has no octree and no LOD to query)");
-    }
-
-    CopcInfo info;
-
-    info.centerX = readAt<double>(buf, 429);
-    info.centerY = readAt<double>(buf, 437);
-    info.centerZ = readAt<double>(buf, 445);
-    info.halfsize = readAt<double>(buf, 453);
-    info.spacing = readAt<double>(buf, 461);
-    info.rootHierOffset = readAt<uint64_t>(buf, 469);
-    info.rootHierSize = readAt<uint64_t>(buf, 477);
-    info.gpsTimeMin = readAt<double>(buf, 485);
-    info.gpsTimeMax = readAt<double>(buf, 493);
-
-    return info;
-}
-
-// ============================================================================
-// PART 3  --  The octree itself
-//
-// A node is named by a VoxelKey (level, x, y, z). Its bounding box needs NO
-// lookup -- it is pure arithmetic from the root cube:
-//
-//      nodeSize = (halfsize * 2) / 2^level
-//      min      = rootMin + key.{x,y,z} * nodeSize
-//
-// This is why a client can cull a whole subtree without reading anything.
-// ============================================================================
-
-struct VoxelKey
-{
-    int32_t level = 0, x = 0, y = 0, z = 0;
-
-    bool operator<(const VoxelKey &o) const
-    {
-        if (level != o.level) return level < o.level;
-        if (x != o.x) return x < o.x;
-        if (y != o.y) return y < o.y;
-        return z < o.z;
-    }
-
-    std::string str() const
-    {
-        return std::to_string(level) + "-" + std::to_string(x) + "-" +
-               std::to_string(y) + "-" + std::to_string(z);
-    }
-};
-
-struct Bounds3
-{
-    double minx, miny, minz, maxx, maxy, maxz;
-};
-
-static Bounds3 boundsOf(const VoxelKey &k, const CopcInfo &info)
-{
-    const double rootMinX = info.centerX - info.halfsize;
-    const double rootMinY = info.centerY - info.halfsize;
-    const double rootMinZ = info.centerZ - info.halfsize;
-
-    const double nodeSize =
-        (info.halfsize * 2.0) / static_cast<double>(1ULL << k.level);
-
-    Bounds3 b;
-
-    b.minx = rootMinX + k.x * nodeSize;
-    b.miny = rootMinY + k.y * nodeSize;
-    b.minz = rootMinZ + k.z * nodeSize;
-    b.maxx = b.minx + nodeSize;
-    b.maxy = b.miny + nodeSize;
-    b.maxz = b.minz + nodeSize;
-
-    return b;
-}
-
-// The LOD ladder, in one line.
+// Kept as a free function because the report prints it in a dozen places.
 static double spacingAtLevel(const CopcInfo &info, int level)
 {
-    return info.spacing / static_cast<double>(1ULL << level);
-}
-
-// ----------------------------------------------------------------------------
-// A hierarchy entry is 32 bytes:
-//
-//      int32  level, x, y, z     the VoxelKey
-//      uint64 offset             absolute byte offset of this node's LAZ chunk
-//      int32  byteSize           compressed size of that chunk
-//      int32  pointCount         >0  a real node with this many points
-//                                 0  the node exists but is empty
-//                                -1  this key is a POINTER to a child
-//                                    hierarchy page living at offset/byteSize
-//
-// That -1 case is what makes the INDEX itself lazy: a client that only ever
-// looks at one corner of the cloud never downloads the index for the rest.
-// ----------------------------------------------------------------------------
-
-struct Node
-{
-    VoxelKey key;
-    uint64_t offset = 0;
-    int32_t byteSize = 0;
-    int32_t pointCount = 0;
-};
-
-// Read one hierarchy page from the file and append its real nodes to `nodes`.
-// Child pages are followed recursively -- which is where the extra reads that
-// a real streaming client would defer show up.
-static void readHierarchyPage(std::ifstream &file,
-                              uint64_t pageOffset,
-                              uint64_t pageSize,
-                              std::vector<Node> &nodes,
-                              std::size_t &pagesRead)
-{
-    if (pageSize == 0)
-        return;
-
-    ++pagesRead;
-
-    std::vector<char> page(static_cast<std::size_t>(pageSize));
-
-    file.seekg(static_cast<std::streamoff>(pageOffset));
-    file.read(page.data(), static_cast<std::streamsize>(pageSize));
-
-    if (!file)
-        throw std::runtime_error("failed to read hierarchy page at offset " +
-                                 std::to_string(pageOffset));
-
-    const std::size_t entryCount = page.size() / 32;
-
-    // Collect child pages first, then recurse, so we do not interleave seeks
-    // with the parsing of the page we are currently holding.
-    std::vector<std::pair<uint64_t, uint64_t>> childPages;
-
-    for (std::size_t i = 0; i < entryCount; ++i)
-    {
-        const std::size_t base = i * 32;
-
-        Node n;
-        n.key.level = readAt<int32_t>(page, base + 0);
-        n.key.x = readAt<int32_t>(page, base + 4);
-        n.key.y = readAt<int32_t>(page, base + 8);
-        n.key.z = readAt<int32_t>(page, base + 12);
-        n.offset = readAt<uint64_t>(page, base + 16);
-        n.byteSize = readAt<int32_t>(page, base + 24);
-        n.pointCount = readAt<int32_t>(page, base + 28);
-
-        if (n.pointCount == -1)
-            childPages.emplace_back(n.offset,
-                                    static_cast<uint64_t>(n.byteSize));
-        else if (n.pointCount > 0)
-            nodes.push_back(n);
-    }
-
-    for (const auto &[off, size] : childPages)
-        readHierarchyPage(file, off, size, nodes, pagesRead);
+    return info.spacingAtLevel(level);
 }
 
 // ============================================================================
@@ -344,11 +76,10 @@ static void printHeader(const LasHeader &h, uint64_t fileSize)
     std::cout << "LAS version          : " << int(h.versionMajor) << "."
               << int(h.versionMinor) << "\n";
 
-    // Bit 7 of the point format byte is the LASzip compression flag.
-    const bool compressed = (h.pointDataRecordFormat & 0x80) != 0;
-
-    std::cout << "Point record format  : " << int(h.pointDataRecordFormat & 0x3F)
-              << (compressed ? "  (LAZ compressed)" : "  (uncompressed LAS)")
+    // parseLasHeader has already split the LASzip compression bit out of the
+    // point format byte.
+    std::cout << "Point record format  : " << int(h.pointDataRecordFormat)
+              << (h.compressed ? "  (LAZ compressed)" : "  (uncompressed LAS)")
               << "\n";
 
     std::cout << "Point record length  : " << h.pointDataRecordLength << " bytes\n";
@@ -649,38 +380,22 @@ int main(int argc, char *argv[])
 
     try
     {
-        std::ifstream file(path, std::ios::binary);
+        // Everything the octree needs, in one call: the 589-byte prefix that
+        // holds the LAS header and the copc info VLR, then the hierarchy
+        // pages it points at. A network client would do the first part as a
+        // single range GET.
+        const Index index = copc::openIndex(path);
 
-        if (!file)
-            throw std::runtime_error("cannot open " + path);
-
-        file.seekg(0, std::ios::end);
-        const uint64_t fileSize = static_cast<uint64_t>(file.tellg());
-        file.seekg(0);
-
-        // Read only the fixed prefix that holds the header and the copc info
-        // VLR. A real network client would do this as a single 589-byte range
-        // request.
-        std::vector<char> prefix(589);
-        file.read(prefix.data(), 589);
-
-        if (!file)
-            throw std::runtime_error("file too short to be a COPC file");
-
-        const LasHeader header = parseLasHeader(prefix);
-        const CopcInfo info = parseCopcInfo(prefix);
+        const LasHeader &header = index.header;
+        const CopcInfo &info = index.info;
+        const std::vector<Node> &nodes = index.nodes;
+        const uint64_t fileSize = index.fileSize;
 
         printHeader(header, fileSize);
         printCopcInfo(info);
 
-        // Now the index. One seek, one read (plus any child pages).
-        std::vector<Node> nodes;
-        std::size_t pagesRead = 0;
-
-        readHierarchyPage(file, info.rootHierOffset, info.rootHierSize, nodes,
-                          pagesRead);
-
-        printLevelStatistics(nodes, info, header.numberOfPointRecords, pagesRead);
+        printLevelStatistics(nodes, info, header.numberOfPointRecords,
+                             index.pagesRead);
 
         if (showTree)
             printTree(nodes, info);

@@ -587,7 +587,7 @@ if(USE_PDAL)
 
 	# Camera-driven streaming: the frustum and the screen-space error decide
 	# the bounds and the resolution on every EndInteractionEvent.
-	add_executable(copc_camera_streaming src/copc_camera_streaming.cpp)
+	add_executable(copc_camera_streaming src/copc_camera_streaming.cpp src/copc_index.hpp)
 	target_link_libraries(copc_camera_streaming PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
 	vtk_module_autoinit(TARGETS copc_camera_streaming MODULES ${VTK_LIBRARIES})
 
@@ -810,7 +810,7 @@ vtk_module_autoinit(TARGETS camera_lod_COCP MODULES ${VTK_LIBRARIES})
 # Deliberately has NO dependencies -- not PDAL, not VTK, not a LAZ decoder --
 # so it builds and runs anywhere, and shows that the LOD levels are data in
 # the file rather than something a library invents.
-add_executable(copc_hierarchy_inspect src/copc_hierarchy_inspect.cpp)
+add_executable(copc_hierarchy_inspect src/copc_hierarchy_inspect.cpp src/copc_index.hpp)
 
 
 

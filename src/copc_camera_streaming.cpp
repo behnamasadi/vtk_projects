@@ -32,6 +32,15 @@
 //
 // Requires -DUSE_PDAL=ON.
 //
+// NOTE ON THE BUDGET: the level of detail is chosen from the COPC OCTREE
+// INDEX, which this program parses itself with copc_index.hpp, before any PDAL
+// query is issued. The naive alternative -- query, notice the result is too
+// big, double the resolution, query again -- costs a full read per guess and
+// wastes one entirely whenever doubling the resolution does not happen to
+// change the depth. Because we hold the index, costing every candidate level
+// against the visible box is pure arithmetic, so every camera move results in
+// EXACTLY ONE query, at a level already known to fit. See SelectLevel below.
+//
 // NOTE ON THREADING: the load below is SYNCHRONOUS, and it runs on
 // EndInteractionEvent -- that is, when you let go of the mouse, not while you
 // are dragging. That keeps the example readable and keeps the drag itself at
@@ -39,6 +48,8 @@
 // worker thread and appends nodes as they arrive; see
 // docs/copc_laz_lod_tutorial.md section 7.
 // ============================================================================
+
+#include "copc_index.hpp"
 
 #include <pdal/Options.hpp>
 #include <pdal/PointTable.hpp>
@@ -125,6 +136,10 @@ public:
     double MinZ = 0.0, MaxZ = 0.0;
     uint64_t TotalPoints = 0;
 
+    // The COPC octree index, parsed once at startup. Holding it is what lets
+    // us answer "what will this cost?" offline, for any box at any level.
+    copc::Index Octree;
+
     // Policy knobs.
     //
     // TargetPixelError: how far apart, in PIXELS, we are willing to let
@@ -133,8 +148,8 @@ public:
     // is derived from the camera.
     double TargetPixelError = 2.0;
 
-    // PointBudget: the hard ceiling. If the derived resolution would return
-    // more than this, we coarsen until it fits. Frame rate is what we are
+    // PointBudget: the hard ceiling. The level is coarsened until the index
+    // says it fits -- before querying, not after. Frame rate is what we are
     // really defending.
     std::size_t PointBudget = 500000;
 
@@ -381,31 +396,51 @@ public:
                   << "  (= " << TargetPixelError << " px * " << std::setprecision(3)
                   << distance << " / " << focalLengthPixels << ")\n";
 
+        // ------------------------------------------------------------------
+        // BUDGET, enforced from the index -- before any point data moves.
+        //
+        // chooseLevelForBudget costs every candidate level against this box
+        // using the hierarchy we already hold, and returns the deepest one
+        // that fits. It is arithmetic over a few hundred structs: no I/O, no
+        // decompression, microseconds.
+        //
+        // It is safe because QueryCost::points counts whole nodes, which is an
+        // UPPER BOUND on what PDAL returns after cropping to the box -- so a
+        // level that fits by that measure is guaranteed to fit for real. It is
+        // also conservative for the same reason, and can pick a level coarser
+        // than strictly needed. Erring toward too few points is the right
+        // default; the alternative is a dropped frame.
+        // ------------------------------------------------------------------
+        const copc::BudgetChoice choice = copc::chooseLevelForBudget(
+            Octree.nodes, Octree.info,
+            box.xmin, box.xmax, box.ymin, box.ymax,
+            resolution, static_cast<uint64_t>(PointBudget));
+
+        const int coarsenSteps = choice.wantedLevel - choice.chosenLevel;
+
+        std::cout << "  index says    : level " << choice.wantedLevel
+                  << " is what the camera wants\n";
+
+        std::cout << "  budget picks  : level " << choice.chosenLevel << " -> "
+                  << choice.cost.nodes << " of " << Octree.nodes.size()
+                  << " nodes, " << choice.cost.dataBytes << " bytes, <= "
+                  << choice.cost.points << " points\n";
+
+        if (coarsenSteps > 0)
+        {
+            resolution = choice.resolution;
+
+            std::cout << "  (coarsened " << coarsenSteps << " level(s) to stay "
+                      << "under " << PointBudget << "; resolution now "
+                      << std::setprecision(5) << resolution << ")\n";
+        }
+
         std::size_t points = 0;
         double seconds = 0.0;
 
+        // Exactly ONE query, at a level we already know fits.
         vtkSmartPointer<vtkPolyData> polyData =
             query(box, resolution, points, seconds);
-
-        // ------------------------------------------------------------------
-        // Budget enforcement. If the derived resolution asked for more than we
-        // can draw, back off by factors of 2 -- each doubling of the spacing
-        // is exactly one octree level shallower, and costs roughly 4x fewer
-        // points on a surface-like cloud.
-        // ------------------------------------------------------------------
-        int coarsenSteps = 0;
-
-        while (points > PointBudget && coarsenSteps < 8)
-        {
-            resolution *= 2.0;
-            ++coarsenSteps;
-
-            std::cout << "  over budget (" << points << " > " << PointBudget
-                      << "), retrying at resolution " << std::setprecision(5)
-                      << resolution << "\n";
-
-            polyData = query(box, resolution, points, seconds);
-        }
 
         std::cout << "\nRESULT\n";
         std::cout << "  points loaded : " << points << "  ("
@@ -414,9 +449,7 @@ public:
                   << " % of the file)\n";
         std::cout << "  load time     : " << seconds << " s\n";
 
-        if (coarsenSteps > 0)
-            std::cout << "  coarsened     : " << coarsenSteps << " level(s) to "
-                      << "stay inside the budget\n";
+        std::cout << "  queries made  : 1  (the level came from the index)\n";
 
         // Swap the geometry under the existing actor. No actor churn, no
         // camera reset -- the view stays exactly where the user put it.
@@ -595,10 +628,19 @@ int main(int argc, char *argv[])
             streamer.TotalPoints = qi.m_pointCount;
         }
 
+        // Parse the octree index ourselves. PDAL walks the hierarchy on every
+        // execute() but does not hand it to us, and we need it in memory to
+        // cost a query before committing to it.
+        streamer.Octree = copc::openIndex(streamer.Filename);
+
         std::cout << std::fixed << std::setprecision(3);
         std::cout << "\nFile          : " << streamer.Filename << "\n";
         std::cout << "Total points  : " << streamer.TotalPoints << "\n";
         std::cout << "Extent        : " << streamer.FullExtent.toPdalBounds()
+                  << "\n";
+        std::cout << "Octree        : " << streamer.Octree.nodes.size()
+                  << " nodes, " << (streamer.Octree.maxLevel() + 1)
+                  << " levels, root spacing " << streamer.Octree.info.spacing
                   << "\n";
         std::cout << "Point budget  : " << streamer.PointBudget << "\n";
         std::cout << "Target error  : " << streamer.TargetPixelError << " px\n";
