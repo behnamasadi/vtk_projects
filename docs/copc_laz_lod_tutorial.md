@@ -13,6 +13,7 @@ Code in this repo:
 | `copc_hierarchy_inspect` | [src/copc_hierarchy_inspect.cpp](../src/copc_hierarchy_inspect.cpp) | **No dependencies.** Reads the octree index out of the file and costs a query before running it — §8 |
 | `copc_partial_load_vtk` | [src/copc_partial_load_vtk.cpp](../src/copc_partial_load_vtk.cpp) | Load one box at one LOD into a `vtkPolyData` and render it — §9 |
 | `copc_camera_streaming` | [src/copc_camera_streaming.cpp](../src/copc_camera_streaming.cpp) | The closed loop: the camera derives both the bounds and the resolution — §10 |
+| *(python)* | [python/copc_hierarchy_inspect.py](../python/copc_hierarchy_inspect.py) | Same inspector in Python, **and it works over HTTP** on a remote file — §8a |
 
 The PDAL targets need `-DUSE_PDAL=ON`; PDAL must be installed *before* VTK is
 configured (see [README](../README.md)). `camera_lod_COCP` is pure VTK.
@@ -706,13 +707,21 @@ Nodes touched        : 2 of 15
   culled by bounds   : 13
   culled by depth    : 0
 
-Points returned      : 91302 of 518862   (17.60 %)
+Points in those nodes: 91302 of 518862   (17.60 %)
 Bytes read           : 591170 of 2705193   (21.85 %)
 Range requests       : 4   (header + root hierarchy page + one per node)
 ```
 
 **13 of 15 nodes were eliminated by arithmetic on their keys.** Their bytes were
 never touched. Over HTTP this is 4 range requests against a static file.
+
+> **A node is the smallest unit of I/O, and that is not the same as the answer.**
+> `points in those nodes` is an *upper bound*: you always decompress whole
+> nodes, and then PDAL (or laspy) **crops** the result to your box. For this
+> query laspy actually returns **7 360** points, not 91 302 — the box is small
+> next to a level-0 node that spans the entire dataset. The number that is
+> exact, and the one that actually costs you, is `bytes read`. Run the Python
+> version with `--load` to see both side by side.
 
 Now hold the bounds still (the whole extent this time) and move only
 `resolution`, and you can watch the depth cut do its work:
@@ -724,6 +733,9 @@ resolution 0.1   ->  level 2   518862 pts (100.0 %)   2703294 bytes (99.93 %)
 no resolution    ->  all       518862 pts (100.0 %)   2703294 bytes (99.93 %)
 ```
 
+(Bounds here are the whole extent, so no cropping happens and the point counts
+are exact.)
+
 Two knobs, two independent prunings:
 
 | Knob | Prunes | Mechanism |
@@ -733,6 +745,131 @@ Two knobs, two independent prunings:
 
 Both are decided from the index alone, *before* any I/O on point data. That is
 the whole trick, and there is nothing more to it.
+
+---
+
+## 8a. The same thing in Python — and over HTTP
+
+**`python/copc_hierarchy_inspect.py`** — the twin of the C++ inspector, plus the
+one capability that is awkward in C++ and trivial here: **it works on a URL.**
+
+The core needs **nothing but the standard library**, so it runs in Anaconda's
+`base` with no install:
+
+```
+python python/copc_hierarchy_inspect.py lone-star.copc.laz
+```
+
+Only the optional `--load` flag needs packages:
+
+```
+conda env create -f python/environment.yml && conda activate copc
+# or, into an env you already have:
+conda install -c conda-forge laspy lazrs numpy python-pdal vtk
+```
+
+### Inspecting a remote file without downloading it
+
+Every read goes through a `ByteSource` that counts bytes and requests, and the
+HTTP implementation is just a `Range:` header. Point it at an 81 MB file on S3:
+
+```
+$ python python/copc_hierarchy_inspect.py \
+    https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz
+```
+
+```
+Number of points     : 10,653,336
+File size            : 81,123,042 bytes (77.36 MB)
+
+Root node spacing    : 36.3712   <-- the base of the LOD ladder
+
+ level   nodes       points    spacing   avg pts/node   cumulative
+ -----   -----   ----------   --------   ------------   ----------
+     0       1       61,201    36.3712         61,201       61,201
+     1       4       69,859    18.1856         17,464      131,060
+     2      12      446,577     9.0928         37,214      577,637
+     3      48    1,504,879     4.5464         31,351    2,082,516
+     4     192    8,380,771     2.2732         43,649   10,463,287
+     5      21      190,049     1.1366          9,049   10,653,336
+
+Total points in octree : 10,653,336
+Header point count     : 10,653,336
+-> they match, so every point is accounted for by exactly one node.
+
+=== WHAT THIS SCRIPT ACTUALLY READ ===========================
+Requests             : 2
+Bytes read           : 9,485 of 81,123,042  (0.0117 %)
+Points decompressed  : 0
+```
+
+**Two HTTP requests and 9,485 bytes** bought the complete octree structure of a
+10.6-million-point cloud: how many levels, how many nodes, where each one is in
+space, and what each costs to fetch. Against a *static file* — no server
+software, no database, no tiling step. That is the whole deployment story for
+COPC, and it is the concrete difference from a plain `.laz`, which would have
+required all 81 MB.
+
+Note the shape of that table, because it is typical and the C++ example's tiny
+file does not show it: levels 0–3 together are under 20 % of the points. A
+viewer can draw a perfectly recognizable Autzen stadium from ~2 M points while
+the remaining 8.4 M stream in — or never load at all if the camera stays far
+away.
+
+### `--ladder`: every LOD at once
+
+```
+$ python python/copc_hierarchy_inspect.py <url> \
+      --ladder --bounds 636000,636500,850000,850500
+
+ resolution    level    node points    % of file        bytes   % of file
+ ----------    -----   ------------   ----------   ----------   ---------
+    36.3712        0         61,201        0.57 %      763,258       0.94 %
+    18.1856        1         86,830        0.82 %    1,093,022       1.35 %
+     9.0928        2        165,338        1.55 %    1,902,701       2.35 %
+     4.5464        3        313,282        2.94 %    3,242,517       4.00 %
+     2.2732        4        768,175        7.21 %    6,526,749       8.05 %
+     1.1366        5        812,085        7.62 %    6,897,746       8.50 %
+     (none)      all        812,085        7.62 %    6,897,746       8.50 %
+```
+
+A 500 × 500 m window of a 3.4 × 4.6 km cloud, at six detail levels: from 0.57 %
+of the file to 7.6 %. **Both knobs are working at once here** — the bounds cut
+it to that window, the resolution picks the rung.
+
+### `--load`: check the prediction against reality
+
+```
+$ python python/copc_hierarchy_inspect.py lone-star.copc.laz \
+      --bounds 515370,515380,4918340,4918350 --resolution 0.1 --load
+
+Points in those nodes: 91,302 of 518,862   (17.60 %)
+Bytes to read        : 591,170 of 2,705,193   (21.85 %)
+
+=== ACTUAL LOAD (laspy) ======================================
+laspy returned       : 7,360 points
+actual X range       : 515370.000 ... 515380.000
+actual Y range       : 4918345.074 ... 4918349.999
+numpy array          : (7360, 3), 0.17 MB
+```
+
+**91,302 predicted, 7,360 returned — and both are right.** This is the
+distinction that trips people up:
+
+| Figure | What it is |
+|---|---|
+| `bytes to read` | **Exact.** Whole LAZ chunks. This is what leaves the disk or the network. |
+| `points in those nodes` | **Upper bound.** Everything inside the chunks you had to decompress. |
+| what laspy/PDAL returns | The subset of those that actually fall inside your box. |
+
+A node is the smallest unit of I/O, so you pay for whole nodes and *then* crop.
+Here the box is 10 × 10 m while the level-0 node spans the entire 40 m dataset,
+so almost everything read gets discarded. **Make your query boxes comparable to
+the node size** and the gap closes; ask for a 1 m box out of a 4 km cloud and
+you will decompress a great deal to keep very little.
+
+`--json` emits the same structure machine-readably, which is the useful form if
+you are picking LODs in a pipeline rather than reading them.
 
 ---
 

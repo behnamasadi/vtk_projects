@@ -562,7 +562,7 @@ static void simulateQuery(const std::vector<Node> &nodes,
     std::cout << "  culled by bounds   : " << culledBySpace << "\n";
     std::cout << "  culled by depth    : " << culledByDepth << "\n";
 
-    std::cout << "\nPoints returned      : " << hitPoints << " of " << totalPoints;
+    std::cout << "\nPoints in those nodes: " << hitPoints << " of " << totalPoints;
 
     if (totalPoints > 0)
         std::cout << "   (" << std::setprecision(2)
@@ -581,9 +581,14 @@ static void simulateQuery(const std::vector<Node> &nodes,
     std::cout << "Range requests       : " << (hitNodes + 2)
               << "   (header + root hierarchy page + one per node)\n";
 
-    std::cout << "\nThis is the entire pitch for COPC: the two numbers above are\n"
-                 "small, and we computed them from the index alone -- no point\n"
-                 "data was decompressed to find them out.\n";
+    std::cout << "\nCAREFUL: `points in those nodes` is an UPPER BOUND on what a\n"
+                 "reader hands back, not the answer. A node is the smallest unit\n"
+                 "of I/O, so whole nodes are always decompressed -- but PDAL then\n"
+                 "CROPS the result to your box. Expect fewer points back, and the\n"
+                 "gap to be large whenever the box is small next to a node.\n"
+                 "\nThe `bytes read` figure is the exact one, and it is the one\n"
+                 "that matters: it is what leaves the disk or the network. All of\n"
+                 "it came from the index -- no point data was decompressed.\n";
 }
 
 // ============================================================================

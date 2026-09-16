@@ -1,0 +1,33 @@
+# Conda environment for the COPC / LOD Python examples.
+#
+#     conda env create -f python/environment.yml
+#     conda activate copc
+#
+# NOTE: python/copc_hierarchy_inspect.py needs NONE of this for its core job.
+# It parses the COPC octree index with nothing but the standard library, so it
+# runs in `base`, or in any Python 3.10+ at all. This environment is only for
+# the parts that touch real point data:
+#
+#   laspy + lazrs   read COPC points (CopcReader.query) -- the --load flag
+#   numpy           arrays for those points
+#   python-pdal     the PDAL pipeline API, if you want the same queries the
+#                   C++ examples issue
+#   vtk             rendering, if you want the Python twin of
+#                   src/copc_partial_load_vtk.cpp
+#
+# To add them to an env you already have instead:
+#
+#     conda install -c conda-forge laspy lazrs numpy python-pdal vtk
+
+name: copc
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python>=3.10
+  - numpy
+  - laspy>=2.5
+  - lazrs          # Rust LAZ backend; laszip is an alternative
+  - python-pdal    # pulls in PDAL itself, with readers.copc
+  - vtk
