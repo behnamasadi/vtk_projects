@@ -694,7 +694,7 @@ int main(int argc, char *argv[])
         renderer->SetBackground(0.08, 0.10, 0.15);
         renderer->AddActor(cloudActor);
         renderer->AddActor(boxActor);
-        renderer->AddActor2D(hud);
+        renderer->AddActor(hud);
 
         vtkNew<vtkRenderWindow> window;
         window->AddRenderer(renderer);

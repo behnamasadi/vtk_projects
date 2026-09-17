@@ -520,7 +520,7 @@ int main(int argc, char *argv[])
         scalarBar->SetTitle("Z");
         scalarBar->SetNumberOfLabels(5);
 
-        renderer->AddActor2D(scalarBar);
+        renderer->AddActor(scalarBar);
 
         renderer->ResetCamera();
 
