@@ -60,6 +60,8 @@ objdump -h libvtkImagingStencil-9.3.so.9.3 | grep 'debug_info'
 
 ## Supported Data Formats
 [Supported Data Formats](https://docs.vtk.org/en/latest/supported_data_formats.html)  
+[LAS, LAZ and COPC — the file format](docs/copc_format.md)  
+[COPC, LAZ, LOD, PDAL and the camera — tutorial index](docs/copc_laz_lod_tutorial.md)  
 
 ## List of VTK Modules
 [List of VTK Modules](https://docs.vtk.org/en/latest/modules/index.html)  
@@ -119,52 +121,6 @@ or be more specific:
 cmake --build build --target all --config Release
 ```
 
-## COPC, LAZ, LOD and the camera
-
-[docs/copc_laz_lod_tutorial.md](docs/copc_laz_lod_tutorial.md) walks the whole
-stack: LAS → LAZ → COPC's octree → PDAL's `bounds`/`resolution` → the VTK
-camera's frustum and focal point → a camera-driven streaming loop.
-
-`copc_hierarchy_inspect` is the quickest way in, because it has **no
-dependencies** — it reads the COPC octree index out of a file with plain
-`std::ifstream` and never decompresses a point:
-
-```
-g++ -std=c++17 -O2 -o copc_hierarchy_inspect src/copc_hierarchy_inspect.cpp
-curl -LO https://raw.githubusercontent.com/PDAL/PDAL/master/test/data/copc/lone-star.copc.laz
-./copc_hierarchy_inspect lone-star.copc.laz
-./copc_hierarchy_inspect lone-star.copc.laz --bounds 515370,515380,4918340,4918350 --resolution 0.1
-```
-
-It prints the LOD ladder stored in the file and tells you, before any I/O on
-point data, how many nodes, points and bytes a given bounds + resolution query
-would actually touch. Point it at a URL and it inspects a remote file with
-HTTP range requests — the full octree of a 10.6 M point cloud costs about 9 KB
-of an 81 MB file.
-
-`python/copc_partial_load_vtk.py` then loads one box at one level of detail and
-renders it, locally or straight off S3:
-
-```
-conda env create -f python/environment.yml && conda activate copc
-
-python python/copc_partial_load_vtk.py \
-    https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz \
-    --bounds 636000,636500,850000,850500 --resolution 2 \
-    --offscreen --screenshot autzen.png
-```
-
-`python/copc_camera_streaming.py` closes the loop: the camera frustum picks the
-bounds, the screen-space error picks the resolution, and the point budget is
-enforced against the octree index so every reload costs exactly one query.
-`--demo N` flies a scripted zoom headlessly and prints each decision.
-
-```
-python python/copc_camera_streaming.py lone-star.copc.laz --demo 5 \
-    --screenshot-prefix step
-```
-
-
 If you prefer `preset` use:
 
 ```
@@ -202,7 +158,7 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [Height based color map](src/height_based_color_map.cpp)  
 [The Basic Setup](docs/the_basic_setup.md)  
 [Command/Observer and CallBacks for Events](docs/command_observer_for_events_callback.md)  
-[Mouse Event vtkCommand](../src/mouse_event_vtkCommand.cpp)  
+[Mouse Event vtkCommand](src/mouse_event_vtkCommand.cpp)  
 [Actor Properties](docs/actor_properties.md)  
 [Plane Source/ Grid Background](docs/plane_source_grid_background.md)  
 [BoundingBox](docs/boundingbox.md)  
@@ -215,12 +171,13 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [ConnectivityFilter](docs/connectivity_filter.md)  
 [RestoreSceneFromFile](https://kitware.github.io-examples/site/Cxx/Snippets/RestoreSceneFromFile/)  
 [ProjectedTexture](src/ProjectedTexture.cxx)  
-[LegendScale](src/LegendScaleActor.cpp)  
+[LegendScale](src/LegendScaleActor.cxx)  
 [Anti-Aliasing](docs/anti-aliasing.md)  
 [Multiple Layers](docs/multiple_layers.md)  
 [CaptionActor2D](docs/captionActor2D.md)  
 [Octree  <span style="color:red">*needs update*</span>](docs/octree.md) 
-[COPC, LAZ, LOD, PDAL, Potree, VTK octrees, and camera pivot](docs/copc_laz_lod_tutorial.md)\n
+[COPC, LAZ, LOD, PDAL, Potree, VTK octrees, and camera pivot](docs/copc_laz_lod_tutorial.md)  
+[PDAL — reading and writing COPC, `bounds` and `resolution`](docs/copc_pdal.md)  
 
 ## Viewport
 
@@ -270,6 +227,7 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [Renderer Camera Position Call back, OnLeftButtonDown, OnChar, Pan, Dolly, Get Position, ViewAngle](docs/camera_position.md)  
 [Frustum Source, Camera Frustum Planes](docs/frustum.md)  
 [Definition of Pan, Tilt and Spin](docs/images/Definition-of-pan-tilt-and-spin.png)  
+[Camera-driven LOD: frustum → `bounds`, screen-space error → `resolution`](docs/copc_vtk_camera.md)  
 
 ## Filtering, Culling, Decimation, Multi Level of Details, Visible Points in Camera
 
@@ -283,6 +241,8 @@ target_link_libraries(VisualDebugging PRIVATE ${VTK_LIBRARIES} )
 [ThresholdPoints](docs/threshold_points.md)  
 [Extract Point Based on Implicit Function ExtractGeometry<span style="color:red">*needs update*</span>](docs/extract_point_based_implicit_function_extract_geometry.md)  
 [HierarchicalBinningFilter](docs/hierarchical_binning_filter.md)  
+[How COPC builds levels of detail — spacing, thinning, node chunks, hierarchy VLR](docs/copc_lod_mechanisms.md)  
+[Out-of-core LOD worked examples — inspect the octree, partial load, camera streaming](docs/copc_worked_examples.md)  
 [Select Visible Points In Camera ( z-buffer) <span style="color:red">*needs update*</span>](docs/select_visible_points_in_camera.md)  
 [Point Visibility In Camera Frustum <span style="color:red">*needs update*</span>](docs/point_visibility_in_camera_frustum.md)  
 [HyperTreeGrid <span style="color:red">*needs update*</span>](https://www.kitware.com/hypertreegrid-in-vtk-an-introduction/)  
