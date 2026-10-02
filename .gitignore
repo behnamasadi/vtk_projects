@@ -2,3 +2,8 @@ build/*
 *.user
 CMakeLists.txt.user
 *.vscode
+# Autzen evaluation clouds are fetched on demand (~137 MB), not committed.
+# Keep README.md + fetch script; ignore the binaries.
+data/autzen/*.laz
+data/autzen/*.las
+data/autzen/*.lax

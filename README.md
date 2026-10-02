@@ -62,6 +62,7 @@ objdump -h libvtkImagingStencil-9.3.so.9.3 | grep 'debug_info'
 [Supported Data Formats](https://docs.vtk.org/en/latest/supported_data_formats.html)  
 [LAS, LAZ and COPC — the file format](docs/copc_format.md)  
 [COPC, LAZ, LOD, PDAL and the camera — tutorial index](docs/copc_laz_lod_tutorial.md)  
+[Autzen Stadium — evaluation data (`data/autzen/`, fetch script)](data/autzen/README.md)  
 
 ## List of VTK Modules
 [List of VTK Modules](https://docs.vtk.org/en/latest/modules/index.html)  
