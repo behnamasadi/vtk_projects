@@ -575,6 +575,11 @@ if(USE_PDAL)
 	target_link_libraries(create_copc_in_memory PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
 	vtk_module_autoinit(TARGETS create_copc_in_memory MODULES ${VTK_LIBRARIES})
 
+	# Shows PDAL-exposed controls while retaining automatic COPC-pyramid policy.
+	add_executable(create_copc_advanced_options src/create_copc_advanced_options.cpp)
+	target_link_libraries(create_copc_advanced_options PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})
+	vtk_module_autoinit(TARGETS create_copc_advanced_options MODULES ${VTK_LIBRARIES})
+
 
 	add_executable(copc_lod_queries src/copc_lod_queries.cpp)
 	target_link_libraries(copc_lod_queries PRIVATE ${PDAL_LIBRARIES} ${VTK_LIBRARIES})

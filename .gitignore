@@ -7,3 +7,5 @@ CMakeLists.txt.user
 data/autzen/*.laz
 data/autzen/*.las
 data/autzen/*.lax
+# Large local LAS scene (~226 MB) — never commit.
+data/las_files/map.las
